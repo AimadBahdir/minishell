@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils.c                                   :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/20 18:22:25 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 09:31:03 by wben-sai         ###   ########.fr       */
+/*   Created: 2019/10/09 22:08:10 by abahdir           #+#    #+#             */
+/*   Updated: 2021/02/02 12:06:40 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int number_of_words_in_table(char **s)
+size_t	ft_strlen(const char *s)
 {
-    int i;
+	size_t len;
 
-    i = 0;
-    if(s != NULL)
-    {
-        while(s[i] != NULL)
-            i++;
-    }
-    return(i);
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	return (len);
 }
 
-int ft_isnumber(char c)
+size_t	ft_lento(char *s, char c)
 {
-    if(c >= '0' && c <= '9')
-        return (1);
-    return(0);
+	size_t len;
+
+	len = 0;
+	while (s[len] != '\0' && s[len] != c)
+		len++;
+	return (len);
 }

@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils.c                                   :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/20 18:22:25 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 09:31:03 by wben-sai         ###   ########.fr       */
+/*   Created: 2019/10/13 13:30:26 by abahdir           #+#    #+#             */
+/*   Updated: 2021/02/01 16:31:32 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int number_of_words_in_table(char **s)
+char	*ft_strdup(const char *s1)
 {
-    int i;
+	char	*ns;
+	int		i;
 
-    i = 0;
-    if(s != NULL)
-    {
-        while(s[i] != NULL)
-            i++;
-    }
-    return(i);
-}
-
-int ft_isnumber(char c)
-{
-    if(c >= '0' && c <= '9')
-        return (1);
-    return(0);
+	i = ft_strlen(s1);
+	ns = malloc((i * sizeof(char)) + 1);
+	if (ns == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		ns[i] = s1[i];
+		i++;
+	}
+	ns[i] = '\0';
+	return (ns);
 }

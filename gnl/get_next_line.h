@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 14:57:42 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/01/05 17:26:17 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/03 18:23:36 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+#include "../minishell.h"
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 200
 # endif
 
-int		ft_strlen(char *s);
 int		chr_bn(char *was_read);
-char	*ft_strjoin(char *s1, char *s2);
 int		get_next_line(int fd, char **line);
 int		chck_save(char **save, char **line);
 int		read_fd(char **was_read, int *len_read, int fd);

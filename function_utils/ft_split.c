@@ -6,11 +6,11 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:16:06 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/01/11 18:23:07 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/03 18:17:29 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Minishell.h"
+#include "../minishell.h"
 
 int		lenwords(char const *s, char c)
 {

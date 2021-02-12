@@ -6,11 +6,11 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 18:01:06 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/01/06 16:03:17 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/03 18:17:32 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Minishell.h"
+#include "../minishell.h"
 
 int len_without_speac(char *line)
 {

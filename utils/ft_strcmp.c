@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils.c                                   :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/20 18:22:25 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 09:31:03 by wben-sai         ###   ########.fr       */
+/*   Created: 2021/02/01 15:10:28 by abahdir           #+#    #+#             */
+/*   Updated: 2021/02/01 15:20:02 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-int number_of_words_in_table(char **s)
+short ft_strcmp(char *s1, char *s2)
 {
     int i;
 
     i = 0;
-    if(s != NULL)
-    {
-        while(s[i] != NULL)
-            i++;
-    }
-    return(i);
-}
-
-int ft_isnumber(char c)
-{
-    if(c >= '0' && c <= '9')
-        return (1);
-    return(0);
+    while (s1[i] == s2[i] && s1[i] && s2[i])
+        i++;
+    return (s1[i] == s2[i]);    
 }
