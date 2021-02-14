@@ -6,42 +6,66 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/05 16:30:59 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/13 15:18:47 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-short   ft_execmd(t_env **lst, char **cmdargs)
-{
-	char *cmd;
 
-	cmd = ft_strlower(cmdargs[0]);
-    if (ft_strcmp(cmd, "echo"))
-        return (ft_echo(cmdargs));
-    else if (ft_strcmp(cmd, "cd"))
-        return (ft_cd(lst, cmdargs));
-	else if (ft_strcmp(cmd, "pwd"))
-		return (ft_pwd(*lst));
-	else if (ft_strcmp(cmd, "env"))
-		return (ft_env(*lst));
-    else if (ft_strcmp(cmd, "export"))
-        return (ft_export(lst, cmdargs));
-    else if (ft_strcmp(cmd, "unset"))
-        return (ft_unset(lst, cmdargs));
-    else
-	    return(-1);
+char    **spltcmd(char **cmd)
+{
+    char    **args;
+    short   i;
+    short   stop;
+
+    stop = -1;
+    while (cmd[++stop])
+        if (ft_strcmp(cmd[stop], ">")
+        || ft_strcmp(cmd[stop], ">>")
+        || ft_strcmp(cmd[stop], "<"))
+            break;
+    if (!(args = malloc(sizeof(char *) * stop)))
+        return (NULL);
+    i = -1;
+    args[stop] = NULL;
+    while (++i < stop)
+        args[i] = cmd[i];
+    return (args);
 }
 
-short    ft_echo(char **args)
-{
-    short cond;
+// int   fillfile(char **cmd, int i)
+// {
+//     int fd;
 
-    cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
-    args += (cond) ? 2 : 1;
-    ft_putmstr(args, ' ');
-    if (!cond)
-        write(STDOUT_FILENO, "\n", 1);
-    return (1);
-}
+//     if (ft_strcmp(cmd[i], ">"))
+//     {
+        
+//     }
+//     return 1;
+// }
 
+// short   gdirections(t_env **envlst, char **cmd)
+// {
+//     short   i;
+//     int     pid;
+//     int     fd;
+
+//     i = -1;
+//     fd = 0;
+//     while (cmd[++i])
+//     {
+//         if (ft_strcmp(cmd[i], ">"))
+//         {
+//             fd = open(cmd[++i],  O_CREAT | O_RDWR | O_TRUNC, 0644);
+             
+//             close(fd);
+//         }
+//         else if (ft_strcmp(cmd[i], ">>"))
+//         {
+//             fd = open(cmd[++i],  O_CREAT | O_RDWR | O_APPEND, 0644);
+//             close(fd);
+//         }
+//     }
+//     return (0);
+// }

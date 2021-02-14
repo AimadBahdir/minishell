@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/05 16:25:47 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/09 14:27:58 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <signal.h>
 # include <fcntl.h>
 # include <errno.h>
 
@@ -32,6 +33,7 @@ typedef	struct	s_env
 	char			*val;
 	struct s_env	*next;
 }				t_env;
+int				g_cmdstat;
 
 size_t			ft_strlen(const char *s);
 size_t			ft_lento(char *s, char c);
@@ -47,6 +49,8 @@ char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 short			ft_checkfor(char c, char *str);
+short			ft_checkforstr(char *str, char **lst);
+short			chk_directions(char **lst);
 short			errthrow(char *errmsg);
 t_env			*newenvelm(char *key, char *val);
 void			envaddelm(t_env **lst, t_env *newelm);
@@ -57,7 +61,7 @@ char			*getenval(t_env *e, char *key);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e);
-short			ft_pwd(t_env *e);
+short			ft_pwd(t_env **e);
 short			ft_export(t_env **e, char **args);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);

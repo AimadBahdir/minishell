@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 22:08:10 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/04 08:34:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/07 17:35:05 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t len;
 
 	len = 0;
+	if (!s)
+		return (0);
 	while (s[len] != '\0')
 		len++;
 	return (len);
