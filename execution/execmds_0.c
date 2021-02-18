@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/12 09:34:51 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/18 11:10:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ short    ft_echo(char **args)
     i = -1;
     while (args[++i])
     {
-        if (ft_strcmp(">", args[i])
-        || ft_strcmp("<", args[i])
-        || ft_strcmp(">>", args[i]))
-            break ;
         ft_putstr(args[i]);
         if (args[i + 1])
             write(STDOUT_FILENO, " ", 1);
@@ -40,6 +36,7 @@ short    ft_echo(char **args)
 short   ft_execmd(t_env **lst, char **cmdargs)
 {
 	char *cmd;
+
 
 	cmd = ft_strlower(cmdargs[0]);
     if (ft_strcmp(cmd, "echo"))
@@ -66,9 +63,7 @@ short   chk_directions(char **lst)
     if (!lst)
         return (-1);
     while (lst[++i])
-        if (ft_strcmp(">", lst[i])
-        || ft_strcmp("<", lst[i])
-        || ft_strcmp(">>", lst[i]))
+        if (lst[i][0] == 27)
             return (1);
     return (0);
 }
@@ -82,7 +77,6 @@ short   chk_directions(char **lst)
 //     {
 //         if (chk_directions(head->command))
 //             gdirections(envlst, head->command);
-        
 //         head = head->next;
 //     }
     

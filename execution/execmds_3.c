@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/08 17:40:13 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/17 15:50:50 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ short	ft_cd(t_env **e, char **args)
 	if (!path || path[0] == '~')
 		path = ft_rplchome(*e, path);
 	if (chdir(path) == -1)
-		return (errthrow(ft_strjoin(strerror(errno),
-				ft_strjoin(" > cd: ", path))));
+		return (errthrow(strerror(errno), " > cd: ", path, NULL));
 	if (!(pwd = getcwd(NULL, 0)))
 		return (-1);
 	if (getenval(*e, "PWD"))

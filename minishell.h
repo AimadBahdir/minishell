@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/09 14:27:58 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/18 11:05:07 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
 short			chk_directions(char **lst);
-short			errthrow(char *errmsg);
+short			errthrow(char *erp1, char *erp2, char *erp3, char *erp4);
 t_env			*newenvelm(char *key, char *val);
 void			envaddelm(t_env **lst, t_env *newelm);
 void			setenval(t_env **lst, char *key, char *val);
@@ -63,6 +63,10 @@ short			ft_echo(char **args);
 short			ft_env(t_env *e);
 short			ft_pwd(t_env **e);
 short			ft_export(t_env **e, char **args);
+short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
+short			gdirections(t_env **envlst, char **cmd);
+int				fillfile(t_env **envlst, char **cmd, int fd);
+
 #endif
