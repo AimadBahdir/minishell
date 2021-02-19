@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/18 11:10:52 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/19 11:10:45 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,17 @@ short	ft_export(t_env **e, char **args)
 	short	i;
 
 	i = 0;
-
 	if (ft_lentwop(args) < 2)
 		return (ft_exprint(*e));
 	while (args[++i])
 	{
-		if (ft_checkfor('=', args[i]) && ft_strnormed(args[i]))
+		if (ft_checkfor('=', args[i]) > 0)
 		{
 			klen = ft_lento(args[i], '=') + 1;
 			key = ft_substr(args[i], 0, (klen - 1));
-			if (!getenval(*e, key))
+			if (!ft_strnormed(key))
+				errthrow("export: `", key, "=': not a valid identifier.", NULL);
+			else if (!getenval(*e, key))
 				envaddelm(e, newenvelm(ft_substr(args[i], 0, (klen - 1)),
 				ft_substr(args[i], klen,(ft_strlen(args[i]) - klen))));
 			else

@@ -50,7 +50,7 @@ int main(int argc, char **argv, char **envp)
     // command[4] = ft_strdup("k3");
     // command[5] = ft_strdup("k4");
     // command[6] = ft_strdup("k5");
-    // ft_execmd(&envlst, command);
+    // ft_execmd(&envlst, command); 
     // command[0] = ft_strdup("env");
     // ft_execmd(&envlst, command);
     // puts("\n cd :");
@@ -80,10 +80,18 @@ int main(int argc, char **argv, char **envp)
     t_env *envlst;
     envlst = NULL;
     ft_setenv(&envlst, envp);
-    char **command = malloc(2 * sizeof(char *));
-    command[0] = ft_strdup("export");
-    command[1] = NULL;
-    ft_execmd(&envlst, command);
+    char **command = malloc(6 * sizeof(char *));
+    
+    command[0] = ft_strdup("echo");
+    command[1] = ft_strdup("dd");
+    command[2] = ft_strdup("file1");
+    command[3] = ft_strdup(" <");
+    command[4] = ft_strdup("file1");
+    command[3][0] = 27;
+    command[5] = NULL;
+    gdirections(&envlst, command);
+    // command[0] = ft_strdup("export");
+    // command[1] = NULL;
     // command[2][0] = 27;
     // command[3][0] = 27;
     // command[5][0] = 27;
@@ -92,6 +100,8 @@ int main(int argc, char **argv, char **envp)
     // if (chk_directions(command))
     //     gdirections(&envlst, command);
     // else
-    command[0] = ft_strdup("env");
-    ft_execmd(&envlst, command);
+    // ft_execmd(&envlst, command);
+    // puts("\n");
+    // command[0] = ft_strdup("env");
+    // ft_execmd(&envlst, command);
 }

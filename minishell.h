@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/18 11:05:07 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/19 16:34:34 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef	struct	s_env
 	struct s_env	*next;
 }				t_env;
 int				g_cmdstat;
+
+int				g_stdout;
+int				g_stdin;
 
 size_t			ft_strlen(const char *s);
 size_t			ft_lento(char *s, char c);
@@ -67,6 +70,6 @@ short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
 short			gdirections(t_env **envlst, char **cmd);
-int				fillfile(t_env **envlst, char **cmd, int fd);
+int				fillfile(t_env **envlst, char **cmd);
 
 #endif
