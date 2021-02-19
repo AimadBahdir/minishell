@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 15:10:23 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/19 15:54:28 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,9 @@ int valid_option(char *line , int start)
 int greater_less(int start_arg, char *line) 
 {
 	if(line[start_arg] == '>' && line[start_arg + 1] == '>')
-	{
-		if(line[start_arg + 2] == '>')
-			return (-1);
 		return (start_arg + 2);
-	}
+	else if(line[start_arg] == '<' && line[start_arg + 1] == '<')
+		return (start_arg + 2);
 	else if(line[start_arg] == '>')
 			return(start_arg);
 	else if(line[start_arg] == '<')
@@ -187,7 +185,7 @@ int gestion_args(char *line, int start, int end, t_gargs **gargs)
 	int end_arg;
 
 	i = 0;
-	while(start + i < end)
+	while(start + i < end && i >= 0)
 	{
 		while(line[start + i] == ' ')
 			i++;
@@ -195,6 +193,8 @@ int gestion_args(char *line, int start, int end, t_gargs **gargs)
 			break;
 		start_arg = start + i;
 		end_arg = get_end_arg(start_arg, line , end);
+		if(end_arg == -1)
+			return(-1);
 		ft_lstadd_back_arg(gargs, ft_lstnew_args(start_arg, end_arg));
 		i += (end_arg - start_arg) == 0 ? 1 : end_arg - start_arg;
 	}
@@ -451,16 +451,12 @@ void gestion_fill_arg(t_gargs *gargs, char *line, int len)
 		len = ptr_list_shell->end - ptr_list_shell->start;
 		t_params.args[i] = (char *)fill_arg(len, ptr_list_shell->start, line);
 		ptr_list_shell = ptr_list_shell->next;
-		write_string("1 : ");
-		write_string(t_params.args[i]);
-		write_string("\n");
 		i++;
 	}
-	write_string("\n");
 	t_params.args[i] = NULL;
 }
 
-void get_args(char *line, int start, int end, int norm)
+int get_args(char *line, int start, int end, int norm)
 {
 	int i;
 	int len;
@@ -470,17 +466,16 @@ void get_args(char *line, int start, int end, int norm)
 	gargs = NULL;
 	i  = 0;
 	len = gestion_args(line, start, end, &gargs);
-	//if(norm == 1)
-	//	echonge_list_args(&gargs);
+	if(len == -1)
+		return(-1);
 	if(norm == 1)
 		check_more(gargs, line, len);
 	else
 		gestion_fill_arg(gargs, line, len);
-	//if(norm == 1)
-		//check_more(gargs, line);
+	return(1);
 }
 
-void get_param_list_shell(t_inputs **list_shell, char *line, int start, int end)
+int get_param_list_shell(t_inputs **list_shell, char *line, int start, int end)
 {
 	int i;
 
@@ -489,10 +484,13 @@ void get_param_list_shell(t_inputs **list_shell, char *line, int start, int end)
 		i++;
 	if(line[start + i] != '>' && line[start + i] != '<')
 	{
-		get_args(line, start, end, 0);
+		if(get_args(line, start, end, 0) == -1)
+			return(-1);
 	}
 	else
-		get_args(line, start, end, 1);
+		if(get_args(line, start, end, 1) == -1)
+			return(-1);
+	return(1);
 }
 
 
@@ -543,24 +541,35 @@ int get_start_and_end_events(char **words_line, char *line, t_inputs **list_shel
 						break;
 					}
 					if (line[i] == '\0')
+					{
+						t_params.error_text = "Empty line there is no supplement \"\n";
 						return(-1);
+					}
 					i++;
 				}
 			}
 			else if(line[i] == '\'' && open == 1)
 			{
 				i++;
-				while(line[i] != '\'')
+				while(line[i] != '\'' && line[i] != '\0')
 					i++;
 				open = 0;
 			}
 		}
 		if ((line[i] == ';' || line[i] == '|' || line[i] == '\0') && open == 0)
 		{
+			if(line[i] == '\0' && (line[i - 1] == '>' || line[i - 1] == '<'))
+			{
+				t_params.error_text = "bash: syntax Error \n";
+				return(-1);
+			}	
 			pipe = (line[i] == '|') ? 1 : 0;
 			end = i;
-			get_param_list_shell(list_shell, line, start, end);
+			if(get_param_list_shell(list_shell, line, start, end) == -1)
+				return(-1);
 			ft_lstadd_back(list_shell, ft_lstnew(t_params.args,pipe));
+			if(line[i] == ';' && line[i + 1] == '\0')
+				break;
 			start = end +1;
 		}
 	}
@@ -584,6 +593,163 @@ int lsh_split_line(char *line, t_inputs **list_shell)
 	return(1);
 }
 
+int get_end_index(char *line, int i)
+{
+	if(line[i] == '\"')
+	{
+		i++;
+		while(1 && line[i] != '\0')
+		{
+			if(line[i] == '\"' && valid_option(line, i) == 1)
+				return(i + 1);
+			i++;
+		}
+		if(line[i] == '\0')
+			t_params.error_text = "There is no supplement \"\n";
+	}
+	else if(line[i] == '\'')
+	{
+		i++;
+		while(1 && line[i] != '\0')
+		{
+			if(line[i] == '\'')
+				return(i + 1);
+			i++;
+		}
+		if(line[i] == '\0')
+			t_params.error_text = "There is no supplement \'\n";
+	}
+	return(-1);
+}
+
+int error_msg()
+{
+	t_params.error_text = "bash: syntax Error \n";
+	return(-1);
+}
+
+int pass_spe(char *line, int i)
+{
+	while(line[i] == ' ')
+	{
+		if(line[i] == '\0')
+			break;
+		i++;
+	}
+	return(i);
+}
+
+
+int check_syntax(char *line)
+{
+	int i;
+	
+	i = 0;
+	while(line[i] != '\0')
+	{
+		if(line[0] == ';' || line[0] == '|')
+			return(error_msg());
+		if((line[i] == '\'' || line[i] == '\"') && valid_option(line, i) == 1)
+			i = get_end_index(line, i);
+		if(i == -1)
+			return(-1);
+		if((line[i] == '|' || line[i] == ';') && valid_option(line, i) == 1)
+		{
+			i = pass_spe(line, i + 1);
+			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
+				return(error_msg());
+		}
+		else if((line[i] == '>' && line[i + 1] == '>') && valid_option(line, i) == 1)
+		{
+			i = pass_spe(line, i + 2);
+			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
+				return(error_msg());
+		}
+		else if((line[i] == '<' && line[i + 1] == '<') && valid_option(line, i) == 1)
+		{
+			i = pass_spe(line, i + 2);
+			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
+				return(error_msg());
+		}
+		else if (line[i] == '>' && valid_option(line, i) == 1)
+		{
+			if(i + 1 == pass_spe(line, i + 1))
+			{
+				if(line[i + 1] == '|' || line[i + 1] == ';' || line[i + 1] == '<')
+					return(error_msg());
+			}
+			else
+			{
+				i = pass_spe(line, i + 1);
+				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
+					return(error_msg());
+			}
+				
+		}
+		else if (line[i] == '<' && valid_option(line, i) == 1)
+		{
+			if(i + 1 == pass_spe(line, i + 1))
+			{
+				if(line[i + 1] == '|' || line[i + 1] == ';' || line[i + 1] == '>')
+					return(error_msg());
+			}
+			else
+			{
+				i = pass_spe(line, i + 1);
+				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
+					return(error_msg());
+			}
+		}
+		i++;
+	}
+	return(1);
+}
+
+void test_print(t_inputs *list_shell)
+{
+	int i;
+	int j;
+	t_inputs *ptr_list_shell;
+	
+	j = 0;
+	ptr_list_shell = list_shell;
+	while (ptr_list_shell != NULL)
+	{
+		printf("--------------------------\n");
+		j = 0;
+		while(ptr_list_shell->command[j] != NULL)
+		{
+			printf("command : %s\n",ptr_list_shell->command[j]);
+			j++;
+		}
+		printf("pipe : %d\n",ptr_list_shell->pipe);
+		printf("--------------------------\n");
+		ptr_list_shell = ptr_list_shell->next;
+	}
+	printf("\n\n\n");
+	
+}
+
+int check_syntax_list(t_inputs *list_shell)
+{
+	int i;
+	int pipe;
+	t_inputs *ptr_list_shell;
+	
+	i = 0;
+	ptr_list_shell = list_shell;
+	while (ptr_list_shell != NULL)
+	{
+		pipe = ptr_list_shell->pipe;
+		if(pipe == 1 && ptr_list_shell->command[0] == NULL)
+			return(-1);
+		ptr_list_shell = ptr_list_shell->next;
+		if(ptr_list_shell != NULL && pipe == 1 && ptr_list_shell->command[0] == NULL)
+			return(-1);
+	}
+	return(1);
+}
+
 void lsh_loop(void)
 {
 	char *line;
@@ -593,16 +759,29 @@ void lsh_loop(void)
 	list_shell = NULL;
 	while (1)
 	{
-		write_string("Shell--> ");
+		errors = 0;
+		write_string("bash-1.0$ ");
 		lsh_read_line_and_trim(&line);
-		if(strcmp("exit", line) == 0)
-			break;
-		if(strcmp("clear", line) == 0)
-			write_string("\e[1;1H\e[2J");
-		errors = lsh_split_line(line, &list_shell);
-		if (errors == -1)
-			write_string("error\n");
-		
+		if(line[0] != '\0')
+		{
+			if(check_syntax(line) != -1)
+				errors = lsh_split_line(line, &list_shell);
+			else
+			{
+				write_string(t_params.error_text);
+				continue;
+			}
+			if (errors == -1)
+				write_string(t_params.error_text);
+			else
+			{
+				if(check_syntax_list(list_shell) != -1)
+					test_print(list_shell);
+				else
+					write_string("bash: syntax Error \n");
+				list_shell = NULL;
+			}
+		}
 		free(line);
 	}
 }

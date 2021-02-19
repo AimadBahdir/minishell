@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 15:02:18 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/19 15:52:24 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "gnl/get_next_line.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h> 
 
@@ -44,6 +45,9 @@ struct s_params
     char **args;
 	char **env;
 	int question_nbr;
+	char *error_text;
+	int i;
+	int type_cute_line;
 }	t_params;
 
 typedef struct  s_env
