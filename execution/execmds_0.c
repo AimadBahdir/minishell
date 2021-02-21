@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/18 11:10:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/20 15:02:38 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ short   ft_execmd(t_env **lst, char **cmdargs)
     else if (ft_strcmp(cmd, "unset"))
         return (ft_unset(lst, cmdargs));
     else
-	    return(0);
+	    return(execve(ft_strjoin("/bin/",cmd), cmdargs, g_envp));
 }
 
 short   chk_directions(char **lst)

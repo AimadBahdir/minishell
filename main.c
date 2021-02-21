@@ -79,15 +79,16 @@ int main(int argc, char **argv, char **envp)
     // }
     t_env *envlst;
     envlst = NULL;
+    g_envp = envp;
     ft_setenv(&envlst, envp);
     char **command = malloc(6 * sizeof(char *));
     
     command[0] = ft_strdup("echo");
-    command[1] = ft_strdup("dd");
+    command[1] = ft_strdup(" <");
     command[2] = ft_strdup("file1");
-    command[3] = ft_strdup(" <");
+    command[3] = ft_strdup("ok lool");
     command[4] = ft_strdup("file1");
-    command[3][0] = 27;
+    command[1][0] = 27;
     command[5] = NULL;
     gdirections(&envlst, command);
     // command[0] = ft_strdup("export");

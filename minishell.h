@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/19 16:34:34 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/20 15:00:14 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef	struct	s_env
 }				t_env;
 int				g_cmdstat;
 
+char			**g_envp;
 int				g_stdout;
 int				g_stdin;
 
