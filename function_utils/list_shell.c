@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 14:59:14 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/11 14:52:30 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:56:25 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ t_inputs	*ft_lstnew(char **command, short pipe)
 	return (nouveau);
 }
 
-t_gargs *ft_lstnew_args(int start ,int  end)
+t_gargs *ft_lstnew_args(int start ,int  end, int vld_der)
 {
 	t_gargs *nouveau;
 
 	nouveau = malloc(sizeof(*nouveau));
     nouveau->start = start;
     nouveau->end = end;
+	nouveau->vld_der = vld_der;
 	nouveau->next = NULL;
 	return (nouveau);
 }
@@ -115,6 +116,7 @@ void	echonge_list_args(t_gargs **lst)
 		while (temp2)
 		{
 			echonge(&temp1->start, &temp1->end, &temp2->start, &temp2->end);
+			echongevld_der(&temp1->vld_der, &temp2->vld_der);
 			temp2 = temp2->next;
 		}
 		temp2 = *lst;
@@ -147,4 +149,13 @@ void	echonge(int *start1, int *end1, int *start2, int *end2)
 	temp = *end2;
 	*end2 = *end1;
 	*end1 = temp;
+}
+
+void	echongevld_der(int *vld_der, int *vld_der2)
+{
+	int temp;
+
+	temp = *vld_der2;
+	*vld_der2 = *vld_der;
+	*vld_der = temp;
 }

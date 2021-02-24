@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 18:01:06 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/03 18:17:32 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/23 15:06:34 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int len_without_speac(char *line)
 	len_line = strlen(line); // skar tink a3za
 	while(line[len_line - i++] == ' ')
 		j++;
+	if(line[len_line - j - 1] == '\\')
+		if(valid_option(line, len_line - j - 1) == 1)
+			if(line[len_line - j] == ' ')
+				j--;
 	i = 0;
 	while(line[i] != '\0' && line[i] == ' ')
 		i++;

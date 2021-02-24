@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/19 15:54:28 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/23 17:09:42 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ int valid_option(char *line , int start)
 
 int greater_less(int start_arg, char *line) 
 {
-	if(line[start_arg] == '>' && line[start_arg + 1] == '>')
+	t_params.vld_der = 1;
+	if((line[start_arg] == '>' && line[start_arg + 1] == '>') || (line[start_arg] == '<' && line[start_arg + 1] == '<'))
+	{
 		return (start_arg + 2);
-	else if(line[start_arg] == '<' && line[start_arg + 1] == '<')
-		return (start_arg + 2);
-	else if(line[start_arg] == '>')
-			return(start_arg);
-	else if(line[start_arg] == '<')
-			return(start_arg);
+	}
+	else if((line[start_arg] == '>') || (line[start_arg] == '<'))
+	{
+		return(start_arg);
+	}
 	return(-1);
 }
 
@@ -125,7 +126,7 @@ int cut_outher(int start_arg, char *line, int end, int *i)
 			return(0);
 		else if((line[start_arg + *i] == '\"' || line[start_arg + *i] == '\'') && valid_option(line, start_arg + *i) == 1)
 			return(1);
-		else if(line[start_arg + *i] == ' ')
+		else if(line[start_arg + *i] == ' ' && valid_option(line, start_arg + *i) == 1)
 			return(0);
 		*i = *i + 1;
 	}
@@ -138,6 +139,7 @@ int get_end_arg(int start_arg, char *line ,int end)
 	int value;
 
 	i = 0;
+	t_params.vld_der = 0;
 	while(start_arg + i < end)
 	{
 		while(line[start_arg + i] == ' ' && start_arg + i < end)
@@ -195,7 +197,7 @@ int gestion_args(char *line, int start, int end, t_gargs **gargs)
 		end_arg = get_end_arg(start_arg, line , end);
 		if(end_arg == -1)
 			return(-1);
-		ft_lstadd_back_arg(gargs, ft_lstnew_args(start_arg, end_arg));
+		ft_lstadd_back_arg(gargs, ft_lstnew_args(start_arg, end_arg, t_params.vld_der));
 		i += (end_arg - start_arg) == 0 ? 1 : end_arg - start_arg;
 	}
 	return(get_number_args(gargs));
@@ -366,20 +368,29 @@ char *check_path(char *s)
 	return(ptr);
 }
 
-char *fill_arg(int len, int start, char *line)
+char *fill_arg(int len, int start, char *line, int vld_der)
 {
 	char *s;
 	int i;
+	int j;
 	
 	i = 0;
+	j = 0;
 	len = len == 0 ? 1 : len;
+	len = (vld_der == 1) ? len + 1 : len;
 	s = (char *)malloc(sizeof(char ) * len + 1);
+	if(vld_der == 1)
+	{
+		s[j++] = '@'; 
+		len--;
+	}
 	while(len > i)
 	{
-		s[i] = line[start + i];
+		s[j] = line[start + i];
+		j++;
 		i++;
 	}
-	s[i] = '\0';
+	s[j] = '\0';
 	return(check_path(s));
 }
 
@@ -398,7 +409,7 @@ void change_position(t_gargs **gargs, int i)
 	echonge_list_args(&ptr_list_shell);
 }
 
-void check_more(t_gargs *gargs, char *line, int len)
+void check_more(t_gargs *gargs, char *line, int len, int norm)
 {
 	int i;
 	int j;
@@ -407,13 +418,17 @@ void check_more(t_gargs *gargs, char *line, int len)
 	ptr_list_shell = gargs;
 	i = 0;
 	gestion_fill_arg(gargs, line, len);
-	j = number_of_words_in_table(t_params.args) - 2;
-	echonge_list_args(&ptr_list_shell);
-	free_table_args();
-	gestion_fill_arg(gargs, line, len);
+	j = number_of_words_in_table(t_params.args);
+	if(norm == 1)
+	{
+		j = j -2;
+		echonge_list_args(&ptr_list_shell);
+		free_table_args();
+		gestion_fill_arg(gargs, line, len);
+	}
 	while(i < j)
 	{
-		if(strcmp(t_params.args[i], ">") == 0)
+		if(strcmp(t_params.args[i], "@>") == 0)
 		{
 			change_position(&ptr_list_shell, i);
 			free_table_args();
@@ -449,7 +464,7 @@ void gestion_fill_arg(t_gargs *gargs, char *line, int len)
 	while (ptr_list_shell != NULL)
 	{
 		len = ptr_list_shell->end - ptr_list_shell->start;
-		t_params.args[i] = (char *)fill_arg(len, ptr_list_shell->start, line);
+		t_params.args[i] = (char *)fill_arg(len, ptr_list_shell->start, line, ptr_list_shell->vld_der);
 		ptr_list_shell = ptr_list_shell->next;
 		i++;
 	}
@@ -468,10 +483,7 @@ int get_args(char *line, int start, int end, int norm)
 	len = gestion_args(line, start, end, &gargs);
 	if(len == -1)
 		return(-1);
-	if(norm == 1)
-		check_more(gargs, line, len);
-	else
-		gestion_fill_arg(gargs, line, len);
+	check_more(gargs, line, len, norm);
 	return(1);
 }
 
@@ -558,9 +570,9 @@ int get_start_and_end_events(char **words_line, char *line, t_inputs **list_shel
 		}
 		if ((line[i] == ';' || line[i] == '|' || line[i] == '\0') && open == 0)
 		{
-			if(line[i] == '\0' && (line[i - 1] == '>' || line[i - 1] == '<'))
+			if(line[i] == '\0' && ((line[i - 1] == '>' || line[i - 1] == '<') && valid_option(line, i - 1) == 1))
 			{
-				t_params.error_text = "bash: syntax Error \n";
+				t_params.error_text = "bash: syntax Error 1 \n";
 				return(-1);
 			}	
 			pipe = (line[i] == '|') ? 1 : 0;
@@ -624,7 +636,7 @@ int get_end_index(char *line, int i)
 
 int error_msg()
 {
-	t_params.error_text = "bash: syntax Error \n";
+	t_params.error_text = "bash: syntax Error 2\n";
 	return(-1);
 }
 
@@ -656,20 +668,23 @@ int check_syntax(char *line)
 		if((line[i] == '|' || line[i] == ';') && valid_option(line, i) == 1)
 		{
 			i = pass_spe(line, i + 1);
-			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
+			if(line[i] == '|' || line[i] == ';')
 				return(error_msg());
+			i--;
 		}
 		else if((line[i] == '>' && line[i + 1] == '>') && valid_option(line, i) == 1)
 		{
 			i = pass_spe(line, i + 2);
 			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
 				return(error_msg());
+			i--;
 		}
 		else if((line[i] == '<' && line[i + 1] == '<') && valid_option(line, i) == 1)
 		{
 			i = pass_spe(line, i + 2);
 			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
 				return(error_msg());
+			i--;
 		}
 		else if (line[i] == '>' && valid_option(line, i) == 1)
 		{
@@ -683,6 +698,7 @@ int check_syntax(char *line)
 				i = pass_spe(line, i + 1);
 				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
 					return(error_msg());
+				i--;
 			}
 				
 		}
@@ -698,6 +714,7 @@ int check_syntax(char *line)
 				i = pass_spe(line, i + 1);
 				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
 					return(error_msg());
+				i--;
 			}
 		}
 		i++;
@@ -719,7 +736,7 @@ void test_print(t_inputs *list_shell)
 		j = 0;
 		while(ptr_list_shell->command[j] != NULL)
 		{
-			printf("command : %s\n",ptr_list_shell->command[j]);
+			printf("command : |%s|\n",ptr_list_shell->command[j]);
 			j++;
 		}
 		printf("pipe : %d\n",ptr_list_shell->pipe);
@@ -778,7 +795,7 @@ void lsh_loop(void)
 				if(check_syntax_list(list_shell) != -1)
 					test_print(list_shell);
 				else
-					write_string("bash: syntax Error \n");
+					write_string("bash: syntax Error 3\n");
 				list_shell = NULL;
 			}
 		}

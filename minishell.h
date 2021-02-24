@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/19 15:52:24 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/23 16:29:53 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_gargs
 {
 	int start;
 	int  end;
+	int vld_der;
 	struct s_gargs *next;
 }           t_gargs;
 
@@ -48,6 +49,7 @@ struct s_params
 	char *error_text;
 	int i;
 	int type_cute_line;
+	int vld_der;
 }	t_params;
 
 typedef struct  s_env
@@ -70,7 +72,7 @@ int 		number_of_words_in_table(char **s);
 void		ft_lstadd_back(t_inputs **list_shell, t_inputs *new);
 t_inputs	*ft_lstnew(char **command, short pipe);
 void		ft_lstadd_back_arg(t_gargs **list_shell, t_gargs *new);
-t_gargs 	*ft_lstnew_args(int start ,int  end);
+t_gargs 	*ft_lstnew_args(int start ,int  end, int vld_der);
 void		echonge_list_args(t_gargs **lst);
 void		echonge(int *start1, int *end1, int *start2, int *end2);
 int 		get_number_args(t_gargs **gargs);
@@ -97,6 +99,8 @@ int greater_less(int start_arg, char *line);
 int valid_option(char *line , int start);
 int cut_outher(int start_arg, char *line, int end, int *i);
 char		*ft_itoa(int n);
-void gestion_fill_arg(t_gargs *gargs, char *line, int len);
+char *fill_arg(int len, int start, char *line, int vld_der);
 void free_table_args();
+void	echongevld_der(int *vld_der, int *vld_der2);
+void gestion_fill_arg(t_gargs *gargs, char *line, int len);
 #endif
