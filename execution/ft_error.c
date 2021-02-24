@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/19 10:55:38 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/23 16:03:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,18 @@ short   errthrow(char *erp1, char *erp2, char *erp3, char *erp4)
         write(2, erp4, ft_strlen(erp4));
     write(2, "\n", 1);
     return (-1);
+}
+
+void ft_stdrst(int fd)
+{
+	if (fd == 1 && g_stdout != STDOUT_FILENO)
+	{
+		close(g_stdout);
+		g_stdout = STDOUT_FILENO;
+	}
+	if (fd == 0 && g_stdin != STDIN_FILENO)
+	{
+		close(g_stdin);
+		g_stdin = STDIN_FILENO;
+	}
 }

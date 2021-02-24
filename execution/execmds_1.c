@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/19 16:38:22 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/24 08:41:45 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,20 @@ int   fillfile(t_env **envlst, char **cmd)
 {
 	int pid;
 	int file;
-	int err;
-
-	if (g_stdout != -1)
-		dup2(g_stdout, STDOUT_FILENO);
-	if (g_stdin != -1)
-		dup2(g_stdin, STDIN_FILENO);
-	err = ft_execmd(envlst, cmd);
-	return (1);
+	int res;
+	
+	res = 1;
+	pid = fork();
+	if (pid == 0)
+	{
+		if (g_stdout != STDOUT_FILENO)
+			dup2(g_stdout, STDOUT_FILENO);
+		if (g_stdin != STDIN_FILENO)
+			dup2(g_stdin, STDIN_FILENO);
+		res = ft_execmd(envlst, cmd);
+		exit(0);
+	}
+	return (res);
 }
 
 int		ft_open(char *name, int flags, short out)
@@ -51,13 +57,13 @@ int		ft_open(char *name, int flags, short out)
 	if (out)
 	{
 		if (g_stdout > 2)
-		close(g_stdout);
+			ft_stdrst(1);
 		return (g_stdout = open(name,  flags, 0644));
 	}
 	else
 	{
 		if (g_stdin > 2)
-			close(g_stdin);
+			ft_stdrst(0);
 		return (g_stdin = open(name,  flags, 0644));
 	}
 }
@@ -65,10 +71,8 @@ int		ft_open(char *name, int flags, short out)
 short   gdirections(t_env **envlst, char **cmd)
 {
 	short   i;
-
 	i = -1;
-	g_stdout = -1;
-	g_stdin = -1;
+
 	while (cmd[++i])
 	{
 		if (cmd[i][0] == 27 && cmd[i][1] == '<')

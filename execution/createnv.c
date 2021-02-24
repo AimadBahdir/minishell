@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/18 11:13:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/23 12:37:23 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ t_env   *newenvelm(char *key, char *val)
 
 	if (!(newelm = malloc(sizeof(*newelm))))
 		return (NULL);
-    newelm->key = key;
-    newelm->val = val;
+	if (ft_strcmp(key, "HOME"))
+		g_homepath = ft_strdup(val);
+    newelm->key = ft_strdup(key);
+    newelm->val = ft_strdup(val);
 	newelm->next = NULL;
+	free(key);
+	free(val);
 	return (newelm);
 }
 

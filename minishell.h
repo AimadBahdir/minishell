@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/20 15:00:14 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/23 16:00:59 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef	struct	s_env
 }				t_env;
 int				g_cmdstat;
 
+char			*g_homepath;
 char			**g_envp;
 int				g_stdout;
 int				g_stdin;
@@ -56,12 +57,14 @@ short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
 short			chk_directions(char **lst);
 short			errthrow(char *erp1, char *erp2, char *erp3, char *erp4);
+void			ft_stdrst(int fd);
 t_env			*newenvelm(char *key, char *val);
 void			envaddelm(t_env **lst, t_env *newelm);
 void			setenval(t_env **lst, char *key, char *val);
 void			rmenval(t_env **lst, char *key);
 void			ft_setenv(t_env **lst, char **envp);
 char			*getenval(t_env *e, char *key);
+short			ft_execute(t_env **envlst, t_inputs *cmdlst);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e);

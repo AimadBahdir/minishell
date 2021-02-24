@@ -77,20 +77,26 @@ int main(int argc, char **argv, char **envp)
     //     printf("{ %s : %s }\n", envlst->key, envlst->val);
     //     envlst = envlst->next;
     // }
-    t_env *envlst;
-    envlst = NULL;
-    g_envp = envp;
-    ft_setenv(&envlst, envp);
-    char **command = malloc(6 * sizeof(char *));
-    
-    command[0] = ft_strdup("echo");
-    command[1] = ft_strdup(" <");
-    command[2] = ft_strdup("file1");
-    command[3] = ft_strdup("ok lool");
-    command[4] = ft_strdup("file1");
-    command[1][0] = 27;
-    command[5] = NULL;
-    gdirections(&envlst, command);
+    // t_env *envlst;
+    // envlst = NULL;
+    // g_envp = envp;
+    // ft_setenv(&envlst, envp);
+    // char **command = malloc(5 * sizeof(char *));
+    // command[0] = ft_strdup("unset");
+    // command[1] = ft_strdup("HOME");
+    // command[2] = NULL;
+    // ft_execmd(&envlst, command);
+    // command[0] = ft_strdup("env");
+    // ft_execmd(&envlst, command);
+    // command[0] = ft_strdup("cd");
+    // command[1] = ft_strdup("~/Desktop");
+    // command[2] = ft_strdup(" >");
+    // command[3] = ft_strdup("file1");
+    // command[2][0] = 27;
+    // command[4] = NULL;
+    // gdirections(&envlst, command);
+    // command[0] = ft_strdup("env");
+    // ft_execmd(&envlst, command);
     // command[0] = ft_strdup("export");
     // command[1] = NULL;
     // command[2][0] = 27;
@@ -105,4 +111,60 @@ int main(int argc, char **argv, char **envp)
     // puts("\n");
     // command[0] = ft_strdup("env");
     // ft_execmd(&envlst, command);
+    t_env *envlst;
+    envlst = NULL;
+    g_envp = envp;
+    ft_setenv(&envlst, envp);
+
+    t_inputs    *inpt;
+    t_inputs    *inpt1;
+    t_inputs    *inpt2;
+    t_inputs    *inpt3;
+
+    inpt3  = malloc(sizeof(*inpt3));
+    inpt3->command = malloc(5 * sizeof(char *));
+    inpt3->command[0] = ft_strdup("cat");
+    inpt3->command[1] = ft_strdup("f1");
+    inpt3->command[2] = ft_strdup("f2");
+    inpt3->command[3] = ft_strdup("f3");
+    inpt3->command[4] = NULL;
+    inpt3->pipe = 0;
+    inpt3->next = NULL;
+
+    inpt2  = malloc(sizeof(*inpt2));
+    inpt2->command = malloc(4 * sizeof(char *));
+    inpt2->command[0] = ft_strdup("env");
+    inpt2->command[1] = ft_strdup(" >");
+    inpt2->command[2] = ft_strdup("f3");
+    inpt2->command[3] = NULL;
+    inpt2->command[1][0] = 27;
+    inpt2->pipe = 0;
+    inpt2->next = inpt3;
+
+    inpt1  = malloc(sizeof(*inpt1));
+    inpt1->command = malloc(7 * sizeof(char *));
+    inpt1->command[0] = ft_strdup("export");
+    inpt1->command[1] = ft_strdup("ke=y0=val0");
+    inpt1->command[2] = ft_strdup("key1=val1");
+    inpt1->command[3] = ft_strdup("key2=val2");
+    inpt1->command[4] = NULL;
+    inpt1->pipe = 0;
+    inpt1->next = inpt2;
+
+    inpt  = malloc(sizeof(*inpt));
+    inpt->command = malloc(7 * sizeof(char *));
+    inpt->command[0] = ft_strdup("echo");
+    inpt->command[1] = ft_strdup("Start");
+    inpt->command[2] = ft_strdup(" >");
+    inpt->command[3] = ft_strdup("f1");
+    inpt->command[4] = ft_strdup(" >");
+    inpt->command[5] = ft_strdup("f2");
+    inpt->command[2][0] = 27;
+    inpt->command[4][0] = 27;
+    inpt->command[6] = NULL;
+    inpt->pipe = 0;
+    inpt->next = inpt1;
+
+
+    ft_execute(&envlst, inpt);
 }
