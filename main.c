@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/23 17:09:42 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/24 14:21:59 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -613,7 +613,7 @@ int get_end_index(char *line, int i)
 		while(1 && line[i] != '\0')
 		{
 			if(line[i] == '\"' && valid_option(line, i) == 1)
-				return(i + 1);
+				return(i);
 			i++;
 		}
 		if(line[i] == '\0')
@@ -625,7 +625,7 @@ int get_end_index(char *line, int i)
 		while(1 && line[i] != '\0')
 		{
 			if(line[i] == '\'')
-				return(i + 1);
+				return(i);
 			i++;
 		}
 		if(line[i] == '\0')
@@ -662,7 +662,9 @@ int check_syntax(char *line)
 		if(line[0] == ';' || line[0] == '|')
 			return(error_msg());
 		if((line[i] == '\'' || line[i] == '\"') && valid_option(line, i) == 1)
+		{
 			i = get_end_index(line, i);
+		}
 		if(i == -1)
 			return(-1);
 		if((line[i] == '|' || line[i] == ';') && valid_option(line, i) == 1)
@@ -717,6 +719,8 @@ int check_syntax(char *line)
 				i--;
 			}
 		}
+		else if (line[i] == '\\' && valid_option(line, i) == 1 && line[i + 1] == '\0')
+			return(error_msg());
 		i++;
 	}
 	return(1);
