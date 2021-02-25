@@ -142,29 +142,22 @@ int main(int argc, char **argv, char **envp)
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
-    inpt1->command = malloc(7 * sizeof(char *));
-    inpt1->command[0] = ft_strdup("export");
-    inpt1->command[1] = ft_strdup("ke=y0=val0");
-    inpt1->command[2] = ft_strdup("key1=val1");
-    inpt1->command[3] = ft_strdup("key2=val2");
-    inpt1->command[4] = NULL;
-    inpt1->pipe = 0;
+    inpt1->command = malloc(3 * sizeof(char *));
+    inpt1->command[0] = ft_strdup("echo");
+    inpt1->command[1] = ft_strdup("Hi");
+    inpt1->command[2] = NULL;
+    inpt1->pipe = 1;
     inpt1->next = inpt2;
 
     inpt  = malloc(sizeof(*inpt));
-    inpt->command = malloc(7 * sizeof(char *));
+    inpt->command = malloc(3 * sizeof(char *));
     inpt->command[0] = ft_strdup("echo");
     inpt->command[1] = ft_strdup("Start");
-    inpt->command[2] = ft_strdup(" >");
-    inpt->command[3] = ft_strdup("f1");
-    inpt->command[4] = ft_strdup(" >");
-    inpt->command[5] = ft_strdup("f2");
-    inpt->command[2][0] = 27;
-    inpt->command[4][0] = 27;
-    inpt->command[6] = NULL;
-    inpt->pipe = 0;
+    // inpt->command[2][0] = 27;
+    // inpt->command[4][0] = 27;
+    inpt->command[2] = NULL;
+    inpt->pipe = 1;
     inpt->next = inpt1;
-
 
     ft_execute(&envlst, inpt);
 }

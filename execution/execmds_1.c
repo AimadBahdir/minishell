@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/24 08:41:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/24 15:02:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int   fillfile(t_env **envlst, char **cmd)
 	if (pid == 0)
 	{
 		if (g_stdout != STDOUT_FILENO)
-			dup2(g_stdout, STDOUT_FILENO);
+			ft_duptwo(g_stdout, STDOUT_FILENO);
 		if (g_stdin != STDIN_FILENO)
-			dup2(g_stdin, STDIN_FILENO);
+			ft_duptwo(g_stdin, STDIN_FILENO);
 		res = ft_execmd(envlst, cmd);
 		exit(0);
 	}
@@ -78,17 +78,17 @@ short   gdirections(t_env **envlst, char **cmd)
 		if (cmd[i][0] == 27 && cmd[i][1] == '<')
 		{
 			if (ft_open(cmd[++i],  O_RDWR, 0) == -1)
-				return (errthrow(cmd[i], ": No such file or directory", NULL, NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
 		}
 		else if (cmd[i][0] == 27 && cmd[i][1] == '>' && cmd[i][2] == '>')
 		{
 			if (ft_open(cmd[++i],  O_CREAT | O_RDWR | O_APPEND, 1) == -1)
-				return (errthrow(cmd[i], ": error in oprning file", NULL, NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
 		}
 		else if (cmd[i][0] == 27 && cmd[i][1] == '>')
 		{
 			if (ft_open(cmd[++i],  O_CREAT | O_RDWR | O_TRUNC, 1) == -1)
-				return (errthrow(cmd[i], ": error in oprning file", NULL, NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
 		}
 	}
 	return ((cmd[0][0] == 27) ? 0 : fillfile(envlst, spltcmd(cmd)));

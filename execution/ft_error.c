@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/23 16:03:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/24 15:09:40 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,10 @@ void ft_stdrst(int fd)
 		close(g_stdin);
 		g_stdin = STDIN_FILENO;
 	}
+}
+
+void    ft_duptwo(int fd1, int fd2)
+{
+    if (dup2(fd1, fd2) < 0)
+        errthrow(strerror(errno), NULL, NULL, NULL);
 }

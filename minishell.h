@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/23 16:00:59 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/25 10:25:42 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 # include <fcntl.h>
 # include <errno.h>
 
-typedef struct	s_inputs
+typedef struct s_inputs
 {
 	char			**command;
 	short			pipe;
 	struct s_inputs	*next;
 }				t_inputs;
 
-typedef	struct	s_env
+typedef struct s_env
 {
 	char			*key;
 	char			*val;
@@ -35,10 +35,18 @@ typedef	struct	s_env
 }				t_env;
 int				g_cmdstat;
 
+struct			s_pipe
+{
+	short	prvpipe;
+	int		fds[2];
+	short	nxtpipe;
+}		t_pipe;
+
 char			*g_homepath;
 char			**g_envp;
 int				g_stdout;
 int				g_stdin;
+int				g_exstat;
 
 size_t			ft_strlen(const char *s);
 size_t			ft_lento(char *s, char c);
@@ -73,6 +81,7 @@ short			ft_export(t_env **e, char **args);
 short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
+void			ft_duptwo(int fd1, int fd2);
 short			gdirections(t_env **envlst, char **cmd);
 int				fillfile(t_env **envlst, char **cmd);
 
