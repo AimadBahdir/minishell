@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/24 14:21:59 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/02/26 16:14:12 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void lsh_read_line_and_trim(char **line)
 
 	if(get_next_line(0, line) == -1)
 		write_string("Error in GNL");
-		
 	temp = *line;
 	*line = ft_trim(*line);
 	free(temp);
@@ -228,6 +227,7 @@ char *check_path(char *s)
 	t_cargs *args;
 	t_cargs *ptr_list_shell;
 	char *temp;
+	char *temp2;
 	char *ptr;
 
 	i = 0;
@@ -250,10 +250,7 @@ char *check_path(char *s)
 			else if(s[i] == '\\')
 			{
 				i++;
-				if(s[i] == '\n' || s[i] == '\0')
-					write_string("Error atamazight");
-				else
-					ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
+				ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
 			}
 			else if(s[i] == '\"')
 			{
@@ -264,8 +261,6 @@ char *check_path(char *s)
 					{
 						if(s[i + 1] == '\\' || s[i + 1] == '\"')
 							ft_lstcargsadd_back(&args, ft_lstcargsnew(s[++i]));
-						else if(s[i + 1] == '\0' || s[i + 1] == '\n')
-							write_string("Error atamazight");
 						else if(s[i + 1] != '$')
 							ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
 					}
@@ -284,15 +279,22 @@ char *check_path(char *s)
 								j++;
 								x++;
 							}
+							if(temp != NULL)
+								free(temp);
 							temp = ft_substr(s, i + 1, j);
 							if(s[i + 1] == '?')
 							{
 								x = -1;
+								if(temp != NULL)
+									free(temp);
 								temp = ft_itoa(t_params.question_nbr);
 								while(temp[++x] != '\0')
 									ft_lstcargsadd_back(&args, ft_lstcargsnew(temp[x]));
 							}
+							temp2 = temp;
 							temp = get_env(temp);
+							if(temp2 != NULL)
+								free(temp2);
 							x = 0;
 							while(temp != NULL && temp[x] != '\0')
 								ft_lstcargsadd_back(&args, ft_lstcargsnew(temp[x++]));
@@ -326,15 +328,22 @@ char *check_path(char *s)
 					j++;
 					x++;
 				}
+				if(temp != NULL)
+					free(temp);
 				temp = ft_substr(s, i + 1, j);
 				if(s[i + 1] == '?')
 				{
 					x = -1;
+					if(temp != NULL)
+						free(temp);
 					temp = ft_itoa(t_params.question_nbr);
 					while(temp[++x] != '\0')
 						ft_lstcargsadd_back(&args, ft_lstcargsnew(temp[x]));
 				}
+				temp2 = temp;
 				temp = get_env(temp);
+				if(temp2 != NULL)
+					free(temp2);
 				x = 0;
 				while(temp != NULL && temp[x] != '\0')
 					ft_lstcargsadd_back(&args, ft_lstcargsnew(temp[x++]));
@@ -355,7 +364,8 @@ char *check_path(char *s)
 			ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
 		i++;
 	}
-
+	if(temp != NULL)
+		free(temp);
 	i = 0;
 	ptr_list_shell = args;
 	ptr = malloc(sizeof(char) * get_len_list(ptr_list_shell) + 1);
@@ -365,12 +375,19 @@ char *check_path(char *s)
 		ptr_list_shell = ptr_list_shell->next;
 	}
 	ptr[i] = '\0';
+	while (args != NULL)
+	{
+		ptr_list_shell = args;
+        args = args->next;
+        free(ptr_list_shell);
+	}
 	return(ptr);
 }
 
 char *fill_arg(int len, int start, char *line, int vld_der)
 {
 	char *s;
+	char *temp;
 	int i;
 	int j;
 	
@@ -391,7 +408,10 @@ char *fill_arg(int len, int start, char *line, int vld_der)
 		i++;
 	}
 	s[j] = '\0';
-	return(check_path(s));
+	temp = s;
+	s = check_path(s);
+	free(temp);
+	return(s);
 }
 
 void change_position(t_gargs **gargs, int i)
@@ -417,6 +437,7 @@ void check_more(t_gargs *gargs, char *line, int len, int norm)
 
 	ptr_list_shell = gargs;
 	i = 0;
+	//free_table_args();
 	gestion_fill_arg(gargs, line, len);
 	j = number_of_words_in_table(t_params.args);
 	if(norm == 1)
@@ -484,6 +505,12 @@ int get_args(char *line, int start, int end, int norm)
 	if(len == -1)
 		return(-1);
 	check_more(gargs, line, len, norm);
+	while (gargs != NULL)
+	{
+		ptr_list_shell = gargs;
+		gargs = gargs->next;
+		free(ptr_list_shell);
+	}
 	return(1);
 }
 
@@ -525,7 +552,7 @@ int valid_quotation(char *line , int start, int open)
 	return(0);
 }
 
-int get_start_and_end_events(char **words_line, char *line, t_inputs **list_shell)
+int get_start_and_end_events(char *line, t_inputs **list_shell)
 {
 	int	i;
 	int	start;
@@ -590,18 +617,8 @@ int get_start_and_end_events(char **words_line, char *line, t_inputs **list_shel
 
 int lsh_split_line(char *line, t_inputs **list_shell)
 {
-	char **words_line;
-	
-	words_line = ft_split(line, ' ');
-	if (words_line && number_of_words_in_table(words_line) >= 0)//badalt
-	{
-		if(get_start_and_end_events(words_line, line, list_shell) == -1)
+	if(get_start_and_end_events(line, list_shell) == -1)
 			return (-1);
-	}
-	//else if (number_of_words_in_table(words_line) == 1)
-		//ft_lstadd_back(list_shell, ft_lstnew(words_line[0], 0));
-	else
-		write_string("Empty line");
 	return(1);
 }
 
@@ -748,7 +765,14 @@ void test_print(t_inputs *list_shell)
 		ptr_list_shell = ptr_list_shell->next;
 	}
 	printf("\n\n\n");
-	
+	free_table_args();
+	ptr_list_shell = list_shell;
+	while (list_shell != NULL)
+	{
+		ptr_list_shell = list_shell;
+		list_shell = list_shell->next;
+		free(ptr_list_shell);
+	}
 }
 
 int check_syntax_list(t_inputs *list_shell)
