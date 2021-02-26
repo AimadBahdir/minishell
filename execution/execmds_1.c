@@ -6,12 +6,11 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/24 15:02:35 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/26 12:13:39 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 char    **spltcmd(char **cmd)
 {

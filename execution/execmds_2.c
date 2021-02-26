@@ -6,11 +6,32 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/19 11:10:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/26 12:13:57 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+short    ft_echo(char **args)
+{
+    short cond;
+    short i;
+
+    if (!args[1])
+        return (write(STDOUT_FILENO, "\n", 1));
+    cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
+    args += (cond) ? 2 : 1;
+    i = -1;
+    while (args[++i])
+    {
+        ft_putstr(args[i]);
+        if (args[i + 1])
+            write(STDOUT_FILENO, " ", 1);
+    }
+    if (!cond)
+        write(STDOUT_FILENO, "\n", 1);
+    return (1);
+}
 
 short	ft_env(t_env *e)
 {

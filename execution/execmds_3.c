@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/23 12:41:47 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/26 12:12:57 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,26 @@ short	ft_cd(t_env **e, char **args)
 	if (getenval(*e, "PWD"))
 		setenval(e, "PWD", pwd);
 	return (1);
+}
+
+short   ft_pipe(short inp)
+{
+    if (inp)
+    {
+        t_stdorigin.stdoutpt = dup(STDOUT_FILENO);
+        if (dup2(t_navpipe.next.inout[0], STDOUT_FILENO) < 0)
+            return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+        close(t_navpipe.next.inout[0]);
+        close(t_navpipe.next.inout[1]);
+    }
+    else
+    {
+        t_stdorigin.stdinpt = dup(STDIN_FILENO);
+        if (dup2(t_navpipe.prev.inout[1], STDIN_FILENO) < 0)
+            return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+        close(t_navpipe.prev.inout[0]);
+        close(t_navpipe.prev.inout[1]);
+        t_navpipe.prev.exist = 0;
+    }
+    return (1);
 }

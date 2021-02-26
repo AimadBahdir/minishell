@@ -6,32 +6,11 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/25 11:42:44 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/26 12:16:32 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-short    ft_echo(char **args)
-{
-    short cond;
-    short i;
-
-    if (!args[1])
-        return (write(STDOUT_FILENO, "\n", 1));
-    cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
-    args += (cond) ? 2 : 1;
-    i = -1;
-    while (args[++i])
-    {
-        ft_putstr(args[i]);
-        if (args[i + 1])
-            write(STDOUT_FILENO, " ", 1);
-    }
-    if (!cond)
-        write(STDOUT_FILENO, "\n", 1);
-    return (1);
-}
 
 short   ft_othercmd(char **cmdargs)
 {
@@ -52,22 +31,28 @@ short   ft_othercmd(char **cmdargs)
 short   ft_execmd(t_env **lst, char **cmdargs)
 {
 	char    *cmd;
+    short   res;
 
+    if (t_navpipe.next.exist)
+        ft_pipe(1);
+    if (t_navpipe.prev.exist)
+        ft_pipe(0);
     cmd = ft_strlower(cmdargs[0]);
     if (ft_strcmp(cmd, "echo"))
-        return (ft_echo(cmdargs));
+        res = ft_echo(cmdargs);
     else if (ft_strcmp(cmd, "cd"))
-        return (ft_cd(lst, cmdargs));
+        res = ft_cd(lst, cmdargs);
     else if (ft_strcmp(cmd, "pwd"))
-        return (ft_pwd(lst));
+        res = ft_pwd(lst);
     else if (ft_strcmp(cmd, "env"))
-        return (ft_env(*lst));
+        res = ft_env(*lst);
     else if (ft_strcmp(cmd, "export"))
-        return (ft_export(lst, cmdargs));
+        res = ft_export(lst, cmdargs);
     else if (ft_strcmp(cmd, "unset"))
-        return (ft_unset(lst, cmdargs));
+        res = ft_unset(lst, cmdargs);
     else
-        return(ft_othercmd(cmdargs));
+        res = ft_othercmd(cmdargs);
+    return (res);
 }
 
 short   chk_directions(char **lst)
@@ -83,54 +68,20 @@ short   chk_directions(char **lst)
     return (0);
 }
 
-short   ft_pipe(short inp)
+short    ft_setprev(void)
 {
-    if (inp)
-    {
-        if (dup2(t_pipe.fds[0], STDOUT_FILENO) < 0)
-            return (errthrow(strerror(errno), NULL, NULL, NULL));
-        t_pipe.nxtpipe = 1;
-    }
-    else
-    {
-        if (dup2(t_pipe.fds[1], STDIN_FILENO) < 0)
-            return (errthrow(strerror(errno), NULL, NULL, NULL));
-        t_pipe.prvpipe = 1;
-    }
-    close(t_pipe.fds[0]);
-    close(t_pipe.fds[1]);
+    if(dup2(t_navpipe.prev.inout[0], t_navpipe.next.inout[0]) < 0)
+        return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+    if(dup2(t_navpipe.prev.inout[1], t_navpipe.next.inout[1]) < 0)
+        return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+    close(t_navpipe.next.inout[1]);
+    close(t_navpipe.next.inout[0]);
+    if (dup2(t_stdorigin.stdinpt, STDIN_FILENO))
+        return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+    if (dup2(t_stdorigin.stdoutpt, STDOUT_FILENO))
+        return (errthrow("dup2: ", strerror(errno), NULL, NULL));
+    t_navpipe.prev.exist = 1;
     return (1);
-}
-
-void    ft_expipe(t_env **envlst, char **cmd)
-{
-    int     pid;
-    short   prvp;
-    short   nxtp;
-
-    if (pipe(t_pipe.fds) < 0)
-        errthrow(strerror(errno), NULL, NULL, NULL);
-    if ((pid = fork()) < 0)
-        errthrow(strerror(errno), NULL, NULL, NULL);
-    else if (pid == 0)
-    {
-        if (t_pipe.nxtpipe)
-            nxtp = ft_pipe(1);
-        else
-            prvp = ft_pipe(0);
-        if (chk_directions(cmd))
-            gdirections(envlst, cmd);
-        else
-            ft_execmd(envlst, cmd);
-        if (prvp == 1)
-            t_pipe.prvpipe = 0;
-        if (nxtp == 1)
-            t_pipe.prvpipe = 1;
-        exit(0);
-    }
-    wait(NULL);
-    close(t_pipe.fds[0]);
-    close(t_pipe.fds[1]);
 }
 
 short   ft_execute(t_env **envlst, t_inputs *cmdlst)
@@ -138,16 +89,20 @@ short   ft_execute(t_env **envlst, t_inputs *cmdlst)
     t_inputs    *head;
 
     head = cmdlst;
-    t_pipe.nxtpipe = 0;
-    t_pipe.prvpipe = 0;
+    t_navpipe.next.exist = 0;
+    t_navpipe.prev.exist = 0;
     while (head)
     {
-        if ((t_pipe.nxtpipe = head->pipe) || t_pipe.prvpipe)
-            ft_expipe(envlst, head->command);
-        else if (chk_directions(head->command))
+        if ((t_navpipe.next.exist = head->pipe) == 1)
+            if (pipe(t_navpipe.next.inout) < 0)
+                return (errthrow(strerror(errno), NULL, NULL, NULL));
+        if (chk_directions(head->command))
             gdirections(envlst, head->command);
         else
             ft_execmd(envlst, head->command);
+        if (head->pipe)
+            if (ft_setprev() < 0)
+                return (0);
         head = head->next;
     }
     return (1);

@@ -122,23 +122,21 @@ int main(int argc, char **argv, char **envp)
     t_inputs    *inpt3;
 
     inpt3  = malloc(sizeof(*inpt3));
-    inpt3->command = malloc(5 * sizeof(char *));
+    inpt3->command = malloc(2 * sizeof(char *));
     inpt3->command[0] = ft_strdup("cat");
-    inpt3->command[1] = ft_strdup("f1");
-    inpt3->command[2] = ft_strdup("f2");
-    inpt3->command[3] = ft_strdup("f3");
-    inpt3->command[4] = NULL;
+    inpt3->command[1] = ft_strdup("f3");
+    inpt3->command[2] = NULL;
     inpt3->pipe = 0;
     inpt3->next = NULL;
 
     inpt2  = malloc(sizeof(*inpt2));
     inpt2->command = malloc(4 * sizeof(char *));
     inpt2->command[0] = ft_strdup("env");
-    inpt2->command[1] = ft_strdup(" >");
+    inpt2->command[1] = ft_strdup(" <");
     inpt2->command[2] = ft_strdup("f3");
     inpt2->command[3] = NULL;
     inpt2->command[1][0] = 27;
-    inpt2->pipe = 0;
+    inpt2->pipe = 1;
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
@@ -146,7 +144,7 @@ int main(int argc, char **argv, char **envp)
     inpt1->command[0] = ft_strdup("echo");
     inpt1->command[1] = ft_strdup("Hi");
     inpt1->command[2] = NULL;
-    inpt1->pipe = 1;
+    inpt1->pipe = 0;
     inpt1->next = inpt2;
 
     inpt  = malloc(sizeof(*inpt));
@@ -156,7 +154,7 @@ int main(int argc, char **argv, char **envp)
     // inpt->command[2][0] = 27;
     // inpt->command[4][0] = 27;
     inpt->command[2] = NULL;
-    inpt->pipe = 1;
+    inpt->pipe = 0;
     inpt->next = inpt1;
 
     ft_execute(&envlst, inpt);
