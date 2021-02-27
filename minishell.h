@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/26 12:17:01 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/27 17:51:30 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,25 @@ typedef struct s_env
 }				t_env;
 int				g_cmdstat;
 
-typedef struct s_pipe
+struct s_pipe
 {
-	short	exist;
-	int		inout[2];
-}				t_pipe;
+	short	next;
+	short	prev;
+	int		nxtio[2];
+	int		prvo;
+}		t_pipe;
 
-struct	s_stdorigin
+struct	s_g
 {
-	int stdinpt;
-	int stdoutpt;
-}		t_stdorigin;
+	char	**envp;
+	char	*homepath;
+	int		stdinpt;
+	int		stdoutpt;
+	int		mystdout;
+	int		mystdin;
+	int		exstat;
+}		t_g;
 
-
-struct s_navpipe
-{
-	t_pipe prev;
-	t_pipe next;
-}		t_navpipe;
-
-
-char			*g_homepath;
-char			**g_envp;
-int				g_stdout;
-int				g_stdin;
-int				g_exstat;
 
 size_t			ft_strlen(const char *s);
 size_t			ft_lento(char *s, char c);
@@ -94,8 +88,8 @@ short			ft_export(t_env **e, char **args);
 short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
-void			ft_duptwo(int fd1, int fd2);
-short			ft_pipe(short inp);
+short			ft_duptwo(int fd1, int fd2);
+short			ft_pipe(void);
 short			gdirections(t_env **envlst, char **cmd);
 int				fillfile(t_env **envlst, char **cmd);
 

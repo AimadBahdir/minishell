@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/26 12:13:39 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/27 16:58:07 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,30 @@ char    **spltcmd(char **cmd)
 
 int   fillfile(t_env **envlst, char **cmd)
 {
-	int pid;
 	int file;
-	int res;
-	
-	res = 1;
-	pid = fork();
-	if (pid == 0)
-	{
-		if (g_stdout != STDOUT_FILENO)
-			ft_duptwo(g_stdout, STDOUT_FILENO);
-		if (g_stdin != STDIN_FILENO)
-			ft_duptwo(g_stdin, STDIN_FILENO);
-		res = ft_execmd(envlst, cmd);
-		exit(0);
-	}
-	return (res);
+
+	if (t_g.mystdout != STDOUT_FILENO)
+		ft_duptwo(t_g.mystdout, STDOUT_FILENO);
+	if (t_g.mystdin != STDIN_FILENO)
+		ft_duptwo(t_g.mystdin, STDIN_FILENO);
+	if (ft_execmd(envlst, cmd) < 0)
+		return (-1);
+	return (1);
 }
 
 int		ft_open(char *name, int flags, short out)
 {
 	if (out)
 	{
-		if (g_stdout > 2)
+		if (t_g.mystdout > 2)
 			ft_stdrst(1);
-		return (g_stdout = open(name,  flags, 0644));
+		return (t_g.mystdout = open(name,  flags, 0644));
 	}
 	else
 	{
-		if (g_stdin > 2)
+		if (t_g.mystdin > 2)
 			ft_stdrst(0);
-		return (g_stdin = open(name,  flags, 0644));
+		return (t_g.mystdin = open(name,  flags, 0644));
 	}
 }
 

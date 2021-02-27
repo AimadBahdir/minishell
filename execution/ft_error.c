@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/24 15:09:40 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/27 08:30:44 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,24 @@ short   errthrow(char *erp1, char *erp2, char *erp3, char *erp4)
 
 void ft_stdrst(int fd)
 {
-	if (fd == 1 && g_stdout != STDOUT_FILENO)
+	if (fd == 1 && t_g.mystdout != STDOUT_FILENO)
 	{
-		close(g_stdout);
-		g_stdout = STDOUT_FILENO;
+		close(t_g.mystdout);
+		t_g.mystdout = STDOUT_FILENO;
 	}
-	if (fd == 0 && g_stdin != STDIN_FILENO)
+	if (fd == 0 && t_g.mystdin != STDIN_FILENO)
 	{
-		close(g_stdin);
-		g_stdin = STDIN_FILENO;
+		close(t_g.mystdin);
+		t_g.mystdin = STDIN_FILENO;
 	}
 }
 
-void    ft_duptwo(int fd1, int fd2)
+short   ft_duptwo(int fd1, int fd2)
 {
     if (dup2(fd1, fd2) < 0)
-        errthrow(strerror(errno), NULL, NULL, NULL);
+    {
+        errthrow("dup2: ", strerror(errno), NULL, NULL);
+        return (0);
+    }
+    return (1);
 }

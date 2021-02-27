@@ -113,7 +113,7 @@ int main(int argc, char **argv, char **envp)
     // ft_execmd(&envlst, command);
     t_env *envlst;
     envlst = NULL;
-    g_envp = envp;
+    t_g.envp = envp;
     ft_setenv(&envlst, envp);
 
     t_inputs    *inpt;
@@ -132,11 +132,11 @@ int main(int argc, char **argv, char **envp)
     inpt2  = malloc(sizeof(*inpt2));
     inpt2->command = malloc(4 * sizeof(char *));
     inpt2->command[0] = ft_strdup("env");
-    inpt2->command[1] = ft_strdup(" <");
+    inpt2->command[1] = ft_strdup(" >");
     inpt2->command[2] = ft_strdup("f3");
     inpt2->command[3] = NULL;
     inpt2->command[1][0] = 27;
-    inpt2->pipe = 1;
+    inpt2->pipe = 0;
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
@@ -145,7 +145,7 @@ int main(int argc, char **argv, char **envp)
     inpt1->command[1] = ft_strdup("Hi");
     inpt1->command[2] = NULL;
     inpt1->pipe = 0;
-    inpt1->next = inpt2;
+    inpt1->next = inpt3;
 
     inpt  = malloc(sizeof(*inpt));
     inpt->command = malloc(3 * sizeof(char *));
@@ -156,6 +156,33 @@ int main(int argc, char **argv, char **envp)
     inpt->command[2] = NULL;
     inpt->pipe = 0;
     inpt->next = inpt1;
+
+    // int fds[2];
+    // int fds2;
+    // pipe(fds);
+    // int id = fork();
+    // if (id == 0)
+    // {
+    //     close(fds[0]);
+    //     dup2(fds[1], STDOUT_FILENO);
+    //     printf("HELLO WORLD");
+    //     close(fds[1]);
+    //     exit(0);
+    // }
+    // else
+    // {
+    //     wait(NULL);
+    //     char *buff;
+    //     buff = malloc(11);
+    //     buff[10] = '\0';
+    //     fds2 = dup(fds[0]);
+    //     dup2(fds2, STDIN_FILENO);
+    //     read(STDIN_FILENO, buff, 11);
+    //     printf(">> |%s|\n", buff);
+    //     close(fds2);
+    //     close(fds[0]);
+    //     close(fds[1]);
+    // }
 
     ft_execute(&envlst, inpt);
 }

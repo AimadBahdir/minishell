@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/26 12:12:57 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/02/27 17:56:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*ft_rplchome(t_env *e, char *path)
 
 	tmp = path;
 	if (path == NULL)
-		path = g_homepath;
+		path = t_g.homepath;
 	else if (path[0] == '~')
-		path = ft_strjoin(g_homepath, (path + 1));
+		path = ft_strjoin(t_g.homepath, (path + 1));
 	free(tmp);
 	return (path);
 }
@@ -42,24 +42,20 @@ short	ft_cd(t_env **e, char **args)
 	return (1);
 }
 
-short   ft_pipe(short inp)
+short   ft_pipe(void)
 {
-    if (inp)
+    if (t_pipe.next)
     {
-        t_stdorigin.stdoutpt = dup(STDOUT_FILENO);
-        if (dup2(t_navpipe.next.inout[0], STDOUT_FILENO) < 0)
-            return (errthrow("dup2: ", strerror(errno), NULL, NULL));
-        close(t_navpipe.next.inout[0]);
-        close(t_navpipe.next.inout[1]);
+    	close(t_pipe.nxtio[0]);
+        if (!ft_duptwo(t_pipe.nxtio[1], STDOUT_FILENO))
+			return (0);
+		close(t_pipe.nxtio[1]);
     }
-    else
+    if (t_pipe.prev)
     {
-        t_stdorigin.stdinpt = dup(STDIN_FILENO);
-        if (dup2(t_navpipe.prev.inout[1], STDIN_FILENO) < 0)
-            return (errthrow("dup2: ", strerror(errno), NULL, NULL));
-        close(t_navpipe.prev.inout[0]);
-        close(t_navpipe.prev.inout[1]);
-        t_navpipe.prev.exist = 0;
+        if (!ft_duptwo(t_pipe.prvo, STDIN_FILENO))
+			return (0);
+    	close(t_pipe.prvo);
     }
     return (1);
 }
