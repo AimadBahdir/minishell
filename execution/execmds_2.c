@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/26 12:13:57 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 11:51:47 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ short    ft_echo(char **args)
     short i;
 
     if (!args[1])
-        return (write(STDOUT_FILENO, "\n", 1));
+        return (write(STDOUT_FILENO, "\n", 1) - 1);
     cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
     args += (cond) ? 2 : 1;
     i = -1;
@@ -30,11 +30,13 @@ short    ft_echo(char **args)
     }
     if (!cond)
         write(STDOUT_FILENO, "\n", 1);
-    return (1);
+    return (0);
 }
 
-short	ft_env(t_env *e)
+short	ft_env(t_env *e, char **args)
 {
+	if (ft_lentwop(args) > 1)
+		return (errthrow("env: ", args[1], ": No such file or directory", 127));
 	while (e)
 	{
 		ft_putstr(e->key);
@@ -43,21 +45,21 @@ short	ft_env(t_env *e)
 		write(1, "\n", 1);
 		e = e->next;
 	}
-	return (e == NULL);
+	return (0);
 }
 
-short	ft_pwd(t_env **e)
+short	ft_pwd(t_env **e, char **args)
 {
 	char	*path;
 	char	*pwd;
 
 	if (!(pwd = getcwd(NULL, 0)))
-		return (errthrow(strerror(errno), NULL, NULL, NULL));
+		return (errthrow(strerror(errno), NULL, NULL, errno));
 	ft_putstr(pwd);
 	path = getenval(*e, "PWD");
 	if (path != NULL && !ft_strcmp(path, pwd))
 		setenval(e, "PWD", pwd);
-	return (1);
+	return (0);
 }
 
 short	ft_export(t_env **e, char **args)
@@ -76,7 +78,7 @@ short	ft_export(t_env **e, char **args)
 			klen = ft_lento(args[i], '=') + 1;
 			key = ft_substr(args[i], 0, (klen - 1));
 			if (!ft_strnormed(key))
-				errthrow("export: `", key, "=': not a valid identifier.", NULL);
+				errthrow("export: `", key, "=': not a valid identifier.", 1);
 			else if (!getenval(*e, key))
 				envaddelm(e, newenvelm(ft_substr(args[i], 0, (klen - 1)),
 				ft_substr(args[i], klen,(ft_strlen(args[i]) - klen))));
@@ -84,9 +86,9 @@ short	ft_export(t_env **e, char **args)
 				setenval(e, key, ft_substr(args[i], klen,
 						(ft_strlen(args[i]) - klen)));
 		} else if (!ft_strnormed(args[i]))
-			errthrow("export: `", args[i], "': not a valid identifier.", NULL);
+			errthrow("export: `", args[i], "': not a valid identifier.", 1);
 	}
-	return (1);
+	return (0);
 }
 
 short	ft_unset(t_env **e, char **args)
@@ -95,11 +97,11 @@ short	ft_unset(t_env **e, char **args)
 
 	i = 0;
 	if (ft_lentwop(args) <= 1)
-		return (-1);
+		return (1);
 	while (args[++i])
 	{
 		if (!ft_strnormed(args[i]))
-			errthrow("unset: `", args[i], "': not a valid identifier.", NULL);
+			errthrow("unset: `", args[i], "': not a valid identifier.", 1);
 		else
 			rmenval(e, args[i]);
 	}

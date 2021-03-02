@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/27 17:56:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 11:45:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,30 @@ short	ft_cd(t_env **e, char **args)
 	if (!path || path[0] == '~')
 		path = ft_rplchome(*e, path);
 	if (chdir(path) == -1)
-		return (errthrow("cd: ", path, ": ", strerror(errno)));
+		return (errthrow(path, ": cd: ", strerror(errno), errno));
 	if (!(pwd = getcwd(NULL, 0)))
-		return (-1);
+		return (errthrow("cd: ", "pwd: ", strerror(errno), errno));
 	if (getenval(*e, "PWD"))
 		setenval(e, "PWD", pwd);
-	return (1);
+	return (0);
 }
 
 short   ft_pipe(void)
 {
+	int err;
+
+	err = 0;
     if (t_pipe.next)
     {
-    	close(t_pipe.nxtio[0]);
-        if (!ft_duptwo(t_pipe.nxtio[1], STDOUT_FILENO))
-			return (0);
+        if ((err = ft_duptwo(t_pipe.nxtio[1], STDOUT_FILENO)) > 0)
+			return (err);
 		close(t_pipe.nxtio[1]);
     }
     if (t_pipe.prev)
     {
-        if (!ft_duptwo(t_pipe.prvo, STDIN_FILENO))
-			return (0);
+        if ((err = ft_duptwo(t_pipe.prvo, STDIN_FILENO)) > 0)
+			return (err);
     	close(t_pipe.prvo);
     }
-    return (1);
+    return (err);
 }

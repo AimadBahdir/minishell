@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/27 17:51:30 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 10:50:49 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char			*ft_substr(char const *s, unsigned int start, size_t len);
 short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
 short			chk_directions(char **lst);
-short			errthrow(char *erp1, char *erp2, char *erp3, char *erp4);
+short			errthrow(char *erp1, char *erp2, char *erp3, int errcode);
 void			ft_stdrst(int fd);
 t_env			*newenvelm(char *key, char *val);
 void			envaddelm(t_env **lst, t_env *newelm);
@@ -82,8 +82,8 @@ char			*getenval(t_env *e, char *key);
 short			ft_execute(t_env **envlst, t_inputs *cmdlst);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
-short			ft_env(t_env *e);
-short			ft_pwd(t_env **e);
+short			ft_env(t_env *e, char **args);
+short			ft_pwd(t_env **e, char **args);
 short			ft_export(t_env **e, char **args);
 short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);

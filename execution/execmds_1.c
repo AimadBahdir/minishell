@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/27 16:58:07 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 10:56:50 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ char    **spltcmd(char **cmd)
 
 int   fillfile(t_env **envlst, char **cmd)
 {
-	int file;
+	int err;
 
+	err = 0;
 	if (t_g.mystdout != STDOUT_FILENO)
-		ft_duptwo(t_g.mystdout, STDOUT_FILENO);
+		if ((err = ft_duptwo(t_g.mystdout, STDOUT_FILENO)) > 0)
+			return (err);
 	if (t_g.mystdin != STDIN_FILENO)
-		ft_duptwo(t_g.mystdin, STDIN_FILENO);
-	if (ft_execmd(envlst, cmd) < 0)
-		return (-1);
-	return (1);
+		if ((err = ft_duptwo(t_g.mystdin, STDIN_FILENO)) > 0)
+			return (err);
+	if ((err = ft_execmd(envlst, cmd)) > 0)
+		return (err);
+	return (err);
 }
 
 int		ft_open(char *name, int flags, short out)
@@ -70,17 +73,17 @@ short   gdirections(t_env **envlst, char **cmd)
 		if (cmd[i][0] == 27 && cmd[i][1] == '<')
 		{
 			if (ft_open(cmd[++i],  O_RDWR, 0) == -1)
-				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), errno));
 		}
 		else if (cmd[i][0] == 27 && cmd[i][1] == '>' && cmd[i][2] == '>')
 		{
 			if (ft_open(cmd[++i],  O_CREAT | O_RDWR | O_APPEND, 1) == -1)
-				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), errno));
 		}
 		else if (cmd[i][0] == 27 && cmd[i][1] == '>')
 		{
 			if (ft_open(cmd[++i],  O_CREAT | O_RDWR | O_TRUNC, 1) == -1)
-				return (errthrow(cmd[i], ": ", strerror(errno), NULL));
+				return (errthrow(cmd[i], ": ", strerror(errno), errno));
 		}
 	}
 	return ((cmd[0][0] == 27) ? 0 : fillfile(envlst, spltcmd(cmd)));

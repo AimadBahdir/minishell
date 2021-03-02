@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/27 08:30:44 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 11:57:17 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-short   errthrow(char *erp1, char *erp2, char *erp3, char *erp4)
+short   errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 {
     write(2, "bash: ", strlen("bash: "));
     if (erp1)
@@ -21,10 +21,9 @@ short   errthrow(char *erp1, char *erp2, char *erp3, char *erp4)
         write(2, erp2, ft_strlen(erp2));
     if (erp3)
         write(2, erp3, ft_strlen(erp3));
-    if (erp4)
-        write(2, erp4, ft_strlen(erp4));
     write(2, "\n", 1);
-    return (-1);
+    t_g.exstat = errcode;
+    return (errcode);
 }
 
 void ft_stdrst(int fd)
@@ -43,10 +42,7 @@ void ft_stdrst(int fd)
 
 short   ft_duptwo(int fd1, int fd2)
 {
-    if (dup2(fd1, fd2) < 0)
-    {
-        errthrow("dup2: ", strerror(errno), NULL, NULL);
-        return (0);
-    }
-    return (1);
+    if (dup2(fd1, fd2) == -1)
+        return (errthrow("dup2: ", strerror(errno), NULL, errno));
+    return (0);
 }
