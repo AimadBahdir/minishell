@@ -56,17 +56,17 @@ int main(int argc, char **argv, char **envp)
     inpt5->next = inpt7;
 
     inpt4  = malloc(sizeof(*inpt4));
-    inpt4->command = malloc(3 * sizeof(char *));
-    inpt4->command[0] = ft_strdup("echo");
-    inpt4->command[1] = ft_strdup("Print5");
-    inpt4->command[2] = NULL;
+    inpt4->command = malloc(2 * sizeof(char *));
+    inpt4->command[0] = ft_strdup("env");
+    // inpt4->command[1] = ft_strdup("Print5");
+    inpt4->command[1] = NULL;
     inpt4->pipe = 0;
     inpt4->next = inpt5;
 
     inpt3  = malloc(sizeof(*inpt3));
     inpt3->command = malloc(3 * sizeof(char *));
     inpt3->command[0] = ft_strdup("echo");
-    inpt3->command[1] = ft_strdup("THE OLD COMMAND EXIT WITH :  ? ERROR");
+    inpt3->command[1] = ft_strdup("THE OLD COMMAND EXIT WITH : $? ERROR");
     inpt3->command[2] = NULL;
     inpt3->command[1][28] = 24;
     inpt3->pipe = 0;
@@ -74,18 +74,18 @@ int main(int argc, char **argv, char **envp)
 
     inpt2  = malloc(sizeof(*inpt2));
     inpt2->command = malloc(3 * sizeof(char *));
-    inpt2->command[0] = ft_strdup("unset");
+    inpt2->command[0] = ft_strdup("echo");
     inpt2->command[1] = ft_strdup("$PATH");
     inpt2->command[2] = NULL;
-    // inpt2->command[0][0] = 14;
-    inpt2->pipe = 1;
+    inpt2->command[1][0] = 24;
+    inpt2->pipe = 0;
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
     inpt1->command = malloc(4 * sizeof(char *));
-    inpt1->command[0] = ft_strdup("echo");
-    inpt1->command[1] = ft_strdup("-n");
-    inpt1->command[2] = ft_strdup("HELL");
+    inpt1->command[0] = ft_strdup("export");
+    inpt1->command[1] = ft_strdup("NUM=0639207672");
+    inpt1->command[2] = ft_strdup("PATH");
     inpt1->command[3] = NULL;
     inpt1->pipe = 0;
     inpt1->next = inpt2;
@@ -94,8 +94,9 @@ int main(int argc, char **argv, char **envp)
     inpt  = malloc(sizeof(*inpt));
     inpt->command = malloc(3 * sizeof(char *));
     inpt->command[0] = ft_strdup("echo");
-    inpt->command[1] = ft_strdup("asdfasf");
+    inpt->command[1] = ft_strdup("$PATH");
     inpt->command[2] = NULL;
+    inpt->command[1][0] = 24;
     inpt->pipe = 0;
     inpt->next = inpt1;
 

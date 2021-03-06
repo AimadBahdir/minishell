@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 12:28:06 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 15:10:12 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ short   ft_exchild(t_env **envlst, char **cmd)
 	return (err);
 }
 
-short   ft_execute(t_env **envlst, t_inputs *cmdlst)
+short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 {
 	t_inputs    *head;
 	int         pid;

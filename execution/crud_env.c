@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 11:03:42 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 15:23:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ char	*getnewelm(t_env *envlst, char **spltd, short first)
 	char	*tmp;
 	int		j;
 
-	j = 0;
+	j = -1;
 	if (first)
 		newelm = ft_strdup("");
 	else
-		newelm = ft_strdup(spltd[0]);
+		newelm = ft_strdup(spltd[++j]);
 	while (spltd[++j])
 	{
 		tmp = newelm;
