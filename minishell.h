@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/02 10:50:49 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 12:28:03 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ struct	s_g
 	int		stdoutpt;
 	int		mystdout;
 	int		mystdin;
+	int		wstatus;
 	int		exstat;
 }		t_g;
 
@@ -64,14 +65,18 @@ short			ft_strcmp(char *s1, char *s2);
 void			ft_putstr(char *str);
 void			ft_putmstr(char **mstr, char spr);
 short			ft_strnormed(char *str);
+int				ft_isalpha(int c);
+char			*ft_itoa(int n);
 char			*ft_strlower(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			**ft_split(char const *s, char c);
 short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
 short			chk_directions(char **lst);
 short			errthrow(char *erp1, char *erp2, char *erp3, int errcode);
+int				ft_ternint(short cond, int iftrue, int iffalse);
 void			ft_stdrst(int fd);
 t_env			*newenvelm(char *key, char *val);
 void			envaddelm(t_env **lst, t_env *newelm);
@@ -83,14 +88,15 @@ short			ft_execute(t_env **envlst, t_inputs *cmdlst);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e, char **args);
-short			ft_pwd(t_env **e, char **args);
+short			ft_pwd(t_env **e);
 short			ft_export(t_env **e, char **args);
 short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
 short			ft_duptwo(int fd1, int fd2);
 short			ft_pipe(void);
+void			ft_setenvar(t_env *envlst, char **cmd);
 short			gdirections(t_env **envlst, char **cmd);
 int				fillfile(t_env **envlst, char **cmd);
-
+int				retfreetwo(char **tmp1, int ret);
 #endif

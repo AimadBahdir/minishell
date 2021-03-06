@@ -43,26 +43,22 @@ int main(int argc, char **argv, char **envp)
 
     inpt6  = malloc(sizeof(*inpt6));
     inpt6->command = malloc(2 * sizeof(char *));
-    inpt6->command[0] = ft_strdup("cat");
-    // inpt6->command[1] = ft_strdup("KO");
+    inpt6->command[0] = ft_strdup("sort");
     inpt6->command[1] = NULL;
-    inpt6->pipe = 1;
+    inpt6->pipe = 0;
     inpt6->next = NULL;
 
     inpt5  = malloc(sizeof(*inpt5));
-    inpt5->command = malloc(3 * sizeof(char *));
-    inpt5->command[0] = ft_strdup("env");
-    inpt5->command[1] = ft_strdup(" >");
-    inpt5->command[2] = ft_strdup("KO");
-    inpt5->command[3] = NULL;
-    inpt5->command[1][0] = 27;
-    inpt5->pipe = 0;
-    inpt5->next = inpt6;
+    inpt5->command = malloc(2 * sizeof(char *));
+    inpt5->command[0] = ft_strdup("ls");
+    inpt5->command[1] = NULL;
+    inpt5->pipe = 1;
+    inpt5->next = inpt7;
 
     inpt4  = malloc(sizeof(*inpt4));
     inpt4->command = malloc(3 * sizeof(char *));
     inpt4->command[0] = ft_strdup("echo");
-    inpt4->command[1] = ft_strdup("Start");
+    inpt4->command[1] = ft_strdup("Print5");
     inpt4->command[2] = NULL;
     inpt4->pipe = 0;
     inpt4->next = inpt5;
@@ -70,24 +66,27 @@ int main(int argc, char **argv, char **envp)
     inpt3  = malloc(sizeof(*inpt3));
     inpt3->command = malloc(3 * sizeof(char *));
     inpt3->command[0] = ft_strdup("echo");
-    inpt3->command[1] = ft_strdup("Start");
+    inpt3->command[1] = ft_strdup("THE OLD COMMAND EXIT WITH :  ? ERROR");
     inpt3->command[2] = NULL;
-    inpt3->pipe = 1;
+    inpt3->command[1][28] = 24;
+    inpt3->pipe = 0;
     inpt3->next = inpt4;
 
     inpt2  = malloc(sizeof(*inpt2));
     inpt2->command = malloc(3 * sizeof(char *));
-    inpt2->command[0] = ft_strdup("echo");
-    inpt2->command[1] = ft_strdup("Start");
+    inpt2->command[0] = ft_strdup("unset");
+    inpt2->command[1] = ft_strdup("$PATH");
     inpt2->command[2] = NULL;
-    inpt2->pipe = 0;
+    // inpt2->command[0][0] = 14;
+    inpt2->pipe = 1;
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
-    inpt1->command = malloc(3 * sizeof(char *));
+    inpt1->command = malloc(4 * sizeof(char *));
     inpt1->command[0] = ft_strdup("echo");
-    inpt1->command[1] = ft_strdup("Start");
-    inpt1->command[2] = NULL;
+    inpt1->command[1] = ft_strdup("-n");
+    inpt1->command[2] = ft_strdup("HELL");
+    inpt1->command[3] = NULL;
     inpt1->pipe = 0;
     inpt1->next = inpt2;
     
@@ -95,7 +94,7 @@ int main(int argc, char **argv, char **envp)
     inpt  = malloc(sizeof(*inpt));
     inpt->command = malloc(3 * sizeof(char *));
     inpt->command[0] = ft_strdup("echo");
-    inpt->command[1] = ft_strdup("Start");
+    inpt->command[1] = ft_strdup("asdfasf");
     inpt->command[2] = NULL;
     inpt->pipe = 0;
     inpt->next = inpt1;

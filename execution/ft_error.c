@@ -6,43 +6,55 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/02 11:57:17 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 10:31:24 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-short   errthrow(char *erp1, char *erp2, char *erp3, int errcode)
+short	errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 {
-    write(2, "bash: ", strlen("bash: "));
-    if (erp1)
-        write(2, erp1, ft_strlen(erp1));
-    if (erp2)
-        write(2, erp2, ft_strlen(erp2));
-    if (erp3)
-        write(2, erp3, ft_strlen(erp3));
-    write(2, "\n", 1);
-    t_g.exstat = errcode;
-    return (errcode);
+	write(2, "bash: ", strlen("bash: "));
+	if (erp1)
+		write(2, erp1, ft_strlen(erp1));
+	if (erp2)
+		write(2, erp2, ft_strlen(erp2));
+	if (erp3)
+		write(2, erp3, ft_strlen(erp3));
+	write(2, "\n", 1);
+	return (errcode);
 }
 
-void ft_stdrst(int fd)
+short	ft_duptwo(int fd1, int fd2)
 {
-	if (fd == 1 && t_g.mystdout != STDOUT_FILENO)
-	{
-		close(t_g.mystdout);
-		t_g.mystdout = STDOUT_FILENO;
-	}
-	if (fd == 0 && t_g.mystdin != STDIN_FILENO)
-	{
-		close(t_g.mystdin);
-		t_g.mystdin = STDIN_FILENO;
-	}
+	if (dup2(fd1, fd2) == -1)
+		return (errthrow("dup2: ", strerror(errno), NULL, errno));
+	return (0);
 }
 
-short   ft_duptwo(int fd1, int fd2)
+int		retfreetwo(char **tmp1, int ret)
 {
-    if (dup2(fd1, fd2) == -1)
-        return (errthrow("dup2: ", strerror(errno), NULL, errno));
-    return (0);
+	int i;
+
+	i = 0;
+	if (tmp1)
+	{
+		while (tmp1[i] != 0)
+		{
+			free(tmp1[i]);
+			tmp1[i] = NULL;
+			i++;
+		}
+		free(tmp1);
+		tmp1 = NULL;
+	}
+	return (ret);
+}
+
+int	ft_ternint(short cond, int iftrue, int iffalse)
+{
+	if (cond)
+		return (iftrue);
+	else
+		return (iffalse);
 }

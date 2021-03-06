@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/02 11:51:47 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 12:35:54 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ short    ft_echo(char **args)
     if (!args[1])
         return (write(STDOUT_FILENO, "\n", 1) - 1);
     cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
-    args += (cond) ? 2 : 1;
+    args += ft_ternint(cond, 2, 1);
     i = -1;
     while (args[++i])
     {
@@ -48,7 +48,7 @@ short	ft_env(t_env *e, char **args)
 	return (0);
 }
 
-short	ft_pwd(t_env **e, char **args)
+short	ft_pwd(t_env **e)
 {
 	char	*path;
 	char	*pwd;
@@ -66,10 +66,11 @@ short	ft_export(t_env **e, char **args)
 {
 	char	*key;
 	int		klen;
+	int		err;
 	short	i;
 
 	i = 0;
-	if (ft_lentwop(args) < 2)
+	if (!(err = 0) && ft_lentwop(args) < 2)
 		return (ft_exprint(*e));
 	while (args[++i])
 	{
@@ -78,7 +79,7 @@ short	ft_export(t_env **e, char **args)
 			klen = ft_lento(args[i], '=') + 1;
 			key = ft_substr(args[i], 0, (klen - 1));
 			if (!ft_strnormed(key))
-				errthrow("export: `", key, "=': not a valid identifier.", 1);
+				err = errthrow("export: `", key, "=': not a valid identifier.", 1);
 			else if (!getenval(*e, key))
 				envaddelm(e, newenvelm(ft_substr(args[i], 0, (klen - 1)),
 				ft_substr(args[i], klen,(ft_strlen(args[i]) - klen))));
@@ -86,24 +87,26 @@ short	ft_export(t_env **e, char **args)
 				setenval(e, key, ft_substr(args[i], klen,
 						(ft_strlen(args[i]) - klen)));
 		} else if (!ft_strnormed(args[i]))
-			errthrow("export: `", args[i], "': not a valid identifier.", 1);
+			err = errthrow("export: `", args[i], "': not a valid identifier.", 1);
 	}
-	return (0);
+	return (err);
 }
 
 short	ft_unset(t_env **e, char **args)
 {
 	short	i;
+	int		err;
 
 	i = 0;
+	err = 0;
 	if (ft_lentwop(args) <= 1)
 		return (1);
 	while (args[++i])
 	{
 		if (!ft_strnormed(args[i]))
-			errthrow("unset: `", args[i], "': not a valid identifier.", 1);
+			err = errthrow("unset: `", args[i], "': not a valid identifier.", 1);
 		else
 			rmenval(e, args[i]);
 	}
-	return (1);
+	return (err);
 }

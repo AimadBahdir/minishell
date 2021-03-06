@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 08:55:32 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/19 10:43:47 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 09:53:27 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,10 @@ short   ft_checkforstr(char *str, char **lst)
         if (ft_strcmp(str, lst[i]))
             return (1);
     return (0);
+}
+
+int	ft_isalpha(int c)
+{
+	return ((c >= 'A' && c <= 'Z')
+			|| (c >= 'a' && c <= 'z'));
 }

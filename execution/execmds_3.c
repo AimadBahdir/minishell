@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/02 11:45:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 12:29:27 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_rplchome(t_env *e, char *path)
+char	*ft_rplchome(char *path)
 {
 	char *tmp;
 
@@ -32,7 +32,7 @@ short	ft_cd(t_env **e, char **args)
 
 	path = args[1];
 	if (!path || path[0] == '~')
-		path = ft_rplchome(*e, path);
+		path = ft_rplchome(path);
 	if (chdir(path) == -1)
 		return (errthrow(path, ": cd: ", strerror(errno), errno));
 	if (!(pwd = getcwd(NULL, 0)))

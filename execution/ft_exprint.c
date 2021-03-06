@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 10:21:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/02 11:49:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/02 17:01:59 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,14 @@
 short	alphacmp(char *str1, char *str2)
 {
 	int i;
-	int s1;
-	int s2;
+	int j;
 
+	j = -1;
 	i = -1;
-	s1 = 0;
-	while (str1[++i])
-		s1 += str1[i];
-	i = -1;
-	s2 = 0;
-	while (str2[++i])
-		s2 += str2[i];
-	return (s1 > s2);
+	while (str1[++i] && str2[++j])
+		if (str1[i] != str2[j])
+			return (str1[i] > str2[j]);
+	return (0);
 }
 
 t_env	*ft_envcpy(t_env *cur)
@@ -37,25 +33,26 @@ t_env	*ft_envcpy(t_env *cur)
 	ncpy = NULL;
 	while (cur)
 	{
-		envaddelm(&ncpy, newenvelm(cur->key, cur->val));
+		envaddelm(&ncpy, newenvelm(ft_strdup(cur->key),
+					ft_strdup(cur->val)));
 		cur = cur->next;
 	}
 	return (ncpy);
 }
 
-void	ft_envsort(t_env **envlst)
+void	ft_envsort(t_env *envlst)
 {
 	t_env	*a;
 	t_env	*b;
 	char	*tmp;
 
-	a = *envlst;
+	a = envlst;
 	while (a)
 	{
-		b = a;
+		b = a->next;
 		while (b)
 		{
-			if (alphacmp(b->key, a->key))
+			if (alphacmp(a->key, b->key))
 			{
 				tmp = a->key;
 				a->key = b->key;
@@ -73,9 +70,11 @@ void	ft_envsort(t_env **envlst)
 short	ft_exprint(t_env *head)
 {
 	t_env	*lcpy;
+	t_env	*lcpytmp;
 
 	lcpy = ft_envcpy(head);
-	ft_envsort(&lcpy);
+	lcpytmp = lcpy;
+	ft_envsort(lcpy);
 	while (lcpy)
 	{
 		ft_putstr("declare -x ");
@@ -85,12 +84,12 @@ short	ft_exprint(t_env *head)
 		write(1, "\"\n", 2);
 		lcpy = lcpy->next;
 	}
-	while (lcpy)
+	while (lcpytmp)
 	{
-		free(lcpy->key);
-		free(lcpy->val);
-		lcpy = lcpy->next;
+		free(lcpytmp->key);
+		free(lcpytmp->val);
+		lcpytmp = lcpytmp->next;
 	}
-	free(lcpy);
+	free(lcpytmp);
 	return (0);
 }
