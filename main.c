@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/26 16:14:12 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/06 14:55:33 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int valid_option(char *line , int start)
 int greater_less(int start_arg, char *line) 
 {
 	t_params.vld_der = 1;
-	if((line[start_arg] == '>' && line[start_arg + 1] == '>') || (line[start_arg] == '<' && line[start_arg + 1] == '<'))
+	if((line[start_arg] == '>' && line[start_arg + 1] == '>') 
+	|| (line[start_arg] == '<' && line[start_arg + 1] == '<'))
 	{
 		return (start_arg + 2);
 	}
@@ -63,57 +64,59 @@ int greater_less(int start_arg, char *line)
 	return(-1);
 }
 
-int cut_quotation(int start_arg, char *line, int end)
+int cut_quotation(int start, char *line, int end)
 {
 	int i;
 
 	i = 1;
 	while(1)
 	{
-		if(line[start_arg + i] == '\"' && valid_option(line, start_arg + i) == 1)
+		if(line[start + i] == '\"' && valid_option(line, start + i) == 1)
 			break;
-		if(start_arg + i > end)
-			return (-1);
 		i++;
 	}
 	i++;
-	if(line[start_arg + i] == '\0' || line[start_arg + i] == ' ' || line[start_arg + i] == '<' || line[start_arg + i] == '>' || start_arg + i > end) 
-		return(start_arg + i);
+	if(line[start + i] == '\0' || line[start + i] == ' ' 
+	|| line[start + i] == '<' || line[start + i] == '>' || start + i > end) 
+		return(start + i);
 	else
 	{
-		while(line[start_arg + i] != '\0' && line[start_arg + i] != ' ' && line[start_arg + i] != '<' && line[start_arg + i] != '>' && start_arg + i < end)
+		while(line[start + i] != '\0' && line[start + i] != ' ' 
+		&& line[start + i] != '<' && line[start + i] != '>' && start + i < end)
 		{
-			if(line[start_arg + i] == '\"' && valid_option(line, start_arg + i) == 1)
-				return(cut_quotation(start_arg + i, line, end)); 
+			if(line[start + i] == '\"' && valid_option(line, start + i) == 1)
+				return(cut_quotation(start + i, line, end)); 
 			i++;
 		}
-		return(start_arg + i);
+		return(start + i);
 	}
 }
 
-int cut_apostrophe(int start_arg, char *line, int end)
+int cut_apostrophe(int start, char *line, int end)
 {
 	int i;
 
 	i = 1;
-	while(line[start_arg + i] != '\'')
+	while(line[start + i] != '\'')
 	{
-		if(start_arg + i > end)
+		if(start + i > end)
 			return (-1);
 		i++;
 	}
 	i++;
-	if(line[start_arg + i] == '\0' || line[start_arg + i] == ' ' || line[start_arg + i] == '<' || line[start_arg + i] == '>' || start_arg + i > end) 
-		return(start_arg + i);
+	if(line[start + i] == '\0' || line[start + i] == ' ' 
+	|| line[start + i] == '<' || line[start + i] == '>' || start + i > end) 
+		return(start + i);
 	else
 	{
-		while(line[start_arg + i] != '\0' && line[start_arg + i] != ' ' && line[start_arg + i] != '<' && line[start_arg + i] != '>' && start_arg + i < end)
+		while(line[start + i] != '\0' && line[start + i] != ' ' 
+		&& line[start + i] != '<' && line[start + i] != '>' && start + i < end)
 		{
-			if(line[start_arg + i] == '\'' && valid_option(line, start_arg + i) == 1)
-				return(cut_apostrophe(start_arg + i, line, end)); 
+			if(line[start + i] == '\'' && valid_option(line, start + i) == 1)
+				return(cut_apostrophe(start + i, line, end)); 
 			i++;
 		}
-		return(start_arg + i);
+		return(start + i);
 	}
 }
 
@@ -121,9 +124,11 @@ int cut_outher(int start_arg, char *line, int end, int *i)
 {
 	while (start_arg + *i < end)
 	{
-		if((line[start_arg + *i] == '>' || line[start_arg + *i] == '<') && valid_option(line, start_arg + *i) == 1)
+		if((line[start_arg + *i] == '>' || line[start_arg + *i] == '<') 
+		&& valid_option(line, start_arg + *i) == 1)
 			return(0);
-		else if((line[start_arg + *i] == '\"' || line[start_arg + *i] == '\'') && valid_option(line, start_arg + *i) == 1)
+		else if((line[start_arg + *i] == '\"' || line[start_arg + *i] == '\'') 
+		&& valid_option(line, start_arg + *i) == 1)
 			return(1);
 		else if(line[start_arg + *i] == ' ' && valid_option(line, start_arg + *i) == 1)
 			return(0);
@@ -143,7 +148,8 @@ int get_end_arg(int start_arg, char *line ,int end)
 	{
 		while(line[start_arg + i] == ' ' && start_arg + i < end)
 			i++;
-		if(valid_option(line, start_arg + i) == 1 && (line[start_arg + i] == '>' || line[start_arg + i] == '<'))
+		if(valid_option(line, start_arg + i) == 1 
+		&& (line[start_arg + i] == '>' || line[start_arg + i] == '<'))
 			return(greater_less(start_arg + i, line));
 		else if(valid_option(line, start_arg + i) == 1 && line[start_arg + i] == '\"')
 			return(cut_quotation(start_arg +i ,line, end));
@@ -219,7 +225,105 @@ char *get_env(char *s)
 	return (getenval(env,s));
 }
 
-char *check_path(char *s)
+int checkpath_apostrophe(t_cargs **args, char *s, int i)
+{
+	while(s[i] != '\0' && s[i] != '\'')
+	{
+		ft_lstcargsadd_back(args, ft_lstcargsnew(s[i]));
+		i++;
+	}
+	return(i);
+}
+
+int checkpath_backslash(t_cargs **args, char *s, int i)
+{
+	ft_lstcargsadd_back(args, ft_lstcargsnew(s[i]));
+	return(i);
+}
+
+int checkpath_quotation(t_cargs **args, char *s, int i)
+{
+	while(s[i] != '\"' && valid_option(s, i) == 1)
+	{
+		if(s[i] == '\\')
+			i =  checkpath_backslash(args, s, i + 1);
+		else if (s[i] == '$')
+			i =  checkpath_dollar(args, s, i + 1);
+	}
+	return(i);
+}
+
+int checkpath_question_mark(t_cargs **args, int i)
+{
+	char *temp;
+	int x;
+
+	x = -1;
+	temp = ft_itoa(t_params.question_nbr);
+	while(temp[++x] != '\0')
+		ft_lstcargsadd_back(args, ft_lstcargsnew(temp[x]));
+	free(temp);
+	return(i);
+}
+
+int checkpath_dollar(t_cargs **args, char *s, int i)
+{
+	if(s[i] == '?')
+		return(checkpath_question_mark(args, i));
+	else if(ft_isnumber(s[i]) == 0 && ft_alpha(s[i]) == 0)
+		ft_lstcargsadd_back(args, ft_lstcargsnew('$'));
+	else if(ft_isnumber(s[i]) == 1)
+		return(i);
+	else if(ft_alpha(s[i]) == 1 || s[i] == '_')
+		ft_lstcargsadd_back(args, ft_lstcargsnew('@'));
+	ft_lstcargsadd_back(args, ft_lstcargsnew(s[i]));
+	return(i);
+	
+}
+
+char *get_word(t_cargs *args)
+{
+	t_cargs *ptr_args;
+	int i;
+	char *ptr;
+
+	i = 0;
+	ptr = malloc(sizeof(char) * get_len_list(args) + 1);
+	ptr_args = args;
+	while(ptr_args != NULL)
+	{
+		ptr[i++] = ptr_args->c;
+		ptr_args = ptr_args->next;
+	}
+	ptr[i] = '\0';
+	return(ptr);
+}
+
+char *checkpath(char *s)
+{
+	t_cargs *args;
+	int i;
+	
+	i = 0;
+	args = NULL;
+	while(s[i] != '\0')
+	{
+		if(s[i] == '\'')
+			i =  checkpath_apostrophe(&args, s, i + 1);
+		else if(s[i] == '\\')
+			i =  checkpath_backslash(&args, s, i + 1);
+		else if(s[i] == '\"')
+			i =  checkpath_quotation(&args, s, i + 1);
+		else if(s[i] == '$')
+			i =  checkpath_dollar(&args, s, i + 1);
+		else
+			ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
+		i++;
+	}
+	return(get_word(args));
+}
+
+/*char *check_path(char *s)
 {
 	int i;
 	int x;
@@ -382,7 +486,7 @@ char *check_path(char *s)
         free(ptr_list_shell);
 	}
 	return(ptr);
-}
+}*/
 
 char *fill_arg(int len, int start, char *line, int vld_der)
 {
@@ -393,23 +497,22 @@ char *fill_arg(int len, int start, char *line, int vld_der)
 	
 	i = 0;
 	j = 0;
-	len = len == 0 ? 1 : len;
-	len = (vld_der == 1) ? len + 1 : len;
+	if(len == 0)
+		len++;
 	s = (char *)malloc(sizeof(char ) * len + 1);
-	if(vld_der == 1)
-	{
-		s[j++] = '@'; 
-		len--;
-	}
 	while(len > i)
 	{
-		s[j] = line[start + i];
-		j++;
+		if(vld_der == 1 && line[start + i] == '>' && line[start + i - 1] != '>')
+			s[j++] = '@';
+		else if(vld_der == 1 && line[start + i] == '<')
+			s[j++] = '@';
+		else
+			s[j++] = line[start + i];
 		i++;
 	}
 	s[j] = '\0';
 	temp = s;
-	s = check_path(s);
+	s = checkpath(s);
 	free(temp);
 	return(s);
 }
@@ -433,25 +536,22 @@ void check_more(t_gargs *gargs, char *line, int len, int norm)
 {
 	int i;
 	int j;
-	t_gargs *ptr_list_shell;
-
-	ptr_list_shell = gargs;
+	
 	i = 0;
-	//free_table_args();
 	gestion_fill_arg(gargs, line, len);
 	j = number_of_words_in_table(t_params.args);
 	if(norm == 1)
 	{
 		j = j -2;
-		echonge_list_args(&ptr_list_shell);
+		echonge_list_args(&gargs);
 		free_table_args();
 		gestion_fill_arg(gargs, line, len);
 	}
 	while(i < j)
 	{
-		if(strcmp(t_params.args[i], "@>") == 0)
+		if(t_params.args[i][0] == '@')
 		{
-			change_position(&ptr_list_shell, i);
+			change_position(&gargs, i);
 			free_table_args();
 			gestion_fill_arg(gargs, line, len);
 			j = j - 2;
@@ -579,11 +679,6 @@ int get_start_and_end_events(char *line, t_inputs **list_shell)
 						open = 0;
 						break;
 					}
-					if (line[i] == '\0')
-					{
-						t_params.error_text = "Empty line there is no supplement \"\n";
-						return(-1);
-					}
 					i++;
 				}
 			}
@@ -668,6 +763,34 @@ int pass_spe(char *line, int i)
 	return(i);
 }
 
+int check_syntax_red(char *line, int i)
+{
+	if(((line[i] == '>' && line[i + 1] == '>') && valid_option(line, i) == 1) 
+	|| ((line[i] == '<' && line[i + 1] == '<') && valid_option(line, i) == 1))
+	{
+		i = pass_spe(line, i + 2);
+		if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
+			return(-1);
+		return(i - 1);
+	}
+	else
+	{
+		if(i + 1 == pass_spe(line, i + 1))
+		{
+			if(line[i + 1] == '|' || line[i + 1] == ';' || (line[i + 1] == '<' 
+			&& line[i] == '>') || (line[i + 1] == '>' && line[i] == '<'))
+				return(-1);
+		}
+		else
+		{
+			i = pass_spe(line, i + 1);
+			if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
+				return(-1);
+			i--;
+		}
+		return(i);
+	}
+}
 
 int check_syntax(char *line)
 {
@@ -679,9 +802,7 @@ int check_syntax(char *line)
 		if(line[0] == ';' || line[0] == '|')
 			return(error_msg());
 		if((line[i] == '\'' || line[i] == '\"') && valid_option(line, i) == 1)
-		{
 			i = get_end_index(line, i);
-		}
 		if(i == -1)
 			return(-1);
 		if((line[i] == '|' || line[i] == ';') && valid_option(line, i) == 1)
@@ -691,50 +812,11 @@ int check_syntax(char *line)
 				return(error_msg());
 			i--;
 		}
-		else if((line[i] == '>' && line[i + 1] == '>') && valid_option(line, i) == 1)
+		else if ((line[i] == '>' || line[i] == '<') && valid_option(line, i) == 1)
 		{
-			i = pass_spe(line, i + 2);
-			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
-				return(error_msg());
-			i--;
-		}
-		else if((line[i] == '<' && line[i + 1] == '<') && valid_option(line, i) == 1)
-		{
-			i = pass_spe(line, i + 2);
-			if(line[i] == '|' || line[i] == ';' || line[i] == '>' || line[i] == '<')
-				return(error_msg());
-			i--;
-		}
-		else if (line[i] == '>' && valid_option(line, i) == 1)
-		{
-			if(i + 1 == pass_spe(line, i + 1))
-			{
-				if(line[i + 1] == '|' || line[i + 1] == ';' || line[i + 1] == '<')
+			i = check_syntax_red(line, i);
+				if(i == -1)
 					return(error_msg());
-			}
-			else
-			{
-				i = pass_spe(line, i + 1);
-				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
-					return(error_msg());
-				i--;
-			}
-				
-		}
-		else if (line[i] == '<' && valid_option(line, i) == 1)
-		{
-			if(i + 1 == pass_spe(line, i + 1))
-			{
-				if(line[i + 1] == '|' || line[i + 1] == ';' || line[i + 1] == '>')
-					return(error_msg());
-			}
-			else
-			{
-				i = pass_spe(line, i + 1);
-				if(line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
-					return(error_msg());
-				i--;
-			}
 		}
 		else if (line[i] == '\\' && valid_option(line, i) == 1 && line[i + 1] == '\0')
 			return(error_msg());

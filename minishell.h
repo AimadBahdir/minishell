@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/02/24 12:45:53 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/05 10:56:07 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,7 @@ char *fill_arg(int len, int start, char *line, int vld_der);
 void free_table_args();
 void	echongevld_der(int *vld_der, int *vld_der2);
 void gestion_fill_arg(t_gargs *gargs, char *line, int len);
+int ft_alpha(char c);
+char *checkpath(char *s);
+int checkpath_dollar(t_cargs **args, char *s, int i);
 #endif

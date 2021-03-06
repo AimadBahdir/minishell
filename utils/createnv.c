@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/03 18:26:31 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:42:51 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*getenval(t_env *e, char *key)
 {
 	while (e)
 	{
-		if (ft_strcmp(ft_strlower(e->key), ft_strlower(key)))
+		if (ft_strcmp(e->key, key))
 			return (e->val);
 		e = e->next;
 	}
@@ -67,4 +67,21 @@ void    ft_setenv(t_env **lst, char **envp)
         envaddelm(lst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
             ft_substr(envp[i], klen, (elen - klen))));
     }
+}
+
+short	ft_strnormed(char *str)
+{
+	short i;
+	i = -1;
+	if (str[0] >= '0' && str[0] <= '9')
+		return (0);
+	while (str[++i])
+	{
+		if (!(str[i] >= 'a' && str[i] <= 'z')
+			&& !(str[i] >= 'A' && str[i] <= 'Z')
+			&& !(str[i] >= '0' && str[i] <= '9')
+			&& str[i] != '_')
+			return (0);
+	}
+	return (1);
 }
