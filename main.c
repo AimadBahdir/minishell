@@ -82,11 +82,11 @@ int main(int argc, char **argv, char **envp)
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
-    inpt1->command = malloc(4 * sizeof(char *));
-    inpt1->command[0] = ft_strdup("export");
-    inpt1->command[1] = ft_strdup("NUM=0639207672");
-    inpt1->command[2] = ft_strdup("PATH");
-    inpt1->command[3] = NULL;
+    inpt1->command = malloc(3 * sizeof(char *));
+    inpt1->command[0] = ft_strdup("unset");
+    inpt1->command[1] = ft_strdup("PATH");
+    // inpt1->command[2] = ft_strdup("NUM");
+    inpt1->command[2] = NULL;
     inpt1->pipe = 0;
     inpt1->next = inpt2;
     

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 15:21:58 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 17:26:12 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ struct s_pipe
 	short	prev;
 	int		nxtio[2];
 	int		prvo;
+	int		envio[2];
 }		t_pipe;
 
 struct	s_g

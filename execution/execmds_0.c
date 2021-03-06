@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 15:10:12 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/06 18:00:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ short   ft_exchild(t_env **envlst, char **cmd)
 		if ((err = ft_execmd(envlst, cmd)) > 0)
 			return (err);
 	}
+	close(t_pipe.envio[0]);
+	write(t_pipe.envio[1], &envlst, sizeof(envlst));
+	close(t_pipe.envio[1]);
 	return (err);
 }
 
@@ -135,6 +138,8 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 		if ((t_pipe.next = head->pipe) == 1)
 			if (pipe(t_pipe.nxtio) < 0)
 				exit(errthrow(strerror(errno), NULL, NULL, 1));
+		if (pipe(t_pipe.envio) < 0)
+			exit(errthrow(strerror(errno), NULL, NULL, 1));
 		if ((pid = fork()) < 0)
 			exit(errthrow(strerror(errno), NULL, NULL, 1));
 		else if (pid == 0)
@@ -152,6 +157,9 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 				close(t_pipe.nxtio[0]);
 				t_pipe.prev = 1;
 			}
+			close(t_pipe.envio[1]);
+			read(t_pipe.envio[0], &envlst, sizeof(envlst));
+			close(t_pipe.envio[0]);
 		}
 		head = head->next;
 	}
