@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/05 10:56:07 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/08 11:58:25 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct  s_env
 }               t_env;
 
 void		lsh_loop();
-void		lsh_read_line_and_trim(char **line);
+int		lsh_read_line_and_trim(char **line);
 void		write_string(char *s);
 char		*ft_trim(char *line);
 int 		len_without_speac(char *line);
@@ -106,4 +106,5 @@ void gestion_fill_arg(t_gargs *gargs, char *line, int len);
 int ft_alpha(char c);
 char *checkpath(char *s);
 int checkpath_dollar(t_cargs **args, char *s, int i);
+int check_syntax(char *line);
 #endif

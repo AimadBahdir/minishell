@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/06 14:55:33 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/09 11:57:00 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,75 @@ void write_string(char *s)
 		write(1, &s[i],1);
 }
 
-void lsh_read_line_and_trim(char **line)
+int new_check(char **line2)
+{
+	if(line2[0][0] == '|' || line2[0][0] == ';' || line2[0][0] == '>' || line2[0][0] == '<')
+	{
+		free(*line2);
+		return(-1);
+	}
+	return(0);
+}
+
+int read_more(char **line)
+{
+	int len;
+	char *line2;
+	char *temp;
+
+	len = ft_strlen(*line);
+	if(line[0][len - 1] == '|' && valid_option(*line, len - 1) == 1)
+	{
+		while(1)
+		{
+			write_string("> ");
+			
+			if(get_next_line(0, &line2) == -1)
+				return(-1);
+			temp = line2;
+			line2 = ft_trim(line2);
+			free(temp);
+		
+			if(new_check(&line2) == -1)
+				return(-1);
+			if(line2[0] != '\0')
+			{
+				temp = *line;
+				*line = ft_strjoin(*line , line2);
+				free(temp);
+				
+				len = ft_strlen(line2);
+				if (line2[len - 1]!= '|' && valid_option(line2, len - 1) == 1)
+				{
+					free(line2);
+					return(1);
+				}
+			}
+			free(line2);
+		}
+	}
+	return(0);
+}
+
+int lsh_read_line_and_trim(char **line)
 {
 	char *temp;
+	int i;
 
 	if(get_next_line(0, line) == -1)
 		write_string("Error in GNL");
 	temp = *line;
 	*line = ft_trim(*line);
 	free(temp);
+	if(read_more(line) == -1)
+		return(-1);
+	return(0);
 }
 
 int valid_option(char *line , int start)
 {
 	int i;
 	int j;
-	int valid;
 	
 	i = 1;
 	j = 0;
@@ -45,8 +98,9 @@ int valid_option(char *line , int start)
 		j++;
 		i++;
 	}
-	valid = (j % 2 == 0 )? 1: 0;
-	return(valid);
+	if(j % 2 == 0)
+		return(1);
+	return(0);
 }
 
 int greater_less(int start_arg, char *line) 
@@ -203,7 +257,10 @@ int gestion_args(char *line, int start, int end, t_gargs **gargs)
 		if(end_arg == -1)
 			return(-1);
 		ft_lstadd_back_arg(gargs, ft_lstnew_args(start_arg, end_arg, t_params.vld_der));
-		i += (end_arg - start_arg) == 0 ? 1 : end_arg - start_arg;
+		if(end_arg - start_arg == 0)
+			i += 1;
+		else
+			i += end_arg - start_arg;
 	}
 	return(get_number_args(gargs));
 }
@@ -255,14 +312,9 @@ int checkpath_quotation(t_cargs **args, char *s, int i)
 
 int checkpath_question_mark(t_cargs **args, int i)
 {
-	char *temp;
-	int x;
 
-	x = -1;
-	temp = ft_itoa(t_params.question_nbr);
-	while(temp[++x] != '\0')
-		ft_lstcargsadd_back(args, ft_lstcargsnew(temp[x]));
-	free(temp);
+	ft_lstcargsadd_back(args, ft_lstcargsnew('@'));
+	ft_lstcargsadd_back(args, ft_lstcargsnew('?'));
 	return(i);
 }
 
@@ -281,21 +333,29 @@ int checkpath_dollar(t_cargs **args, char *s, int i)
 	
 }
 
-char *get_word(t_cargs *args)
+char *get_word_free(t_cargs **args)
 {
 	t_cargs *ptr_args;
+	t_cargs *ptr_args2;
 	int i;
 	char *ptr;
 
 	i = 0;
-	ptr = malloc(sizeof(char) * get_len_list(args) + 1);
-	ptr_args = args;
+	ptr = malloc(sizeof(char) * get_len_list(*args) + 1);
+	ptr_args = *args;
 	while(ptr_args != NULL)
 	{
 		ptr[i++] = ptr_args->c;
 		ptr_args = ptr_args->next;
 	}
 	ptr[i] = '\0';
+	ptr_args2 =  *args;
+	while (ptr_args2 != NULL)
+	{
+		ptr_args = ptr_args2;
+        ptr_args2 = ptr_args2->next;
+        free(ptr_args);
+	}
 	return(ptr);
 }
 
@@ -320,7 +380,7 @@ char *checkpath(char *s)
 			ft_lstcargsadd_back(&args, ft_lstcargsnew(s[i]));
 		i++;
 	}
-	return(get_word(args));
+	return(get_word_free(&args));
 }
 
 /*char *check_path(char *s)
@@ -646,7 +706,10 @@ int valid_quotation(char *line , int start, int open)
 		j++;
 		i++;
 	}
-	valid = (j % 2 == 0 )? 1: 0;
+	if(j % 2 == 0)
+		valid = 1;
+	else
+		valid = 0;
 	if((valid && !open) || (!valid && open))
 		return(1);
 	return(0);
@@ -697,7 +760,10 @@ int get_start_and_end_events(char *line, t_inputs **list_shell)
 				t_params.error_text = "bash: syntax Error 1 \n";
 				return(-1);
 			}	
-			pipe = (line[i] == '|') ? 1 : 0;
+			if(line[i] == '|')
+				pipe = 1 ;
+			else
+				pipe =  0;
 			end = i;
 			if(get_param_list_shell(list_shell, line, start, end) == -1)
 				return(-1);
@@ -847,10 +913,15 @@ void test_print(t_inputs *list_shell)
 		ptr_list_shell = ptr_list_shell->next;
 	}
 	printf("\n\n\n");
-	free_table_args();
 	ptr_list_shell = list_shell;
 	while (list_shell != NULL)
 	{
+		i = 0;
+		
+		while (list_shell->command[i] != NULL)
+			free(list_shell->command[i++]);
+		free(list_shell->command);
+		
 		ptr_list_shell = list_shell;
 		list_shell = list_shell->next;
 		free(ptr_list_shell);
@@ -888,8 +959,9 @@ void lsh_loop(void)
 	{
 		errors = 0;
 		write_string("bash-1.0$ ");
-		lsh_read_line_and_trim(&line);
-		if(line[0] != '\0')
+		if(lsh_read_line_and_trim(&line) == -1)
+			write_string("bash: syntax Error\n");
+		else if(line[0] != '\0')
 		{
 			if(check_syntax(line) != -1)
 				errors = lsh_split_line(line, &list_shell);
