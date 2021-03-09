@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 11:55:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:50:49 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,6 @@ char	**spltcmd(char **cmd)
 	return (args);
 }
 
-int	fillfile(t_env **envlst, char **cmd)
-{
-	int err;
-
-	err = 0;
-	if (t_g.mystdout != STDOUT_FILENO)
-		if ((err = ft_duptwo(t_g.mystdout, STDOUT_FILENO)) > 0)
-			return (err);
-	if (t_g.mystdin != STDIN_FILENO)
-		if ((err = ft_duptwo(t_g.mystdin, STDIN_FILENO)) > 0)
-			return (err);
-	if ((err = ft_execmd(envlst, cmd)) > 0)
-		return (err);
-	return (err);
-}
-
 int	ft_open(char *name, int flags, short out)
 {
 	if (out)
@@ -60,7 +44,7 @@ int	ft_open(char *name, int flags, short out)
 		if (t_g.mystdin > 2)
 		{
 			close(t_g.mystdin);
-			t_g.mystdin = STDIN_FILENO;
+			t_g.mystdin = dup(STDIN_FILENO);
 		}
 		return (t_g.mystdin = open(name,  flags, 0644));
 	}
@@ -84,5 +68,5 @@ short	gdirections(t_env **envlst, char **cmd)
 	}
 	if (cmd[0][0] == 14 || cmd[0][0] == 15)
 		return (0);
-	return (fillfile(envlst, spltcmd(cmd)));
+	return (ft_execmd(envlst, spltcmd(cmd)));
 }

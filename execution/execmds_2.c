@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 12:35:54 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 18:46:30 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,45 @@
 
 short    ft_echo(char **args)
 {
-    short cond;
-    short i;
+    short	nlexist;
+    int		i;
+	int		j;
 
-    if (!args[1])
-        return (write(STDOUT_FILENO, "\n", 1) - 1);
-    cond = (args[1][0] == '-' && ft_strcmp(args[1], "-n"));
-    args += ft_ternint(cond, 2, 1);
-    i = -1;
-    while (args[++i])
+    if (!args[1] && (nlexist = 1))
+        return (write(t_g.mystdout, "\n", 1) - 1);
+    i = 0;
+    while (args[++i] && (j = 1))
     {
-        ft_putstr(args[i]);
-        if (args[i + 1])
-            write(STDOUT_FILENO, " ", 1);
+        while (args[i][j] && args[i][0] == '-' && args[i][j] == 'n')
+            j++;   
+        if (args[i][j] && args[i][j] != 'n' && j > 0)
+		{
+			nlexist = (i != 0);
+            break;
+		}
     }
-    if (!cond)
-        write(STDOUT_FILENO, "\n", 1);
+    while (args[i])
+    {
+        ft_putstr(args[i++]);
+        if (args[i])
+            write(t_g.mystdout, " ", 1);
+    }
+    if (nlexist)
+        write(t_g.mystdout, "\n", 1);
     return (0);
 }
 
 short	ft_env(t_env *e, char **args)
 {
 	if (ft_lentwop(args) > 1)
-		return (errthrow("env: ", args[1], ": No such file or directory", 127));
+		return (errthrow("env: ", args[1],
+				": No such file or directory", 127));
 	while (e)
 	{
 		ft_putstr(e->key);
-		write(1, "=", 1);
+		write(t_g.mystdout, "=", 1);
 		ft_putstr(e->val);
-		write(1, "\n", 1);
+		write(t_g.mystdout, "\n", 1);
 		e = e->next;
 	}
 	return (0);

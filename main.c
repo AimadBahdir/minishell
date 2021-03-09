@@ -56,98 +56,52 @@ int main(int argc, char **argv, char **envp)
     inpt5->next = inpt7;
 
     inpt4  = malloc(sizeof(*inpt4));
-    inpt4->command = malloc(2 * sizeof(char *));
-    inpt4->command[0] = ft_strdup("env");
+    inpt4->command = malloc(5 * sizeof(char *));
+    inpt4->command[0] = ft_strdup("echo");
+    inpt4->command[1] = ft_strdup("-nnn");
+    inpt4->command[2] = ft_strdup("env");
+    inpt4->command[3] = ft_strdup("env");
     // inpt4->command[1] = ft_strdup("Print5");
-    inpt4->command[1] = NULL;
+    inpt4->command[4] = NULL;
     inpt4->pipe = 0;
-    inpt4->next = inpt5;
+    inpt4->next = NULL;
 
     inpt3  = malloc(sizeof(*inpt3));
     inpt3->command = malloc(3 * sizeof(char *));
     inpt3->command[0] = ft_strdup("echo");
-    inpt3->command[1] = ft_strdup("THE OLD COMMAND EXIT WITH : $? ERROR");
+    inpt3->command[1] = ft_strdup("$?");
     inpt3->command[2] = NULL;
-    inpt3->command[1][28] = 24;
+    inpt3->command[1][0] = 24;
     inpt3->pipe = 0;
-    inpt3->next = inpt4;
+    inpt3->next = NULL;
 
     inpt2  = malloc(sizeof(*inpt2));
-    inpt2->command = malloc(3 * sizeof(char *));
-    inpt2->command[0] = ft_strdup("echo");
-    inpt2->command[1] = ft_strdup("$PATH");
-    inpt2->command[2] = NULL;
-    inpt2->command[1][0] = 24;
+    inpt2->command = malloc(5 * sizeof(char *));
+    inpt2->command[0] = ft_strdup("./rr");
+    inpt2->command[1] = NULL;
     inpt2->pipe = 0;
     inpt2->next = inpt3;
 
     inpt1  = malloc(sizeof(*inpt1));
-    inpt1->command = malloc(3 * sizeof(char *));
-    inpt1->command[0] = ft_strdup("unset");
-    inpt1->command[1] = ft_strdup("PATH");
+    inpt1->command = malloc(4 * sizeof(char *));
+    inpt1->command[0] = ft_strdup("chmod");
+    inpt1->command[1] = ft_strdup("000");
+    inpt1->command[2] = ft_strdup("rr");
     // inpt1->command[2] = ft_strdup("NUM");
-    inpt1->command[2] = NULL;
+    inpt1->command[3] = NULL;
     inpt1->pipe = 0;
     inpt1->next = inpt2;
     
     
     inpt  = malloc(sizeof(*inpt));
-    inpt->command = malloc(3 * sizeof(char *));
+    inpt->command = malloc(4 * sizeof(char *));
     inpt->command[0] = ft_strdup("echo");
-    inpt->command[1] = ft_strdup("$PATH");
-    inpt->command[2] = NULL;
-    inpt->command[1][0] = 24;
+    inpt->command[1] = ft_strdup(">");
+    inpt->command[2] = ft_strdup("rr");
+    inpt->command[3] = NULL;
+    inpt->command[1][0] = 14;
     inpt->pipe = 0;
     inpt->next = inpt1;
-
-    // int fds[2];
-    // int fds2 = -1;
-    // int i = -1;
-    // int id;
-    // int id2;
-    // pipe(fds);
-    // while (++i < 2)
-    // {
-    //     id = fork();
-    //     if (id == 0)
-    //     {
-    //         if (fds2 == -1)
-    //         {
-    //             close(fds[0]);
-    //             dup2(fds[1], STDOUT_FILENO);
-    //             // write(fds[1], "IKHSS", 5);
-    //             close(fds[1]);
-    //         }
-    //         else
-    //         {
-    //             char *buff;
-    //             buff = malloc(11);
-    //             buff[10] = '\0';
-    //             dup2(fds2, STDIN_FILENO);
-    //             // read(STDIN_FILENO, buff, 11);
-    //             // printf(">> |%s|\n", buff);
-    //             id2 =  fork();
-    //             if (id2 == 0)
-    //             {
-    //                 printf("inpt3->command[0]  : %s", inpt3->command[0]);
-    //                 execve(inpt3->command[0], NULL, t_g.envp);
-    //                 exit(0);
-    //             }
-    //             close(fds2);
-    //         }
-    //         exit(0);
-    //     }
-    //     else
-    //     {
-    //         wait(NULL);
-    //         if (fds2 == -1)
-    //             fds2 = dup(fds[0]);
-    //         else
-    //             close(fds2);
-    //         close(fds[0]);
-    //         close(fds[1]);
-    //     }
-    // }
 
     ft_execute(&envlst, inpt);
 }

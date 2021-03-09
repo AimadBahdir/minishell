@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 12:29:27 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:30:58 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ short   ft_pipe(void)
 	err = 0;
     if (t_pipe.next)
     {
-        if ((err = ft_duptwo(t_pipe.nxtio[1], STDOUT_FILENO)) > 0)
-			return (err);
+        if ((t_g.mystdout = dup(t_pipe.nxtio[1])) == -1)
+			err = 1;
 		close(t_pipe.nxtio[1]);
     }
     if (t_pipe.prev)
     {
-        if ((err = ft_duptwo(t_pipe.prvo, STDIN_FILENO)) > 0)
-			return (err);
+        if ((t_g.mystdin = dup(t_pipe.prvo)) == -1)
+			err = 1;
     	close(t_pipe.prvo);
     }
     return (err);

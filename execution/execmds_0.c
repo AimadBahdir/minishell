@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 18:00:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 19:22:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,19 @@ char *find_cmd(t_env **lst, char *cmd)
 
 short   ft_othercmd(t_env **lst, char **cmdargs)
 {
-	int pid;
-	char *cmd;
+	int		pid;
+	char	*cmd;
+	int		exstat;
 
 	pid = fork();
 	if (pid < 0)
 		return (errthrow("Error", "in", "Forking", 1));
 	if (pid == 0)
 	{
+		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0)
+			exit(1);
+		if (ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
+			exit(1);
 		if (!(cmd = find_cmd(lst, cmdargs[0])))
 			exit(errthrow(cmdargs[0], ": command not found", NULL, 127));
 		if (execve(cmd, cmdargs, t_g.envp) == -1)
@@ -58,9 +63,9 @@ short   ft_othercmd(t_env **lst, char **cmdargs)
 	}
 	else
 	{
-		wait(&t_g.wstatus);
-		if(WIFEXITED(t_g.wstatus))
-			return (WEXITSTATUS(t_g.wstatus));
+		wait(&exstat);
+		if(WIFEXITED(exstat))
+			return (WEXITSTATUS(exstat));
 	}
 	return (0);
 }
@@ -119,47 +124,31 @@ short   ft_exchild(t_env **envlst, char **cmd)
 		if ((err = ft_execmd(envlst, cmd)) > 0)
 			return (err);
 	}
-	close(t_pipe.envio[0]);
-	write(t_pipe.envio[1], &envlst, sizeof(envlst));
-	close(t_pipe.envio[1]);
 	return (err);
 }
 
 short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 {
 	t_inputs    *head;
-	int         pid;
 
 	head = cmdlst;
 	t_pipe.prev = 0;
 	while (head)
 	{
+		t_g.mystdout = dup(STDOUT_FILENO);
+		t_g.mystdin = dup(STDIN_FILENO);
 		ft_setenvar(*envlst, head->command);
 		if ((t_pipe.next = head->pipe) == 1)
 			if (pipe(t_pipe.nxtio) < 0)
 				exit(errthrow(strerror(errno), NULL, NULL, 1));
-		if (pipe(t_pipe.envio) < 0)
-			exit(errthrow(strerror(errno), NULL, NULL, 1));
-		if ((pid = fork()) < 0)
-			exit(errthrow(strerror(errno), NULL, NULL, 1));
-		else if (pid == 0)
-			exit(ft_exchild(envlst, head->command));
-		else
+		t_g.exstat = ft_exchild(envlst, head->command);
+		t_pipe.prev = 0;
+		if (t_pipe.next)
 		{
-			wait(&t_g.wstatus);
-			if(WIFEXITED(t_g.wstatus))
-				t_g.exstat = WEXITSTATUS(t_g.wstatus);
-			t_pipe.prev = 0;
-			if (t_pipe.next)
-			{
-				if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
-					return (-1);
-				close(t_pipe.nxtio[0]);
-				t_pipe.prev = 1;
-			}
-			close(t_pipe.envio[1]);
-			read(t_pipe.envio[0], &envlst, sizeof(envlst));
-			close(t_pipe.envio[0]);
+			if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
+				return (-1);
+			close(t_pipe.nxtio[0]);
+			t_pipe.prev = 1;
 		}
 		head = head->next;
 	}

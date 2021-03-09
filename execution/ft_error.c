@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 10:31:24 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 17:02:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 short	errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 {
-	write(2, "bash: ", strlen("bash: "));
+	write(STDERR_FILENO, "bash: ", strlen("bash: "));
 	if (erp1)
-		write(2, erp1, ft_strlen(erp1));
+		write(STDERR_FILENO, erp1, ft_strlen(erp1));
 	if (erp2)
-		write(2, erp2, ft_strlen(erp2));
+		write(STDERR_FILENO, erp2, ft_strlen(erp2));
 	if (erp3)
-		write(2, erp3, ft_strlen(erp3));
-	write(2, "\n", 1);
+		write(STDERR_FILENO, erp3, ft_strlen(erp3));
+	write(STDERR_FILENO, "\n", 1);
 	return (errcode);
 }
 

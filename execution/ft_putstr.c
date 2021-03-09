@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 15:52:49 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/24 08:04:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/09 16:23:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_putstr(char *str)
 
 	i = -1;
 	while (str[++i])
-		write(STDOUT_FILENO, (str + i), 1);
+		write(t_g.mystdout, (str + i), 1);
 }
 
 void	ft_putmstr(char **mstr, char spr)
@@ -30,7 +30,7 @@ void	ft_putmstr(char **mstr, char spr)
 	{
 		ft_putstr(mstr[i]);
 		if (spr && mstr[i + 1])
-			write(STDOUT_FILENO, &spr, 1);
+			write(t_g.mystdout, &spr, 1);
 	}
 }
 
