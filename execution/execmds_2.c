@@ -6,41 +6,11 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 18:46:30 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/10 10:13:23 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-short    ft_echo(char **args)
-{
-    short	nlexist;
-    int		i;
-	int		j;
-
-    if (!args[1] && (nlexist = 1))
-        return (write(t_g.mystdout, "\n", 1) - 1);
-    i = 0;
-    while (args[++i] && (j = 1))
-    {
-        while (args[i][j] && args[i][0] == '-' && args[i][j] == 'n')
-            j++;   
-        if (args[i][j] && args[i][j] != 'n' && j > 0)
-		{
-			nlexist = (i != 0);
-            break;
-		}
-    }
-    while (args[i])
-    {
-        ft_putstr(args[i++]);
-        if (args[i])
-            write(t_g.mystdout, " ", 1);
-    }
-    if (nlexist)
-        write(t_g.mystdout, "\n", 1);
-    return (0);
-}
 
 short	ft_env(t_env *e, char **args)
 {

@@ -58,9 +58,9 @@ int main(int argc, char **argv, char **envp)
     inpt4  = malloc(sizeof(*inpt4));
     inpt4->command = malloc(5 * sizeof(char *));
     inpt4->command[0] = ft_strdup("echo");
-    inpt4->command[1] = ft_strdup("-nnn");
-    inpt4->command[2] = ft_strdup("env");
-    inpt4->command[3] = ft_strdup("env");
+    inpt4->command[1] = ft_strdup("-nn  ");
+    inpt4->command[2] = ft_strdup("-nn");
+    inpt4->command[3] = ft_strdup("-nnnnnnnn");
     // inpt4->command[1] = ft_strdup("Print5");
     inpt4->command[4] = NULL;
     inpt4->pipe = 0;
@@ -76,8 +76,8 @@ int main(int argc, char **argv, char **envp)
     inpt3->next = NULL;
 
     inpt2  = malloc(sizeof(*inpt2));
-    inpt2->command = malloc(5 * sizeof(char *));
-    inpt2->command[0] = ft_strdup("./rr");
+    inpt2->command = malloc(2 * sizeof(char *));
+    inpt2->command[0] = ft_strdup("./aa");
     inpt2->command[1] = NULL;
     inpt2->pipe = 0;
     inpt2->next = inpt3;
@@ -85,9 +85,8 @@ int main(int argc, char **argv, char **envp)
     inpt1  = malloc(sizeof(*inpt1));
     inpt1->command = malloc(4 * sizeof(char *));
     inpt1->command[0] = ft_strdup("chmod");
-    inpt1->command[1] = ft_strdup("000");
-    inpt1->command[2] = ft_strdup("rr");
-    // inpt1->command[2] = ft_strdup("NUM");
+    inpt1->command[1] = ft_strdup("777");
+    inpt1->command[2] = ft_strdup("aa");
     inpt1->command[3] = NULL;
     inpt1->pipe = 0;
     inpt1->next = inpt2;
@@ -97,7 +96,7 @@ int main(int argc, char **argv, char **envp)
     inpt->command = malloc(4 * sizeof(char *));
     inpt->command[0] = ft_strdup("echo");
     inpt->command[1] = ft_strdup(">");
-    inpt->command[2] = ft_strdup("rr");
+    inpt->command[2] = ft_strdup("aa");
     inpt->command[3] = NULL;
     inpt->command[1][0] = 14;
     inpt->pipe = 0;

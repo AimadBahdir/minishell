@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 19:22:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/10 10:23:29 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,20 @@ char *find_cmd(t_env **lst, char *cmd)
 
 	spltpath = ft_split(getenval(*lst, "PATH"), ':');
 	i = -1;
-	cmdpath = ft_strdup("");
-	cmd = ft_strjoin("/", cmd);
+	cmdpath = ft_strdup(cmd);
+	if (ft_checkfor('/', cmd) == -1)
+		cmd = ft_strjoin("/", cmd);
 	while (spltpath[++i])
 	{
-		tmp = cmdpath;
-		cmdpath = ft_strjoin(spltpath[i], cmd);
-		free(tmp);
-		if((fd = open(cmdpath, O_RDONLY)) > 0)
+		if((fd = open(cmdpath, O_RDONLY)) > 0 || errno == EACCES)
 		{
 			close(fd);
 			retfreetwo(spltpath, 0);
 			return (cmdpath);   
 		}
+		tmp = cmdpath;
+		cmdpath = ft_strjoin(spltpath[i], cmd);
+		free(tmp);
 	}
 	return (NULL);
 }
@@ -45,9 +46,8 @@ short   ft_othercmd(t_env **lst, char **cmdargs)
 	char	*cmd;
 	int		exstat;
 
-	pid = fork();
-	if (pid < 0)
-		return (errthrow("Error", "in", "Forking", 1));
+	if ((pid = fork()) < 0)
+		return (errthrow("Error ", "in ", "forking", 1));
 	if (pid == 0)
 	{
 		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0)
@@ -57,7 +57,8 @@ short   ft_othercmd(t_env **lst, char **cmdargs)
 		if (!(cmd = find_cmd(lst, cmdargs[0])))
 			exit(errthrow(cmdargs[0], ": command not found", NULL, 127));
 		if (execve(cmd, cmdargs, t_g.envp) == -1)
-			exit(errthrow(strerror(errno), NULL, NULL, errno));
+			exit(errthrow(strerror(errno), NULL, NULL,
+				ft_ternint(errno == EACCES, 126, errno)));
 		free(cmd);
 		exit(0);
 	}

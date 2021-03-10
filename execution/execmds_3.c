@@ -6,11 +6,57 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 16:30:58 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/10 10:13:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
+short	ft_chkopt(char **args, int *i)
+{
+	short	nl;
+	int		j;
+
+	*i = 0;
+	nl = 1;
+	while (args[++(*i)])
+	{
+		j = 0;
+		if (args[*i][0] == '-')
+		{
+			while (args[*i][++j])
+				if(args[*i][j] != 'n')
+					break;
+			if (*i == 1)
+				nl = !(!args[*i][j] && args[*i][j - 1] == 'n');
+			if (args[*i][j] && args[*i][j] != 'n')
+				break ;
+		}
+		else
+			break;
+	}
+	return (nl);
+}
+
+short    ft_echo(char **args)
+{
+	short	newline;
+	int		i;
+
+	if (!args[1])
+        return (!(write(t_g.mystdout, "\n", 1)));
+	newline = ft_chkopt(args, &i);
+	while (args[i])
+    {
+        ft_putstr(args[i++]);
+        if (args[i])
+            write(t_g.mystdout, " ", 1);
+    }
+    if (newline)
+        write(t_g.mystdout, "\n", 1);
+    return (0);
+}
 
 char	*ft_rplchome(char *path)
 {
