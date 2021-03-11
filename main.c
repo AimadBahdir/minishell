@@ -1,106 +1,108 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
+/*   Updated: 2021/03/11 16:03:03 by abahdir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void handel_c()
+void	handel_c(int i)
 {
-    printf("ctrl + c\n");
-}
-void handel_d()
-{
-    printf("ctrl + d\n");
-}
-void handel_b()
-{
-    printf("ctrl + \\\n");
+	printf("(%d) ctrl + c\n", i);
 }
 
-int main(int argc, char **argv, char **envp)
+void	handel_d(int i)
 {
-    argv = NULL;
-    argc = 0;
-    signal(SIGINT, handel_c);
-    t_env *envlst;
-    envlst = NULL;
-    t_g.envp = envp;
-    ft_setenv(&envlst, envp);
+	printf("(%d) ctrl + d\n", i);
+}
 
-    t_inputs    *inpt;
-    t_inputs    *inpt1;
-    t_inputs    *inpt2;
-    t_inputs    *inpt3;
-    t_inputs    *inpt4;
-    t_inputs    *inpt5;
-    t_inputs    *inpt6;
-    t_inputs    *inpt7;
+void	handel_b(int i)
+{
+	printf("(%d) ctrl + \\\n", i);
+}
 
+int		main(int argc, char **argv, char **envp)
+{
+	t_env		*envlst;
+	t_inputs	*inpt;
+	t_inputs	*inpt1;
+	t_inputs	*inpt2;
+	t_inputs	*inpt3;
+	t_inputs	*inpt4;
+	t_inputs	*inpt5;
+	t_inputs	*inpt6;
+	t_inputs	*inpt7;
 
-    inpt7  = malloc(sizeof(*inpt7));
-    inpt7->command = malloc(2 * sizeof(char *));
-    inpt7->command[0] = ft_strdup("cat");
-    // inpt7->command[1] = ft_strdup("Start");
-    inpt7->command[1] = NULL;
-    inpt7->pipe = 0;
-    inpt7->next = NULL;
-
-    inpt6  = malloc(sizeof(*inpt6));
-    inpt6->command = malloc(2 * sizeof(char *));
-    inpt6->command[0] = ft_strdup("sort");
-    inpt6->command[1] = NULL;
-    inpt6->pipe = 0;
-    inpt6->next = NULL;
-
-    inpt5  = malloc(sizeof(*inpt5));
-    inpt5->command = malloc(2 * sizeof(char *));
-    inpt5->command[0] = ft_strdup("ls");
-    inpt5->command[1] = NULL;
-    inpt5->pipe = 1;
-    inpt5->next = inpt7;
-
-    inpt4  = malloc(sizeof(*inpt4));
-    inpt4->command = malloc(5 * sizeof(char *));
-    inpt4->command[0] = ft_strdup("echo");
-    inpt4->command[1] = ft_strdup("-nn  ");
-    inpt4->command[2] = ft_strdup("-nn");
-    inpt4->command[3] = ft_strdup("-nnnnnnnn");
-    // inpt4->command[1] = ft_strdup("Print5");
-    inpt4->command[4] = NULL;
-    inpt4->pipe = 0;
-    inpt4->next = NULL;
-
-    inpt3  = malloc(sizeof(*inpt3));
-    inpt3->command = malloc(3 * sizeof(char *));
-    inpt3->command[0] = ft_strdup("echo");
-    inpt3->command[1] = ft_strdup("$?");
-    inpt3->command[2] = NULL;
-    inpt3->command[1][0] = 24;
-    inpt3->pipe = 0;
-    inpt3->next = NULL;
-
-    inpt2  = malloc(sizeof(*inpt2));
-    inpt2->command = malloc(2 * sizeof(char *));
-    inpt2->command[0] = ft_strdup("./aa");
-    inpt2->command[1] = NULL;
-    inpt2->pipe = 0;
-    inpt2->next = inpt3;
-
-    inpt1  = malloc(sizeof(*inpt1));
-    inpt1->command = malloc(4 * sizeof(char *));
-    inpt1->command[0] = ft_strdup("chmod");
-    inpt1->command[1] = ft_strdup("777");
-    inpt1->command[2] = ft_strdup("aa");
-    inpt1->command[3] = NULL;
-    inpt1->pipe = 0;
-    inpt1->next = inpt2;
-    
-    
-    inpt  = malloc(sizeof(*inpt));
-    inpt->command = malloc(4 * sizeof(char *));
-    inpt->command[0] = ft_strdup("echo");
-    inpt->command[1] = ft_strdup(">");
-    inpt->command[2] = ft_strdup("aa");
-    inpt->command[3] = NULL;
-    inpt->command[1][0] = 14;
-    inpt->pipe = 0;
-    inpt->next = inpt1;
-
-    ft_execute(&envlst, inpt);
+	argv = NULL;
+	argc = 0;
+	signal(SIGINT, handel_c);
+	signal(SIGQUIT, handel_b);
+	envlst = NULL;
+	t_g.envp = NULL;
+	ft_setenv(&envlst, envp);
+	inpt7 = malloc(sizeof(*inpt7));
+	inpt7->command = malloc(2 * sizeof(char *));
+	inpt7->command[0] = ft_strdup("cat");
+	inpt7->command[1] = NULL;
+	inpt7->pipe = 0;
+	inpt7->next = NULL;
+	inpt6 = malloc(sizeof(*inpt6));
+	inpt6->command = malloc(2 * sizeof(char *));
+	inpt6->command[0] = ft_strdup("sort");
+	inpt6->command[1] = NULL;
+	inpt6->pipe = 0;
+	inpt6->next = NULL;
+	inpt5 = malloc(sizeof(*inpt5));
+	inpt5->command = malloc(2 * sizeof(char *));
+	inpt5->command[0] = ft_strdup("pwd");
+	inpt5->command[1] = NULL;
+	inpt5->pipe = 1;
+	inpt5->next = inpt7;
+	inpt4 = malloc(sizeof(*inpt4));
+	inpt4->command = malloc(5 * sizeof(char *));
+	inpt4->command[0] = ft_strdup("echo");
+	inpt4->command[1] = ft_strdup("-nn");
+	inpt4->command[2] = ft_strdup("-nn");
+	inpt4->command[3] = ft_strdup("-nnnnnnnn");
+	inpt4->command[4] = NULL;
+	inpt4->pipe = 0;
+	inpt4->next = inpt5;
+	inpt3 = malloc(sizeof(*inpt3));
+	inpt3->command = malloc(3 * sizeof(char *));
+	inpt3->command[0] = ft_strdup(">");
+	inpt3->command[1] = ft_strdup("$?");
+	inpt3->command[2] = NULL;
+	inpt3->command[1][0] = 14;
+	inpt3->pipe = 0;
+	inpt3->next = inpt4;
+	inpt2 = malloc(sizeof(*inpt2));
+	inpt2->command = malloc(2 * sizeof(char *));
+	inpt2->command[0] = ft_strdup("cd");
+	inpt2->command[1] = NULL;
+	inpt2->pipe = 0;
+	inpt2->next = inpt3;
+	inpt1 = malloc(sizeof(*inpt1));
+	inpt1->command = malloc(4 * sizeof(char *));
+	inpt1->command[0] = ft_strdup(">");
+	inpt1->command[1] = ft_strdup("777");
+	inpt1->command[2] = ft_strdup("aa.tst");
+	inpt1->command[3] = NULL;
+	inpt1->pipe = 0;
+	inpt1->next = inpt2;
+	inpt = malloc(sizeof(*inpt));
+	inpt->command = malloc(4 * sizeof(char *));
+	inpt->command[0] = ft_strdup("export");
+	inpt->command[1] = ft_strdup("f=\"file file1\"");
+	inpt->command[2] = ft_strdup("f2=\"file2 file3\"");
+	inpt->command[3] = NULL;
+	inpt->command[1][0] = 14;
+	inpt->pipe = 0;
+	inpt->next = inpt1;
+	ft_execute(&envlst, inpt);
 }

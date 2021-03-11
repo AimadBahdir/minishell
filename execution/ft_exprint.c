@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 10:21:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 17:27:32 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 11:34:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ short	ft_exprint(t_env *head)
 	ft_envsort(lcpy);
 	while (lcpy)
 	{
-		ft_putstr("declare -x ");
-		ft_putstr(lcpy->key);
+		ft_putstr("declare -x ", 0);
+		ft_putstr(lcpy->key, 0);
 		write(t_g.mystdout, "=\"", 2);
-		ft_putstr(lcpy->val);
+		ft_putstr(lcpy->val, 0);
 		write(t_g.mystdout, "\"\n", 2);
 		lcpy = lcpy->next;
 	}

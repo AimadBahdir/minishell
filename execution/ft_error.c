@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 17:02:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 09:29:39 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,19 @@ short	errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 	return (errcode);
 }
 
-short	ft_duptwo(int fd1, int fd2)
+int		retfree(char *tmp1, char *tmp2, int ret)
 {
-	if (dup2(fd1, fd2) == -1)
-		return (errthrow("dup2: ", strerror(errno), NULL, errno));
-	return (0);
+	if (tmp1 != NULL)
+	{
+		free(tmp1);
+		tmp1 = NULL;
+	}
+	if (tmp2 != NULL)
+	{
+		free(tmp2);
+		tmp2 = NULL;
+	}
+	return (ret);
 }
 
 int		retfreetwo(char **tmp1, int ret)
@@ -51,10 +59,23 @@ int		retfreetwo(char **tmp1, int ret)
 	return (ret);
 }
 
-int	ft_ternint(short cond, int iftrue, int iffalse)
+int		ft_ternint(short cond, int iftrue, int iffalse)
 {
 	if (cond)
 		return (iftrue);
 	else
 		return (iffalse);
+}
+
+void	ft_closefds(void)
+{
+	close(t_g.mystdin);
+	close(t_g.mystdout);
+	if (!t_pipe.prev)
+		close(t_pipe.prvo);
+	if (!t_pipe.next)
+	{
+		close(t_pipe.nxtio[0]);
+		close(t_pipe.nxtio[1]);
+	}
 }

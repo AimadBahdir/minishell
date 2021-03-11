@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 22:08:10 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/07 17:35:05 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 09:32:45 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,6 @@ size_t	ft_lentwop(char **s)
 }
 
 size_t	ft_inputslen(t_inputs *lst)
-{
-	size_t len;
-
-	len = 0;
-	while (lst)
-		len++;
-	return (len);
-}
-
-size_t	ft_envlen(t_env *lst)
 {
 	size_t len;
 

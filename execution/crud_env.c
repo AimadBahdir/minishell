@@ -6,17 +6,16 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/06 15:23:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 16:27:50 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
 void	setenval(t_env **lst, char *key, char *val)
 {
-	t_env *e;
-	char *tmp;
+	t_env	*e;
+	char	*tmp;
 
 	e = *lst;
 	while (e)
@@ -27,7 +26,7 @@ void	setenval(t_env **lst, char *key, char *val)
 			e->val = val;
 			free(tmp);
 			tmp = NULL;
-			break;
+			break ;
 		}
 		e = e->next;
 	}
@@ -56,11 +55,11 @@ void	rmenval(t_env **lst, char *key)
 		{
 			free(e->key);
 			free(e->val);
-            tmp->next = e->next;
+			tmp->next = e->next;
 			free(e);
-			break;
+			break ;
 		}
-        tmp = e;
+		tmp = e;
 		e = e->next;
 	}
 }
@@ -115,4 +114,5 @@ void	ft_setenvar(t_env *envlst, char **cmd)
 			}
 		}
 	}
+	ft_resetenv(envlst);
 }

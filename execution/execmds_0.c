@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/10 10:23:29 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 10:42:29 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char *find_cmd(t_env **lst, char *cmd)
+char	*find_cmd(t_env **lst, char *cmd)
 {
 	char	*cmdpath;
 	char	**spltpath;
@@ -27,11 +27,11 @@ char *find_cmd(t_env **lst, char *cmd)
 		cmd = ft_strjoin("/", cmd);
 	while (spltpath[++i])
 	{
-		if((fd = open(cmdpath, O_RDONLY)) > 0 || errno == EACCES)
+		if ((fd = open(cmdpath, O_RDONLY)) > 0 || errno == EACCES)
 		{
 			close(fd);
 			retfreetwo(spltpath, 0);
-			return (cmdpath);   
+			return (cmdpath);
 		}
 		tmp = cmdpath;
 		cmdpath = ft_strjoin(spltpath[i], cmd);
@@ -40,7 +40,7 @@ char *find_cmd(t_env **lst, char *cmd)
 	return (NULL);
 }
 
-short   ft_othercmd(t_env **lst, char **cmdargs)
+short	ft_othercmd(t_env **lst, char **cmdargs)
 {
 	int		pid;
 	char	*cmd;
@@ -50,31 +50,29 @@ short   ft_othercmd(t_env **lst, char **cmdargs)
 		return (errthrow("Error ", "in ", "forking", 1));
 	if (pid == 0)
 	{
-		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0)
-			exit(1);
-		if (ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
+		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0
+		|| ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
 			exit(1);
 		if (!(cmd = find_cmd(lst, cmdargs[0])))
 			exit(errthrow(cmdargs[0], ": command not found", NULL, 127));
 		if (execve(cmd, cmdargs, t_g.envp) == -1)
 			exit(errthrow(strerror(errno), NULL, NULL,
-				ft_ternint(errno == EACCES, 126, errno)));
-		free(cmd);
-		exit(0);
+				errno));
+		exit(retfree(cmd, NULL, 0));
 	}
 	else
 	{
 		wait(&exstat);
-		if(WIFEXITED(exstat))
+		if (WIFEXITED(exstat))
 			return (WEXITSTATUS(exstat));
 	}
 	return (0);
 }
 
-short   ft_execmd(t_env **lst, char **cmdargs)
+short	ft_execmd(t_env **lst, char **cmdargs)
 {
-	char    *cmd;
-	short   err;
+	char	*cmd;
+	short	err;
 
 	cmd = ft_strlower(cmdargs[0]);
 	if (ft_strcmp(cmd, "echo"))
@@ -94,21 +92,7 @@ short   ft_execmd(t_env **lst, char **cmdargs)
 	return (err);
 }
 
-short   chk_directions(char **lst)
-{
-	int i;
-
-	i = -1;
-	if (!lst)
-		return (-1);
-	while (lst[++i])
-		if (lst[i][0] == 14
-			|| lst[i][0] == 15)
-			return (i);
-	return (-1);
-}
-
-short   ft_exchild(t_env **envlst, char **cmd)
+short	ft_exchild(t_env **envlst, char **cmd)
 {
 	int err;
 
@@ -116,7 +100,7 @@ short   ft_exchild(t_env **envlst, char **cmd)
 	if ((err = ft_pipe()) > 0)
 		return (err);
 	if (chk_directions(cmd) != -1)
-	{   
+	{
 		if ((err = gdirections(envlst, cmd)) > 0)
 			return (err);
 	}
@@ -130,7 +114,7 @@ short   ft_exchild(t_env **envlst, char **cmd)
 
 short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 {
-	t_inputs    *head;
+	t_inputs	*head;
 
 	head = cmdlst;
 	t_pipe.prev = 0;
@@ -151,6 +135,7 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 			close(t_pipe.nxtio[0]);
 			t_pipe.prev = 1;
 		}
+		ft_closefds();
 		head = head->next;
 	}
 	return (1);

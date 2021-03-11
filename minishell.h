@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/09 16:05:13 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 14:20:57 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <errno.h>
 
-typedef struct s_inputs
+typedef struct	s_inputs
 {
 	char			**command;
 	short			pipe;
 	struct s_inputs	*next;
 }				t_inputs;
 
-typedef struct s_env
+typedef struct	s_env
 {
 	char			*key;
 	char			*val;
@@ -35,34 +36,30 @@ typedef struct s_env
 }				t_env;
 int				g_cmdstat;
 
-struct s_pipe
+struct			s_pipe
 {
 	short	next;
 	short	prev;
 	int		nxtio[2];
 	int		prvo;
 	int		envio[2];
-}		t_pipe;
+}				t_pipe;
 
-struct	s_g
+struct			s_g
 {
 	char	**envp;
 	char	*homepath;
-	int		stdinpt;
-	int		stdoutpt;
 	int		mystdout;
 	int		mystdin;
 	int		exstat;
-}		t_g;
-
+}				t_g;
 
 size_t			ft_strlen(const char *s);
 size_t			ft_lento(char *s, char c);
 size_t			ft_lentwop(char **s);
 size_t			ft_inputslen(t_inputs *lst);
-size_t			ft_envlen(t_env *lst);
 short			ft_strcmp(char *s1, char *s2);
-void			ft_putstr(char *str);
+void			ft_putstr(char *str, short nl);
 void			ft_putmstr(char **mstr, char spr);
 short			ft_strnormed(char *str);
 int				ft_isalpha(int c);
@@ -96,7 +93,10 @@ short			ft_cd(t_env **e, char **args);
 short			ft_duptwo(int fd1, int fd2);
 short			ft_pipe(void);
 void			ft_setenvar(t_env *envlst, char **cmd);
+void			ft_closefds(void);
+void			ft_resetenv(t_env *lst);
 short			gdirections(t_env **envlst, char **cmd);
 int				fillfile(t_env **envlst, char **cmd);
 int				retfreetwo(char **tmp1, int ret);
+int				retfree(char *tmp1, char *tmp2, int ret);
 #endif
