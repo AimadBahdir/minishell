@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 11:34:05 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:31:16 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ short	novalidentif(short cmd, char *identif)
 		tmp = ft_strdup("export: `");
 	else
 		tmp = ft_strdup("unset: `");
-	err = errthrow(tmp, identif,
-		"=': not a valid identifier.", 1);
+	err = errthrow(tmp, identif, "=': not a valid identifier.", 1);
 	return (retfree(tmp, NULL, err));
 }
 

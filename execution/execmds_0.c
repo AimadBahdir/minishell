@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 10:42:29 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:37:58 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,19 +122,23 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 	{
 		t_g.mystdout = dup(STDOUT_FILENO);
 		t_g.mystdin = dup(STDIN_FILENO);
-		ft_setenvar(*envlst, head->command);
-		if ((t_pipe.next = head->pipe) == 1)
-			if (pipe(t_pipe.nxtio) < 0)
-				exit(errthrow(strerror(errno), NULL, NULL, 1));
-		t_g.exstat = ft_exchild(envlst, head->command);
-		t_pipe.prev = 0;
-		if (t_pipe.next)
+		if (!ft_setenvar(*envlst, head->command))
 		{
-			if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
-				return (-1);
-			close(t_pipe.nxtio[0]);
-			t_pipe.prev = 1;
+			if ((t_pipe.next = head->pipe) == 1)
+				if (pipe(t_pipe.nxtio) < 0)
+					exit(errthrow(strerror(errno), NULL, NULL, 1));
+			t_g.exstat = ft_exchild(envlst, head->command);
+			t_pipe.prev = 0;
+			if (t_pipe.next)
+			{
+				if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
+					return (-1);
+				close(t_pipe.nxtio[0]);
+				t_pipe.prev = 1;
+			}
 		}
+		else
+			t_g.exstat = 1;
 		ft_closefds();
 		head = head->next;
 	}

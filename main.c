@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 16:03:03 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 16:47:29 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,32 @@ int		main(int argc, char **argv, char **envp)
 	inpt4 = malloc(sizeof(*inpt4));
 	inpt4->command = malloc(5 * sizeof(char *));
 	inpt4->command[0] = ft_strdup("echo");
-	inpt4->command[1] = ft_strdup("-nn");
-	inpt4->command[2] = ft_strdup("-nn");
+	inpt4->command[1] = ft_strdup("$f");
+	inpt4->command[2] = ft_strdup("$f2");
 	inpt4->command[3] = ft_strdup("-nnnnnnnn");
 	inpt4->command[4] = NULL;
+	inpt4->command[1][0] = 14;
+	inpt4->command[2][0] = 14;
 	inpt4->pipe = 0;
 	inpt4->next = inpt5;
 	inpt3 = malloc(sizeof(*inpt3));
 	inpt3->command = malloc(3 * sizeof(char *));
 	inpt3->command[0] = ft_strdup(">");
-	inpt3->command[1] = ft_strdup("$?");
+	inpt3->command[1] = ft_strdup("$f");
 	inpt3->command[2] = NULL;
-	inpt3->command[1][0] = 14;
+	inpt3->command[0][0] = 14;
+	inpt3->command[1][0] = 24;
 	inpt3->pipe = 0;
 	inpt3->next = inpt4;
 	inpt2 = malloc(sizeof(*inpt2));
 	inpt2->command = malloc(2 * sizeof(char *));
-	inpt2->command[0] = ft_strdup("cd");
+	inpt2->command[0] = ft_strdup("env");
 	inpt2->command[1] = NULL;
 	inpt2->pipe = 0;
 	inpt2->next = inpt3;
 	inpt1 = malloc(sizeof(*inpt1));
 	inpt1->command = malloc(4 * sizeof(char *));
-	inpt1->command[0] = ft_strdup(">");
+	inpt1->command[0] = ft_strdup("chmod");
 	inpt1->command[1] = ft_strdup("777");
 	inpt1->command[2] = ft_strdup("aa.tst");
 	inpt1->command[3] = NULL;
@@ -98,11 +101,11 @@ int		main(int argc, char **argv, char **envp)
 	inpt = malloc(sizeof(*inpt));
 	inpt->command = malloc(4 * sizeof(char *));
 	inpt->command[0] = ft_strdup("export");
-	inpt->command[1] = ft_strdup("f=\"file file1\"");
-	inpt->command[2] = ft_strdup("f2=\"file2 file3\"");
+	inpt->command[1] = ft_strdup("f=file file1");
+	inpt->command[2] = ft_strdup("f2=file2 file3");
 	inpt->command[3] = NULL;
-	inpt->command[1][0] = 14;
+	// inpt->command[1][0] = 14;
 	inpt->pipe = 0;
-	inpt->next = inpt1;
+	inpt->next = inpt2;
 	ft_execute(&envlst, inpt);
 }

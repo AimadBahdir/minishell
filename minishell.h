@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 14:20:57 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:13:16 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ char			*ft_strlower(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_strtrim(const char *s1, const char *set);
 char			**ft_split(char const *s, char c);
 short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
@@ -92,7 +93,7 @@ short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
 short			ft_duptwo(int fd1, int fd2);
 short			ft_pipe(void);
-void			ft_setenvar(t_env *envlst, char **cmd);
+short			ft_setenvar(t_env *envlst, char **cmd);
 void			ft_closefds(void);
 void			ft_resetenv(t_env *lst);
 short			gdirections(t_env **envlst, char **cmd);

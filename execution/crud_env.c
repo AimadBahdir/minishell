@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 16:27:50 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/11 17:29:28 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*getenval(t_env *e, char *key)
 	while (e)
 	{
 		if (ft_strcmp(e->key, key))
-			return (e->val);
+			return (ft_strtrim(e->val, " \t"));
 		e = e->next;
 	}
 	return (NULL);
@@ -94,7 +94,24 @@ char	*getnewelm(t_env *envlst, char **spltd, short first)
 	return (newelm);
 }
 
-void	ft_setenvar(t_env *envlst, char **cmd)
+short	ft_chkambigs(t_env *envlst, char *prvcmd, char **vars)
+{
+	char	**splt;
+	int		i;
+
+	i = -1;
+	while (vars[++i])
+	{
+		if (prvcmd[0] == 14 || prvcmd[0] == 15)
+		{
+			if ((splt = ft_split(getenval(envlst, vars[i]), ' ')))
+				return (errthrow("$", vars[i], ": ambiguous redirect", 1));
+		}
+	}
+	return (0);
+}
+
+short	ft_setenvar(t_env *envlst, char **cmd)
 {
 	char	**spltd;
 	char	*tmp;
@@ -105,14 +122,20 @@ void	ft_setenvar(t_env *envlst, char **cmd)
 	{
 		if (ft_checkfor(24, cmd[i]) != -1)
 		{
+			
 			if ((spltd = ft_split(cmd[i], 24)))
 			{
 				tmp = cmd[i];
-				cmd[i] = getnewelm(envlst, spltd, cmd[i][0] == 24);
-				free(tmp);
-				retfreetwo(spltd, 0);
+				if (!ft_chkambigs(envlst, cmd[i - 1], spltd))
+				{
+					cmd[i] = getnewelm(envlst, spltd, cmd[i][0] == 24);
+					retfreetwo(spltd, retfree(tmp, NULL, 0));
+				}
+				else
+					return (retfreetwo(spltd, retfree(tmp, NULL, 1)));
 			}
 		}
 	}
 	ft_resetenv(envlst);
+	return(0);
 }
