@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/08 11:58:25 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/10 10:25:06 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,6 @@ int ft_alpha(char c);
 char *checkpath(char *s);
 int checkpath_dollar(t_cargs **args, char *s, int i);
 int check_syntax(char *line);
+int get_end_index(char *line, int i);
+
 #endif
