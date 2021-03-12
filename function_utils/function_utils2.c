@@ -1,26 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   function_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/10 10:02:57 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/10 10:07:28 by wben-sai         ###   ########.fr       */
+/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
+/*   Updated: 2021/03/12 10:02:00 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "../minishell.h"
 
-int	main(void)
+int		is_nbr_car(char c)
 {
 	int i;
 
-	i = 0;
-	while (1)
-	{
-		write(1, "alo", 3);
-		break;
-	}
+	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
 	return (0);
+}
+
+void	write_string(char *s)
+{
+	int i;
+
+	i = -1;
+	while (s != NULL && s[++i])
+		write(1, &s[i], 1);
+}
+
+int		pass_spe(char *line, int i)
+{
+	while (line[i] == ' ')
+	{
+		if (line[i] == '\0')
+			break ;
+		i++;
+	}
+	return (i);
 }
