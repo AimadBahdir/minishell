@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:46:58 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/12 11:24:07 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,12 @@ struct s_params
 }	t_params;
 
 
-size_t      ft_strlen(const char *s);
-size_t      ft_lento(char *s, char c);
-short       ft_strcmp(char *s1, char *s2);
-void        ft_putstr(char *str);
-void        ft_putmstr(char **mstr, char spr);
-char        *ft_strlower(char *str);
-char        *ft_strdup(const char *s1);
-char        *ft_strjoin(char const *s1, char const *s2);
-char        *ft_substr(char const *s, unsigned int start, size_t len);
-char		*ft_itoa(int n);
-int 		ft_isnumber(char c);
-int 		ft_alpha(char c);
-
 int			len_without_speac(char *line);
 char		*ft_trim(char *line);
 
 
+int 		ft_alpha(char c);
+int 		ft_isnumber(char c);
 int			checkpath_apostrophe(t_cargs **args, char *s, int i);
 int			checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation);
 int			checkpath_quotation(t_cargs **args, char *s, int i);
