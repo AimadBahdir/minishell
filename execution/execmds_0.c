@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 17:37:58 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 16:42:43 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,29 @@ char	*find_cmd(t_env **lst, char *cmd)
 	spltpath = ft_split(getenval(*lst, "PATH"), ':');
 	i = -1;
 	cmdpath = ft_strdup(cmd);
-	if (ft_checkfor('/', cmd) == -1)
-		cmd = ft_strjoin("/", cmd);
 	while (spltpath[++i])
 	{
-		if ((fd = open(cmdpath, O_RDONLY)) > 0 || errno == EACCES)
+		if ((fd = open(cmdpath, O_RDONLY)) > 0)
 		{
 			close(fd);
 			retfreetwo(spltpath, 0);
-			return (cmdpath);
+			if (ft_checkfor('/', cmdpath) != -1)
+				return (cmdpath);
+			else
+			{
+				free(cmdpath);
+				return (NULL);
+			}
 		}
 		tmp = cmdpath;
-		cmdpath = ft_strjoin(spltpath[i], cmd);
+		cmdpath = ft_strjoin(spltpath[i], "/");
+		free(tmp);
+		tmp = cmdpath;
+		cmdpath = ft_strjoin(cmdpath, cmd);
 		free(tmp);
 	}
+	if (ft_checkfor('/', cmd) != -1)
+		return (cmd);
 	return (NULL);
 }
 
@@ -87,6 +96,8 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 		err = ft_export(lst, cmdargs);
 	else if (ft_strcmp(cmd, "unset"))
 		err = ft_unset(lst, cmdargs);
+	else if (ft_strcmp(cmd, "exit"))
+		err = ft_exit(cmdargs);
 	else
 		err = ft_othercmd(lst, cmdargs);
 	return (err);
@@ -139,7 +150,8 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 		}
 		else
 			t_g.exstat = 1;
-		ft_closefds();
+		close(t_g.mystdin);
+		close(t_g.mystdout);
 		head = head->next;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 17:13:16 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 14:20:27 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void			ft_putmstr(char **mstr, char spr);
 short			ft_strnormed(char *str);
 int				ft_isalpha(int c);
 char			*ft_itoa(int n);
+int				ft_atoi(const char *str);
 char			*ft_strlower(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
@@ -91,10 +92,10 @@ short			ft_export(t_env **e, char **args);
 short			ft_exprint(t_env *head);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
+short			ft_exit(char **cmd);
 short			ft_duptwo(int fd1, int fd2);
 short			ft_pipe(void);
 short			ft_setenvar(t_env *envlst, char **cmd);
-void			ft_closefds(void);
 void			ft_resetenv(t_env *lst);
 short			gdirections(t_env **envlst, char **cmd);
 int				fillfile(t_env **envlst, char **cmd);

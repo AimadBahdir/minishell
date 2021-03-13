@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:04:08 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 15:51:04 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,43 @@ short	gdirections(t_env **envlst, char **cmd)
 	if (cmd[0][0] == 14 || cmd[0][0] == 15)
 		return (0);
 	return (ft_execmd(envlst, spltcmd(cmd)));
+}
+
+short ft_isnum(char *str)
+{
+	int i;
+
+	i = -1;
+	if (str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[++i])
+		if (str[i] > '9' || str[i] < '0')
+			return (0);
+	return (1);
+}
+
+short	ft_exit(char **cmd)
+{
+	int excod;
+
+	excod = t_g.exstat;
+	if (cmd[1])
+	{
+		if (ft_isnum(cmd[1]))
+		{
+			if (ft_lentwop(cmd) > 2)
+				return (errthrow("exit: ", "too many arguments", NULL, !t_pipe.next));
+			excod = ft_atoi(cmd[1]);
+		}
+		else
+		{
+			ft_putstr("exit", 1);
+			excod = errthrow("exit: ", cmd[1], ": numeric argument required", 255);
+		}
+	}
+	ft_putstr("exit", 1);
+	if (t_pipe.next)
+		return (0);
+	exit(excod);
+	return (excod);
 }

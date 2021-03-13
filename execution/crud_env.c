@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/12 09:25:40 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 10:35:37 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,47 +94,46 @@ char	*getnewelm(t_env *envlst, char **spltd, short first)
 	return (newelm);
 }
 
-short	ft_chkambigs(t_env *envlst, char *prvcmd, char **vars, int concatlen)
+short	ft_chkambigs(t_env *envlst, char *prvcmd, char **vars, int concat)
 {
-	char	**splt;
+	char	*arg;
+	char	*tmp;
 	int		i;
 
-	i = -1;
-	while (vars[++i])
+	if ((i = (concat > 0)))
+		arg = ft_strdup(vars[0]);
+	else
+		arg = ft_strdup("");
+	if (prvcmd[0] == 14 || prvcmd[0] == 15)
 	{
-		printf("== %s == \n", vars[i]);
-		if (prvcmd[0] == 14 || prvcmd[0] == 15)
+		while (vars[i])
 		{
-			if ((splt = ft_split(getenval(envlst, vars[i]), ' ')))
-			{
-				if (ft_lentwop(splt) > 1 || (!splt[0] && !concatlen))
-					return (errthrow("$", splt[1], ": ambiguous redirect", 
-									retfreetwo(splt, 1)));
-				retfreetwo(splt, 0);
-			}
+			tmp = arg;
+			arg = ft_strjoin(arg, getenval(envlst, vars[i++]));
+			free(tmp);
 		}
+		if (ft_checkfor(' ', arg) != -1 || arg[0] == '\0')
+			return (errthrow("$", vars[(concat > 0)], ": ambiguous redirect", 
+					retfree(arg, NULL, 1)));
 	}
-	return (0);
+	return (retfree(arg, NULL, 0));
 }
 
 short	ft_setenvar(t_env *envlst, char **cmd)
 {
 	char	**spltd;
 	char	*tmp;
-	int		posdo;
 	int		i;
 
 	i = -1;
 	while (cmd[++i])
 	{
-		if ((posdo = ft_checkfor(24, cmd[i])) != -1)
+		if (ft_checkfor(24, cmd[i]) != -1)
 		{
-			
 			if ((spltd = ft_split(cmd[i], 24)))
 			{
 				tmp = cmd[i];
-				if (!ft_chkambigs(envlst, cmd[i - 1],
-					(spltd + ft_ternint(posdo > 0, 1, 0)), ft_lento(tmp, 24)))
+				if (!ft_chkambigs(envlst, cmd[i - 1], spltd, ft_lento(cmd[i], 24)))
 				{
 					cmd[i] = getnewelm(envlst, spltd, cmd[i][0] == 24);
 					retfreetwo(spltd, retfree(tmp, NULL, 0));

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:29:39 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 14:20:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,4 @@ int		ft_ternint(short cond, int iftrue, int iffalse)
 		return (iftrue);
 	else
 		return (iffalse);
-}
-
-void	ft_closefds(void)
-{
-	close(t_g.mystdin);
-	close(t_g.mystdout);
-	if (!t_pipe.prev)
-		close(t_pipe.prvo);
-	if (!t_pipe.next)
-	{
-		close(t_pipe.nxtio[0]);
-		close(t_pipe.nxtio[1]);
-	}
 }
