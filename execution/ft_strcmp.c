@@ -1,40 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils2.c                                  :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Created: 2021/02/01 15:10:28 by abahdir           #+#    #+#             */
+/*   Updated: 2021/03/11 09:32:10 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
-{
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
-
-void	write_string(char *s)
+short	ft_strcmp(char *s1, char *s2)
 {
 	int i;
 
-	i = -1;
-	while (s != NULL && s[++i])
-		write(1, &s[i], 1);
-}
-
-int		pass_spe(char *line, int i)
-{
-	while (line[i] == ' ')
-	{
-		if (line[i] == '\0')
-			break ;
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while (s1[i] == s2[i] && s1[i] && s2[i])
 		i++;
-	}
-	return (i);
+	return (s1[i] == s2[i]);
 }

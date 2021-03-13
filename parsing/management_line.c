@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   management_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:33:11 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:35:25 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		lsh_read_line_and_trim(char **line)
 {
 	char *temp;
 
-	if (get_next_line(0, line) == -1)
+	if (get_next_line(STDIN_FILENO, line) == -1)
 		return (-1);
 	temp = *line;
 	*line = ft_trim(*line);
@@ -78,7 +78,7 @@ int		lsh_read_line_and_trim(char **line)
 	return (0);
 }
 
-int		check_line(char **line, t_inputs **list_shell)
+int		check_line(t_env **envlst, char **line, t_inputs **list_shell)
 {
 	int	errors;
 
@@ -96,7 +96,7 @@ int		check_line(char **line, t_inputs **list_shell)
 	else
 	{
 		if (check_syntax_list(*list_shell) != -1)
-			exe_list(*list_shell);
+			exe_list(envlst, *list_shell);
 		else
 			write_string("bash: syntax Error 3\n");
 		*list_shell = NULL;

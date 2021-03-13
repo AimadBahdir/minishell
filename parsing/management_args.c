@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   management_args.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:51:36 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/11 16:09:50 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/12 11:45:53 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int		get_start_and_end_args(char *lne, t_inputs **list_shell)
 int		get_end_arg(int start_arg, char *line, int end)
 {
 	int i;
-	int value;
 
 	i = 0;
 	t_params.vld_der = 0;

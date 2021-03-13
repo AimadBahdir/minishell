@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils2.c                                  :+:      :+:    :+:   */
+/*   ft_strtolower.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Created: 2021/02/02 16:01:48 by abahdir           #+#    #+#             */
+/*   Updated: 2021/03/11 09:33:13 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
-{
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
-
-void	write_string(char *s)
+char	*ft_strlower(char *str)
 {
 	int i;
 
 	i = -1;
-	while (s != NULL && s[++i])
-		write(1, &s[i], 1);
-}
-
-int		pass_spe(char *line, int i)
-{
-	while (line[i] == ' ')
+	while (str[++i] != '\0')
 	{
-		if (line[i] == '\0')
-			break ;
-		i++;
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
 	}
-	return (i);
+	return (str);
 }

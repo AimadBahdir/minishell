@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_tgargs2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:10:46 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:26:38 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/12 11:46:01 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	echonge_list_args(t_gargs **lst)
 {
 	t_gargs	*temp1;
 	t_gargs	*temp2;
-	int		x;
-	int		i;
 
 	temp1 = *lst;
 	temp2 = *lst;

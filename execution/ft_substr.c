@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils2.c                                  :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Created: 2019/10/14 18:55:50 by abahdir           #+#    #+#             */
+/*   Updated: 2021/03/04 18:13:30 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
+	char	*ns;
+	size_t	i;
 
-void	write_string(char *s)
-{
-	int i;
-
-	i = -1;
-	while (s != NULL && s[++i])
-		write(1, &s[i], 1);
-}
-
-int		pass_spe(char *line, int i)
-{
-	while (line[i] == ' ')
-	{
-		if (line[i] == '\0')
-			break ;
-		i++;
-	}
-	return (i);
+	if (s == NULL)
+		return (NULL);
+	i = ft_strlen(s);
+	if (i < start)
+		return (ft_strdup(""));
+	i -= start;
+	len = ft_ternint(i < len, i, len);
+	if ((ns = malloc(len * sizeof(char) + 1)) == NULL)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start] != '\0')
+		ns[i++] = s[start++];
+	ns[i] = '\0';
+	return (ns);
 }

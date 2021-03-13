@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils2.c                                  :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Created: 2019/10/13 13:30:26 by abahdir           #+#    #+#             */
+/*   Updated: 2021/03/11 09:29:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
+char	*ft_strdup(const char *str)
 {
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
+	char	*ns;
+	int		i;
 
-void	write_string(char *s)
-{
-	int i;
-
-	i = -1;
-	while (s != NULL && s[++i])
-		write(1, &s[i], 1);
-}
-
-int		pass_spe(char *line, int i)
-{
-	while (line[i] == ' ')
+	if (!str)
+		return (NULL);
+	i = ft_strlen(str);
+	if (!(ns = malloc((i * sizeof(char)) + 1)))
+		return (NULL);
+	i = 0;
+	while (str[i])
 	{
-		if (line[i] == '\0')
-			break ;
+		ns[i] = str[i];
 		i++;
 	}
-	return (i);
+	ns[i] = '\0';
+	return (ns);
+}
+
+short	ft_duptwo(int fd1, int fd2)
+{
+	if (dup2(fd1, fd2) == -1)
+		return (errthrow("dup2: ", strerror(errno), NULL, errno));
+	return (0);
 }

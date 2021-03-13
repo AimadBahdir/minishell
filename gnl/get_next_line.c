@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 14:48:58 by wben-sai          #+#    #+#             */
-/*   Updated: 2019/11/18 11:44:16 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:08:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,6 @@ int		get_next_line(int fd, char **line)
 		return ((len_read == 0) ? 0 : 1);
 	}
 	*line = last_cs_save(&len_read, &save, line, &was_read);
+	printf("\n\n|%s|\n\n", *line);
 	return (len_read);
 }

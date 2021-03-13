@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   function_utils2.c                                  :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Created: 2019/10/15 13:30:55 by abahdir           #+#    #+#             */
+/*   Updated: 2021/02/01 16:31:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
+	int		c;
+	int		l;
+	int		i;
+	char	*ns;
 
-void	write_string(char *s)
-{
-	int i;
-
-	i = -1;
-	while (s != NULL && s[++i])
-		write(1, &s[i], 1);
-}
-
-int		pass_spe(char *line, int i)
-{
-	while (line[i] == ' ')
-	{
-		if (line[i] == '\0')
-			break ;
-		i++;
-	}
-	return (i);
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	i = (int)ft_strlen(s1);
+	l = (int)ft_strlen(s2);
+	c = i + l;
+	ns = malloc(++c * sizeof(char));
+	if (ns == NULL)
+		return (NULL);
+	i -= 1;
+	while (--c >= 0)
+		if (l >= 0)
+			ns[c] = s2[l--];
+		else if (i >= 0)
+			ns[c] = s1[i--];
+	return (ns);
 }
