@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:58:53 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:39:30 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/13 09:03:20 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation)
 {
 	if (in_quotation == 1)
 	{
-		if (s[i] != '\"' && s[i] != '\\')
+		if (s[i] != '\"' && s[i] != '\\' && s[i] != '$')
 			ft_lstcargsadd_back(args, ft_lstcargsnew('\\'));
 	}
 	ft_lstcargsadd_back(args, ft_lstcargsnew(s[i]));
@@ -35,17 +35,17 @@ int		checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation)
 
 int		checkpath_quotation(t_cargs **args, char *s, int i)
 {
-	while (s[i] != '\"' && valid_option(s, i) == 1)
+	while (1)
 	{
-		if (s[i] == '\\')
+		if (s[i] == '\"' && valid_option(s, i) == 1)
+			break ;
+		else if (s[i] == '\\')
 			i = checkpath_backslash(args, s, i + 1, 1);
 		else if (s[i] == '$')
 			i = checkpath_dollar(args, s, i + 1);
 		else
-		{
 			ft_lstcargsadd_back(args, ft_lstcargsnew(s[i]));
-			i++;
-		}
+		i++;
 	}
 	return (i);
 }

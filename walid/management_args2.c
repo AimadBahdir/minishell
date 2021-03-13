@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:09:08 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:42:27 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/13 09:40:31 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,23 @@ void	check_more(t_gargs *gargs, char *line, int len, int norm)
 
 	i = 0;
 	gestion_fill_arg(gargs, line, len);
-	j = number_of_words_in_table(t_params.args);
+	j = number_of_derc_in_table(t_params.args);
 	if (norm == 1)
 	{
-		j = j - 2;
+		j--;
 		echonge_list_args(&gargs);
 		free_table_args();
 		gestion_fill_arg(gargs, line, len);
 	}
-	while (i < j)
+	while (j > 0)
 	{
 		if (t_params.args[i][0] == 14 || t_params.args[i][0] == 15)
 		{
 			change_position(&gargs, i);
 			free_table_args();
 			gestion_fill_arg(gargs, line, len);
-			j = j - 2;
-			i = 0;
+			j--;
+			continue;
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:46:58 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/03/13 09:24:15 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ struct s_params
 	char *error_text;
 	int vld_der;
 }	t_params;
-
 
 size_t      ft_strlen(const char *s);
 size_t      ft_lento(char *s, char c);
@@ -97,7 +96,7 @@ int			join_new_line_check_read_more(char **line, char **line2);
 int			read_more(char **line);
 int			lsh_read_line_and_trim(char **line);
 int			check_line(char **line, t_inputs **list_shell);
-int 		number_of_words_in_table(char **s);
+int 		number_of_derc_in_table(char **s);
 int			is_nbr_car(char c);
 void		write_string(char *s);
 int			pass_spe(char *line, int i);
