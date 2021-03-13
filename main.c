@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 11:31:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 08:07:09 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 09:16:37 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,12 @@ int		main(int argc, char **argv, char **envp)
 	t_g.envp = NULL;
 	ft_setenv(&envlst, envp);
 	lsh_loop(&envlst);
+	while (envlst)
+	{
+		free(envlst->key);
+		free(envlst->val);
+		envlst = envlst->next;
+	}
+	
 	return (0);
 }

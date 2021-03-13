@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:35:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/13 09:17:54 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	ft_resetenv(t_env *lst)
 	len = 0;
 	while (head && ++len)
 		head = head->next;
-// if (t_g.envp != NULL)
-// 	retfreetwo(t_g.envp, 0);
+	if (t_g.envp != NULL)
+		retfreetwo(t_g.envp, 0);
 	t_g.envp = malloc(sizeof(char *) * (len + 1));
 	len = -1;
 	while (lst)
