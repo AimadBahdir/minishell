@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 12:38:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 09:52:53 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 11:12:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int		lenwords(char const *s, char c)
 
 	i = 0;
 	lenw = 0;
-	if(!s)
+	if (!s)
 		return (lenw);
 	while (s[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 14:20:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:36:57 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ int		retfreetwo(char **tmp1, int ret)
 }
 
 int		ft_ternint(short cond, int iftrue, int iffalse)
+{
+	if (cond)
+		return (iftrue);
+	else
+		return (iffalse);
+}
+
+char	*ft_ternchar(short cond, char *iftrue, char *iffalse)
 {
 	if (cond)
 		return (iftrue);

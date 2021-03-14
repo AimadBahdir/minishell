@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 15:51:04 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:39:09 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,60 +28,74 @@ char	**spltcmd(char **cmd)
 	return (args);
 }
 
-int		ft_open(char *name, int flags, short out)
+char	*ft_joinslash(char *cmdpath, char *path, char *cmd)
 {
-	if (out)
+	char	*tmp;
+
+	tmp = cmdpath;
+	cmdpath = ft_strjoin(path, "/");
+	free(tmp);
+	tmp = cmdpath;
+	cmdpath = ft_strjoin(cmdpath, cmd);
+	free(tmp);
+	return (cmdpath);
+}
+
+char	*find_cmd(t_env **lst, char *cmd)
+{
+	char	*cmdpath;
+	char	**spltpath;
+	int		fd;
+	int		i;
+
+	spltpath = ft_split(getenval(*lst, "PATH"), ':');
+	i = -1;
+	cmdpath = ft_strdup(cmd);
+	while (spltpath[++i])
 	{
-		if (t_g.mystdout > 2)
+		if ((fd = open(cmdpath, O_RDONLY)) > 0)
 		{
-			close(t_g.mystdout);
-			t_g.mystdout = STDOUT_FILENO;
+			retfreetwo(spltpath, close(fd));
+			if (ft_checkfor('/', cmdpath) != -1)
+				return (cmdpath);
+			else
+			{
+				free(cmdpath);
+				return (NULL);
+			}
 		}
-		return (t_g.mystdout = open(name, flags, 0644));
+		cmdpath = ft_joinslash(cmdpath, spltpath[i], cmd);
+	}
+	return (ft_ternchar(ft_checkfor('/', cmd) != -1, cmd, NULL));
+}
+
+short	ft_othercmd(t_env **lst, char **cmdargs)
+{
+	int		pid;
+	char	*cmd;
+	int		exstat;
+
+	if ((pid = fork()) < 0)
+		return (errthrow("Error ", "in ", "forking", 1));
+	if (pid == 0)
+	{
+		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0
+		|| ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
+			exit(1);
+		if (!(cmd = find_cmd(lst, cmdargs[0])))
+			exit(errthrow(cmdargs[0], ": command not found", NULL, 127));
+		if (execve(cmd, cmdargs, t_g.envp) == -1)
+			exit(errthrow(strerror(errno), NULL, NULL,
+				errno));
+		exit(retfree(cmd, NULL, 0));
 	}
 	else
 	{
-		if (t_g.mystdin > 2)
-		{
-			close(t_g.mystdin);
-			t_g.mystdin = dup(STDIN_FILENO);
-		}
-		return (t_g.mystdin = open(name, flags, 0644));
+		wait(&exstat);
+		if (WIFEXITED(exstat))
+			return (WEXITSTATUS(exstat));
 	}
-}
-
-short	gdirections(t_env **envlst, char **cmd)
-{
-	short	i;
-
-	i = -1;
-	while (cmd[++i])
-	{
-		if (cmd[i][0] == 15 && ft_open(cmd[++i], O_RDWR, 0) == -1)
-			return (errthrow(cmd[i], ": ", strerror(errno), 1));
-		else if (cmd[i][0] == 14 && cmd[i][1] == '>' && ft_open(cmd[++i],
-			O_CREAT | O_RDWR | O_APPEND, 1) == -1)
-			return (errthrow(cmd[i], ": ", strerror(errno), 1));
-		else if (cmd[i][0] == 14 && ft_open(cmd[++i],
-			O_CREAT | O_RDWR | O_TRUNC, 1) == -1)
-			return (errthrow(cmd[i], ": ", strerror(errno), 1));
-	}
-	if (cmd[0][0] == 14 || cmd[0][0] == 15)
-		return (0);
-	return (ft_execmd(envlst, spltcmd(cmd)));
-}
-
-short ft_isnum(char *str)
-{
-	int i;
-
-	i = -1;
-	if (str[0] == '-' || str[0] == '+')
-		i++;
-	while (str[++i])
-		if (str[i] > '9' || str[i] < '0')
-			return (0);
-	return (1);
+	return (0);
 }
 
 short	ft_exit(char **cmd)
@@ -94,18 +108,21 @@ short	ft_exit(char **cmd)
 		if (ft_isnum(cmd[1]))
 		{
 			if (ft_lentwop(cmd) > 2)
-				return (errthrow("exit: ", "too many arguments", NULL, !t_pipe.next));
+			{
+				return (errthrow("exit: ",
+						"too many arguments", NULL, !t_pipe.next));
+			}
 			excod = ft_atoi(cmd[1]);
 		}
 		else
 		{
 			ft_putstr("exit", 1);
-			excod = errthrow("exit: ", cmd[1], ": numeric argument required", 255);
+			excod = errthrow("exit: ", cmd[1],
+					": numeric argument required", 255);
 		}
 	}
 	ft_putstr("exit", 1);
 	if (t_pipe.next)
 		return (0);
 	exit(excod);
-	return (excod);
 }

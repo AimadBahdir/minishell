@@ -6,24 +6,40 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 09:19:55 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:30:51 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 11:21:08 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+short		ft_isnum(char *str)
+{
+	int i;
+
+	i = -1;
+	if (str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[++i])
+		if (str[i] > '9' || str[i] < '0')
+			return (0);
+	return (1);
+}
+
 static int	getsize(long l, short sign)
 {
 	int i;
 
-	l = ((l * sign) == 0) ? 1 : (l * sign);
+	if ((l * sign) == 0)
+		l = 1;
+	else
+		l = l * sign;
 	i = 0;
 	while (l)
 	{
 		l = l / 10;
 		i++;
 	}
-	i += (sign == -1) ? 2 : 1;
+	i += ft_ternint(sign == -1, 2, 1);
 	return (i);
 }
 
@@ -34,7 +50,7 @@ char		*ft_itoa(int n)
 	char	*res;
 	short	sign;
 
-	sign = (n < 0) ? -1 : 1;
+	sign = ft_ternint(n < 0, -1, 1);
 	i = getsize(n, sign);
 	res = malloc(i * sizeof(char));
 	if (res == NULL)
@@ -44,7 +60,7 @@ char		*ft_itoa(int n)
 	res[--i] = '\0';
 	while (--i >= 0 || l)
 	{
-		res[i] = (sign == -1 && i == 0) ? '-' : l % 10 + '0';
+		res[i] = ft_ternint(sign == -1 && i == 0, '-', l % 10 + '0');
 		l = l / 10;
 	}
 	return (res);

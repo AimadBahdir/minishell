@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 16:39:48 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 09:51:34 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,27 @@ int		main(int argc, char **argv, char **envp)
 	inpt4->pipe = 0;
 	inpt4->next = inpt5;
 	inpt3 = malloc(sizeof(*inpt3));
-	inpt3->command = malloc(3 * sizeof(char *));
+	inpt3->command = malloc(9 * sizeof(char *));
 	inpt3->command[0] = ft_strdup(">");
-	inpt3->command[1] = ft_strdup("$f2$f2");
-	inpt3->command[2] = NULL;
+	inpt3->command[1] = ft_strdup("abc");
+	inpt3->command[2] = ft_strdup("<");
+	inpt3->command[3] = ft_strdup("def");
+	inpt3->command[4] = ft_strdup(">");
+	inpt3->command[5] = ft_strdup("$f2$f2");
+	inpt3->command[6] = ft_strdup(">");
+	inpt3->command[7] = ft_strdup("ijk");
+	inpt3->command[8] = NULL;
 	inpt3->command[0][0] = 14;
-	inpt3->command[1][3] = 24;
-	inpt3->command[1][0] = 24;
+	inpt3->command[2][0] = 15;
+	inpt3->command[4][0] = 14;
+	inpt3->command[6][0] = 14;
+	inpt3->command[5][3] = 24;
+	inpt3->command[5][0] = 24;
 	inpt3->pipe = 0;
 	inpt3->next = inpt5;
 	inpt2 = malloc(sizeof(*inpt2));
 	inpt2->command = malloc(2 * sizeof(char *));
-	inpt2->command[0] = ft_strdup("a.out/");
+	inpt2->command[0] = ft_strdup("a.out");
 	inpt2->command[1] = NULL;
 	inpt2->pipe = 0;
 	inpt2->next = inpt3;

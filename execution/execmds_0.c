@@ -6,77 +6,11 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/13 16:42:43 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 10:22:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	*find_cmd(t_env **lst, char *cmd)
-{
-	char	*cmdpath;
-	char	**spltpath;
-	char	*tmp;
-	int		fd;
-	int		i;
-
-	spltpath = ft_split(getenval(*lst, "PATH"), ':');
-	i = -1;
-	cmdpath = ft_strdup(cmd);
-	while (spltpath[++i])
-	{
-		if ((fd = open(cmdpath, O_RDONLY)) > 0)
-		{
-			close(fd);
-			retfreetwo(spltpath, 0);
-			if (ft_checkfor('/', cmdpath) != -1)
-				return (cmdpath);
-			else
-			{
-				free(cmdpath);
-				return (NULL);
-			}
-		}
-		tmp = cmdpath;
-		cmdpath = ft_strjoin(spltpath[i], "/");
-		free(tmp);
-		tmp = cmdpath;
-		cmdpath = ft_strjoin(cmdpath, cmd);
-		free(tmp);
-	}
-	if (ft_checkfor('/', cmd) != -1)
-		return (cmd);
-	return (NULL);
-}
-
-short	ft_othercmd(t_env **lst, char **cmdargs)
-{
-	int		pid;
-	char	*cmd;
-	int		exstat;
-
-	if ((pid = fork()) < 0)
-		return (errthrow("Error ", "in ", "forking", 1));
-	if (pid == 0)
-	{
-		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0
-		|| ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
-			exit(1);
-		if (!(cmd = find_cmd(lst, cmdargs[0])))
-			exit(errthrow(cmdargs[0], ": command not found", NULL, 127));
-		if (execve(cmd, cmdargs, t_g.envp) == -1)
-			exit(errthrow(strerror(errno), NULL, NULL,
-				errno));
-		exit(retfree(cmd, NULL, 0));
-	}
-	else
-	{
-		wait(&exstat);
-		if (WIFEXITED(exstat))
-			return (WEXITSTATUS(exstat));
-	}
-	return (0);
-}
 
 short	ft_execmd(t_env **lst, char **cmdargs)
 {
@@ -100,6 +34,7 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 		err = ft_exit(cmdargs);
 	else
 		err = ft_othercmd(lst, cmdargs);
+	t_pipe.prev = 0;
 	return (err);
 }
 
@@ -123,6 +58,15 @@ short	ft_exchild(t_env **envlst, char **cmd)
 	return (err);
 }
 
+short	ft_setprvpip(void)
+{
+	if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
+		return (0);
+	close(t_pipe.nxtio[0]);
+	t_pipe.prev = 1;
+	return (1);
+}
+
 short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 {
 	t_inputs	*head;
@@ -139,14 +83,9 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 				if (pipe(t_pipe.nxtio) < 0)
 					exit(errthrow(strerror(errno), NULL, NULL, 1));
 			t_g.exstat = ft_exchild(envlst, head->command);
-			t_pipe.prev = 0;
-			if (t_pipe.next)
-			{
-				if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
-					return (-1);
-				close(t_pipe.nxtio[0]);
-				t_pipe.prev = 1;
-			}
+			if (t_pipe.next && !ft_setprvpip())
+				return (errthrow("dup: ",
+						"prvo pipe dosn't dupplicated.", NULL, 1));
 		}
 		else
 			t_g.exstat = 1;
@@ -154,5 +93,5 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 		close(t_g.mystdout);
 		head = head->next;
 	}
-	return (1);
+	return (0);
 }
