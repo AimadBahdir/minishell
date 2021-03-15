@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 11:32:35 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 12:06:46 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ short	ft_exit(char **cmd)
 					": numeric argument required", 255);
 		}
 	}
-	ft_putstr("exit", 1);
+	else
+		ft_putstr("exit", 1);
 	if (t_pipe.next)
 		return (0);
 	exit(excod);
