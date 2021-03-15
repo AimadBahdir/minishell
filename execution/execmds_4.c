@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 10:57:33 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 11:58:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ short	ft_chkambigs(t_env *envlst, char **cmd, int pos, char **vars)
 		arg = ft_strdup(vars[0]);
 	else
 		arg = ft_strdup("");
-	if (cmd[pos - 1][0] == 14 || cmd[pos - 1][0] == 15)
+	if (pos > 0 && (cmd[pos - 1][0] == 14 || cmd[pos - 1][0] == 15))
 	{
 		while (vars[i])
 		{
