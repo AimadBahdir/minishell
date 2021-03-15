@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 12:38:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/04 18:14:51 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/14 11:12:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int		lenwords(char const *s, char c)
 
 	i = 0;
 	lenw = 0;
+	if (!s)
+		return (lenw);
 	while (s[i])
 	{
 		while (s[i] && s[i] == c)
@@ -77,6 +79,8 @@ char			**ft_split(char const *s, char c)
 	int		i;
 	int		j;
 
+	if (!s)
+		return (NULL);
 	lw = lenwords(s, c) + 1;
 	sp = malloc(lw * sizeof(char *));
 	i = 0;

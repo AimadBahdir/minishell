@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 08:55:32 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:28:01 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 10:42:01 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ short	ft_checkfor(char c, char *str)
 	int i;
 
 	i = -1;
-	if (!str)
+	if (str == NULL)
 		return (-1);
 	while (str[++i])
 		if (str[i] == c)
