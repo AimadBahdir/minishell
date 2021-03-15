@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 09:59:37 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 10:57:33 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ short	ft_chkambigs(t_env *envlst, char **cmd, int pos, char **vars)
 			arg = ft_strjoin(arg, getenval(envlst, vars[i++]));
 			free(tmp);
 		}
-		if (ft_checkfor(' ', arg) != -1 || arg[0] == '\0')
+		if (ft_checkfor(' ', arg) != -1 || (arg != NULL && *arg == '\0'))
 		{
 			i = ft_creatfiles(cmd, pos - 1);
 			return (ft_ternint(i == 0, errthrow("$",
