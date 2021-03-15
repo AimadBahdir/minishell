@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 11:27:31 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 11:32:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ char	*find_cmd(t_env **lst, char *cmd)
 	{
 		if ((fd = open(cmdpath, O_RDONLY)) > 0)
 		{
-<<<<<<< HEAD
-			close(t_g.mystdout);
-			t_g.mystdout = dup(STDOUT_FILENO);
-=======
 			retfreetwo(spltpath, close(fd));
 			if (ft_checkfor('/', cmdpath) != -1)
 				return (cmdpath);
@@ -67,7 +63,6 @@ char	*find_cmd(t_env **lst, char *cmd)
 				free(cmdpath);
 				return (NULL);
 			}
->>>>>>> origin/Aimad
 		}
 		cmdpath = ft_joinslash(cmdpath, spltpath[i], cmd);
 	}

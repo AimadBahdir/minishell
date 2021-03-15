@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 10:59:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/15 11:53:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 	{
 		if (ft_checkfor(24, cmd[i]) != -1)
 		{
-			if ((spltd = ft_split(cmd[i], 24)))
+			if ((spltd = ft_split(cmd[i], 24)) != NULL)
 			{
 				tmp = cmd[i];
 				if (!ft_chkambigs(envlst, cmd, i, spltd))

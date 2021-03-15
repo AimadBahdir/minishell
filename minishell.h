@@ -5,13 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/15 11:26:02 by abahdir          ###   ########.fr       */
-=======
-/*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 10:37:20 by abahdir          ###   ########.fr       */
->>>>>>> origin/Aimad
+/*   Updated: 2021/03/15 11:33:17 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +110,7 @@ int				new_check(char **line2);
 int				join_new_line_check_read_more(char **line, char **line2);
 int				read_more(char **line);
 int				lsh_read_line_and_trim(char **line);
+int				number_of_derc_in_table(char **s);
 int				check_line(t_env **envlst, char **line, t_inputs **list_shell);
 int 			number_of_words_in_table(char **s);
 int				is_nbr_car(char c);
