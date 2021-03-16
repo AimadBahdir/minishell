@@ -29,8 +29,6 @@ int		get_end_index(char *line, int i)
 				return (i);
 			i++;
 		}
-		if (line[i] == '\0')
-			t_params.error_text = "There is no supplement \"\n";
 	}
 	else if (line[i] == '\'')
 	{
@@ -41,8 +39,6 @@ int		get_end_index(char *line, int i)
 				return (i);
 			i++;
 		}
-		if (line[i] == '\0')
-			t_params.error_text = "There is no supplement \'\n";
 	}
 	return (-1);
 }

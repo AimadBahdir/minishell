@@ -98,7 +98,7 @@ int		gestion_args(char *line, int start, int end, t_gargs **gargs)
 	i = 0;
 	while (start + i < end && i >= 0)
 	{
-		while (line[start + i] == ' ')
+		while (line[start + i] == ' ' || line[start + i] == '\t')
 			i++;
 		if (start + i >= end)
 			break ;

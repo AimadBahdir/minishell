@@ -17,18 +17,17 @@ int		len_without_speac(char *line)
 	int i;
 	int j;
 	int len_line;
-
 	i = 1;
 	j = 0;
 	len_line = ft_strlen(line);
-	while (line[len_line - i++] == ' ')
+	while (line[len_line - i++] == ' ' || line[len_line - i++] == '\t')
 		j++;
 	if (line[len_line - j - 1] == '\\')
 		if (valid_option(line, len_line - j - 1) == 1)
-			if (line[len_line - j] == ' ')
+			if (line[len_line - j] == ' ' || line[len_line - j] == '\t')
 				j--;
 	i = 0;
-	while (line[i] != '\0' && line[i] == ' ')
+	while (line[i] != '\0' && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	return (len_line - j - i);
 }
@@ -39,7 +38,6 @@ char	*ft_trim(char *line)
 	int		len;
 	int		j;
 	char	*new_line;
-
 	if (line == NULL)
 		return (NULL);
 	i = 0;
@@ -47,7 +45,7 @@ char	*ft_trim(char *line)
 	if (len < 0)
 		len = 0;
 	new_line = malloc(sizeof(char *) * len + 1);
-	while (line[i] != '\0' && line[i] == ' ')
+	while (line[i] != '\0' && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	j = 0;
 	while (len-- > 0)
