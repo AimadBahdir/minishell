@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 10:56:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/16 10:24:40 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		main(int argc, char **argv, char **envp)
 	ft_setenv(&envlst, envp);
 	inpt7 = malloc(sizeof(*inpt7));
 	inpt7->command = malloc(2 * sizeof(char *));
-	inpt7->command[0] = ft_strdup("cat");
+	inpt7->command[0] = ft_strdup("pwd");
 	inpt7->command[1] = NULL;
 	inpt7->pipe = 0;
 	inpt7->next = NULL;
@@ -59,11 +59,11 @@ int		main(int argc, char **argv, char **envp)
 	inpt6->command[2] = NULL;
 	inpt6->command[1][0] = 24;
 	inpt6->pipe = 0;
-	inpt6->next = NULL;
+	inpt6->next = inpt7;
 	inpt5 = malloc(sizeof(*inpt5));
 	inpt5->command = malloc(4 * sizeof(char *));
-	inpt5->command[0] = ft_strdup("exit");
-	inpt5->command[1] = ft_strdup("123");
+	inpt5->command[0] = ft_strdup("cd");
+	inpt5->command[1] = ft_strdup("-");
 	inpt5->command[2] = ft_strdup("123");
 	inpt5->command[3] = NULL;
 	inpt5->pipe = 0;
@@ -100,10 +100,10 @@ int		main(int argc, char **argv, char **envp)
 	inpt3->next = inpt4;
 	inpt2 = malloc(sizeof(*inpt2));
 	inpt2->command = malloc(2 * sizeof(char *));
-	inpt2->command[0] = ft_strdup("a.out");
+	inpt2->command[0] = ft_strdup("cd");
 	inpt2->command[1] = NULL;
 	inpt2->pipe = 0;
-	inpt2->next = inpt3;
+	inpt2->next = inpt5;
 	inpt1 = malloc(sizeof(*inpt1));
 	inpt1->command = malloc(4 * sizeof(char *));
 	inpt1->command[0] = ft_strdup("chmod");
@@ -121,5 +121,5 @@ int		main(int argc, char **argv, char **envp)
 	// inpt->command[1][0] = 14;
 	inpt->pipe = 0;
 	inpt->next = inpt2;
-	ft_execute(&envlst, inpt);
+	ft_execute(&envlst, inpt2);
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 10:59:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/16 09:29:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 					retfreetwo(spltd, retfree(tmp, NULL, 0));
 				}
 				else
-					return (retfreetwo(spltd, retfree(tmp, NULL, 1)));
+					return (retfreetwo(spltd, 1));
 			}
 		}
 	}

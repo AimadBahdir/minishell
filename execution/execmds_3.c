@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 11:34:17 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/16 10:23:42 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,19 @@ char	*ft_rplchome(char *path)
 		path = t_g.homepath;
 	else if (path[0] == '~')
 		path = ft_strjoin(t_g.homepath, (path + 1));
-	free(tmp);
 	return (path);
+}
+
+void	ft_setoldpwd(t_env **e, char *path)
+{
+	char *pwd;
+	
+	ft_putstr(path, 1);
+	pwd = getenval(*e, "PWD");
+	if (getenval(*e, "OLDPWD") == NULL)
+		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
+	else
+		setenval(e, "OLDPWD", pwd);
 }
 
 short	ft_cd(t_env **e, char **args)
@@ -78,10 +89,14 @@ short	ft_cd(t_env **e, char **args)
 	path = args[1];
 	if (!path || path[0] == '~')
 		path = ft_rplchome(path);
+	else if (ft_strcmp(path, "-"))
+		if ((path = getenval(*e, "OLDPWD")) == NULL)
+			return (errthrow("cd: ", "OLDPWD not set", NULL, 1));
 	if (chdir(path) == -1)
 		return (errthrow(path, ": cd: ", strerror(errno), errno));
 	if (!(pwd = getcwd(NULL, 0)))
 		return (errthrow("cd: ", "pwd: ", strerror(errno), errno));
+	ft_setoldpwd(e, path);
 	if (getenval(*e, "PWD"))
 		setenval(e, "PWD", pwd);
 	return (0);
