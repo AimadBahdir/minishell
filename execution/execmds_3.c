@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/16 11:50:50 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:24:25 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,17 @@ void	ft_setoldpwd(t_env **e)
 
 	pwd = getenval(*e, "PWD");
 	if (getenval(*e, "OLDPWD") == NULL)
+	{
 		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
+		pwd = getenval(t_g.explst, "PWD");
+		envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
+	}
 	else
+	{
 		setenval(e, "OLDPWD", pwd);
+		pwd = getenval(t_g.explst, "PWD");
+		setenval(&t_g.explst, "OLDPWD", pwd);
+	}
 }
 
 short	ft_cd(t_env **e, char **args)

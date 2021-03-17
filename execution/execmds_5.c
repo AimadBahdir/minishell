@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:51:59 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 11:03:17 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:25:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,28 @@ short	novalidentif(short cmd, char *identif)
 	return (retfree(tmp, NULL, err));
 }
 
-short	ft_exportelem(t_env **envlst, char *key, char *val)
+short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 {
+	char *k;
+	char *v;
+
+	k = NULL;
+	v = NULL;
 	if (!ft_strnormed(key))
 		return (novalidentif(1, key));
-	else if (getenval(*envlst, key) == NULL)
+	if (!exl)
 	{
-		envaddelm(envlst, newenvelm(key, val));
+		k = key;
+		v = val;
+		if (getenval(*envlst, k) == NULL)
+			envaddelm(envlst, newenvelm(k, v));
+		else
+			setenval(envlst, k, v);
 	}
+	if (getenval(t_g.explst, key) == NULL)	
+		envaddelm(&t_g.explst, newenvelm(key, val));
 	else
-		setenval(envlst, key, val);
+		setenval(&t_g.explst, key, val);
 	return (0);
 }
 
@@ -42,20 +54,27 @@ short	ft_export(t_env **e, char **args)
 {
 	int		keylen;
 	int		err;
+	char	*noval;
 	short	i;
 
 	i = 0;
 	if (!(err = 0) && ft_lentwop(args) < 2)
-		return (ft_exprint(*e));
+		return (ft_exprint());
 	while (args[++i])
 	{
 		if (ft_checkfor('=', args[i]) > 0)
 		{
 			keylen = ft_lento(args[i], '=') + 1;
 			err = ft_exportelem(e, ft_substr(args[i], 0, keylen - 1),
-					ft_substr(args[i], keylen, (ft_strlen(args[i]) - keylen)));
+					ft_substr(args[i], keylen, (ft_strlen(args[i]) - keylen)), 0);
 		}
-		else if (!ft_strnormed(args[i]))
+		else if (ft_strnormed(args[i]))
+		{
+			noval = ft_strdup(" ");
+			noval[0] = 16;
+			ft_exportelem(&t_g.explst, ft_strdup(args[i]), noval, 1);
+		}
+		else
 			err = novalidentif(1, args[i]);
 	}
 	return (err);
@@ -78,4 +97,15 @@ short	ft_unset(t_env **e, char **args)
 			rmenval(e, args[i]);
 	}
 	return (err);
+}
+
+short	ft_setoldcmd(t_env **lst, char *cmdpath)
+{
+	char	*cmd;
+
+	cmd = ft_strdup(cmdpath);
+	setenval(lst, "_", cmd);
+	cmd = ft_strdup(cmdpath);
+	setenval(&t_g.explst, "_", cmd);
+	return (127);
 }
