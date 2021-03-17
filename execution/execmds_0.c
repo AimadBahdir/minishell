@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 10:22:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:47:11 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 	char	*cmd;
 	short	err;
 
+	ft_setoldcmd(lst, cmdargs[0]);
 	cmd = ft_strlower(cmdargs[0]);
 	if (ft_strcmp(cmd, "echo"))
 		err = ft_echo(cmdargs);
