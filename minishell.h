@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 10:37:20 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:22:27 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct			s_g
 	int		mystdout;
 	int		mystdin;
 	int		exstat;
+	t_env	*explst;
 }				t_g;
 
 size_t			ft_strlen(const char *s);
@@ -85,13 +86,14 @@ void			setenval(t_env **lst, char *key, char *val);
 void			rmenval(t_env **lst, char *key);
 void			ft_setenv(t_env **lst, char **envp);
 char			*getenval(t_env *e, char *key);
+short			ft_setoldcmd(t_env **lst, char *cmdpath);
 short			ft_execute(t_env **envlst, t_inputs *cmdlst);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e, char **args);
 short			ft_pwd(t_env **e);
 short			ft_export(t_env **e, char **args);
-short			ft_exprint(t_env *head);
+short			ft_exprint(void);
 short			ft_unset(t_env **e, char **args);
 short			ft_cd(t_env **e, char **args);
 short			ft_exit(char **cmd);

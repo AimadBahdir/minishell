@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 11:16:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:23:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	ft_setenv(t_env **lst, char **envp)
 		elen = ft_strlen(envp[i]);
 		klen = ft_lento(envp[i], '=') + 1;
 		envaddelm(lst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
+			ft_substr(envp[i], klen, (elen - klen))));
+		envaddelm(&t_g.explst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
 			ft_substr(envp[i], klen, (elen - klen))));
 	}
 }
