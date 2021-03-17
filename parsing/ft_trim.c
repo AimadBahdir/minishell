@@ -17,6 +17,7 @@ int		len_without_speac(char *line)
 	int i;
 	int j;
 	int len_line;
+
 	i = 1;
 	j = 0;
 	len_line = ft_strlen(line);
@@ -38,6 +39,7 @@ char	*ft_trim(char *line)
 	int		len;
 	int		j;
 	char	*new_line;
+
 	if (line == NULL)
 		return (NULL);
 	i = 0;

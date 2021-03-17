@@ -71,8 +71,14 @@ void	lsh_loop(void)
 	}
 }
 
+void	handel_d(int i)
+{
+	write(0, "\b\b", 2);
+}
+
 int		main(int argc, char **argv, char **envp)
 {
+	signal(SIGQUIT, handel_d);
 	lsh_loop();
 	return (0);
 }

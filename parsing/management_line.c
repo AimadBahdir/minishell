@@ -70,8 +70,10 @@ int		lsh_read_line_and_trim(char **line)
 {
 	char *temp;
 
+	t_params.was_read = strdup("");
 	if (get_next_line(0, line) == -1)
 		return (-1);
+	free(t_params.was_read);
 	temp = *line;
 	*line = ft_trim(*line);
 	free(temp);

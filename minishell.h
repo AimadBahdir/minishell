@@ -46,6 +46,8 @@ struct s_params
     char **args;
 	char *error_text;
 	int vld_der;
+	char *was_read;
+	char *temp;
 }	t_params;
 
 size_t      ft_strlen(const char *s);

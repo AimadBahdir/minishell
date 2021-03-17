@@ -34,12 +34,25 @@ int		read_fd(char **was_read, int *len_read, int fd)
 	if (*was_read == NULL)
 		return (-1);
 	*len_read = read(fd, *was_read, BUFFER_SIZE);
+	was_read[0][*len_read] = '\0';
+	t_params.temp = t_params.was_read;
+	t_params.was_read = ft_strjoin(t_params.was_read, *was_read);
+	free(t_params.temp);
+	if (was_read[0][*len_read - 1] != '\n')
+	{
+		if (*len_read == 0 && !*t_params.was_read)
+			exit(0);
+		free(*was_read);
+		*len_read += read_fd(was_read, len_read, fd);
+	}
+	t_params.temp = *was_read;
+	*was_read = strdup(t_params.was_read);
+	free(t_params.temp);
 	if (*len_read == -1)
 	{
 		free(*was_read);
 		*was_read = NULL;
 		return (-1);
 	}
-	was_read[0][*len_read] = '\0';
 	return (*len_read);
 }
