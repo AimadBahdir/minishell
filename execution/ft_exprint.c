@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 10:21:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:25:56 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/17 08:34:55 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ short	ft_exprint(void)
 {
 	t_env	*lst;
 
+	ft_envsort(t_g.explst);
 	lst = t_g.explst;
-	ft_envsort(lst);
 	while (lst)
 	{
 		ft_putstr("declare -x ", 0);
