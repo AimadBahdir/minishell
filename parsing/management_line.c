@@ -32,12 +32,14 @@ int		join_new_line_check_read_more(char **line, char **line2)
 	*line = ft_strjoin(*line, *line2);
 	free(temp);
 	len = ft_strlen(*line2);
-	if (line2[0][len - 1] != '|' && valid_option(*line2, len - 1) == 1)
+	if (line2[0][len - 1] != '|')
 	{
 		free(*line2);
 		return (1);
 	}
-	return (0);
+	else if (line2[0][len - 1] != '|' && valid_option(*line2, len - 1) == 1)
+		return (0);
+	return (1);
 }
 
 int		read_more(char **line)
