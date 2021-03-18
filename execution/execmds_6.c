@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/16 09:29:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:46:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,5 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 			}
 		}
 	}
-	ft_resetenv(envlst);
 	return (0);
 }

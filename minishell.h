@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:22:27 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:45:21 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct			s_g
 	int		mystdout;
 	int		mystdin;
 	int		exstat;
+	short	iscmd;
 	t_env	*explst;
 }				t_g;
 
