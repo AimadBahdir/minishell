@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:24:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:43:50 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ short	ft_cd(t_env **e, char **args)
 			ft_putstr(path, 1);
 	}
 	if (chdir(path) == -1)
-		return (errthrow(path, ": cd: ", strerror(errno), errno));
+		return (errthrow(path, ": cd: ", strerror(errno), 1));
 	if (!(pwd = getcwd(NULL, 0)))
 		return (errthrow("cd: ", "getcwd: ", strerror(errno), errno));
 	ft_setoldpwd(e);

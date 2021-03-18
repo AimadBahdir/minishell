@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:48:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:51:27 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 	else if (ft_strcmp(cmd, "exit"))
 		err = ft_exit(cmdargs);
 	else
+	{
+		ft_resetenv(*lst);
 		err = ft_othercmd(lst, cmdargs);
+	}
 	t_pipe.prev = 0;
 	return (err);
 }

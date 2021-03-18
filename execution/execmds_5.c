@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:51:59 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:25:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:44:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,10 @@ short	ft_setoldcmd(t_env **lst, char *cmdpath)
 {
 	char	*cmd;
 
+	if (ft_strcmp(ft_strlower(cmdpath), "sort"))
+		t_g.iscmd = 1;
+	else
+		t_g.iscmd = 2;
 	cmd = ft_strdup(cmdpath);
 	setenval(lst, "_", cmd);
 	cmd = ft_strdup(cmdpath);
