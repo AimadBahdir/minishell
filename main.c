@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:56:02 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:58:53 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,24 @@ void	exe_list(t_env **envlst, t_inputs *list_shell)
 	}
 }
 
+void	signals_handler(int sig)
+{
+	int exstat;
+
+	if (sig == SIGINT)
+		write_string("\nbash-1.0$ ");
+	if (sig == SIGQUIT && t_g.iscmd > 0)
+	{
+		wait(&exstat);
+		if (WIFEXITED(exstat))
+			t_g.exstat = WEXITSTATUS(exstat);
+		if (t_g.iscmd == 2)
+			ft_putstr("Quit: 3", 1);
+		else
+			write(t_g.mystdout, "\b\b", 2);
+	}
+}
+
 void	lsh_loop(t_env **envlst)
 {
 	char		*line;
@@ -69,24 +87,6 @@ void	lsh_loop(t_env **envlst)
 				continue;
 		}
 		free(line);
-	}
-}
-
-void	signals_handler(int sig)
-{
-	int exstat;
-
-	if (sig == SIGINT)
-		write_string("\nbash-1.0$ ");
-	if (sig == SIGQUIT && t_g.iscmd > 0)
-	{
-		wait(&exstat);
-		if (WIFEXITED(exstat))
-			t_g.exstat = WEXITSTATUS(exstat);
-		if (t_g.iscmd == 2)
-			ft_putstr("Quit: 3", 1);
-		else
-			write(t_g.mystdout, "\b\b", 2);
 	}
 }
 

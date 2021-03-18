@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:54:24 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:58:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,5 +190,5 @@ short			ft_chkambigs(t_env *envlst, char **cmd,
 int				fillfile(t_env **envlst, char **cmd);
 int				retfreetwo(char **tmp1, int ret);
 int				retfree(char *tmp1, char *tmp2, int ret);
-
+void			signals_handler(int sig);
 #endif
