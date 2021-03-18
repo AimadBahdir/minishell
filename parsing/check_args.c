@@ -61,7 +61,7 @@ int		checkpath_dollar(t_cargs **args, char *s, int i)
 {
 	if (s[i] == '?')
 		return (checkpath_question_mark(args, i));
-	else if (ft_isnumber(s[i]) == 0 && ft_alpha(s[i]) == 0)
+	else if (ft_isnumber(s[i]) == 0 && ft_alpha(s[i]) == 0 && s[i] != '_')
 		ft_lstcargsadd_back(args, ft_lstcargsnew('$'));
 	else if (ft_isnumber(s[i]) == 1)
 		return (i);

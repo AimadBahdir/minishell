@@ -25,9 +25,9 @@ int	number_of_derc_in_table(char **s)
 		while (s[i] != NULL)
 		{
 			j = 0;
-			while(s[i][j] != '\0')
+			while (s[i][j] != '\0')
 			{
-				if(s[i][j] == 14 || s[i][j] == 15)
+				if (s[i][j] == 14 || s[i][j] == 15)
 					res++;
 				j++;
 			}

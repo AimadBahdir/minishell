@@ -29,29 +29,29 @@ int		greater_less(int start_arg, char *line)
 
 int		cut_quotation(int start, char *line, int end)
 {
-	int i;
-
-	i = 1;
+	start++;
 	while (1)
 	{
-		if (line[start + i] == '\"' && valid_option(line, start + i) == 1)
+		if (line[start] == '\"' && valid_option(line, start) == 1)
 			break ;
-		i++;
+		start++;
 	}
-	i++;
-	if (line[start + i] == '\0' || line[start + i] == ' '
-	|| line[start + i] == '<' || line[start + i] == '>' || start + i > end)
-		return (start + i);
+	start++;
+	if (line[start] == '\0' || line[start] == ' ' || line[start] == '\t'
+	|| line[start] == '<' || line[start] == '>' || start > end)
+		return (start);
 	else
 	{
-		while (line[start + i] != '\0' && line[start + i] != ' '
-		&& line[start + i] != '<' && line[start + i] != '>' && start + i < end)
+		while (line[start] != '\0' && line[start] != ' ' && line[start] != '\t'
+		&& line[start] != '<' && line[start] != '>' && start < end)
 		{
-			if (line[start + i] == '\"' && valid_option(line, start + i) == 1)
-				return (cut_quotation(start + i, line, end));
-			i++;
+			if (line[start] == '\"' && valid_option(line, start) == 1)
+				return (cut_quotation(start, line, end));
+			else if (line[start] == '\'' && valid_option(line, start) == 1)
+				return (cut_apostrophe(start, line, end));
+			start++;
 		}
-		return (start + i);
+		return (start);
 	}
 }
 
@@ -61,22 +61,23 @@ int		cut_apostrophe(int start, char *line, int end)
 
 	i = 1;
 	while (line[start + i] != '\'')
-	{
-		if (start + i > end)
-			return (-1);
 		i++;
-	}
 	i++;
 	if (line[start + i] == '\0' || line[start + i] == ' '
-	|| line[start + i] == '<' || line[start + i] == '>' || start + i > end)
+	|| line[start + i] == '\t' || line[start + i] == '<'
+	|| line[start + i] == '>' || start + i > end)
 		return (start + i);
 	else
 	{
 		while (line[start + i] != '\0' && line[start + i] != ' '
-		&& line[start + i] != '<' && line[start + i] != '>' && start + i < end)
+		&& line[start + i] != '\t' && line[start + i] != '<'
+		&& line[start + i] != '>' && start + i < end)
 		{
 			if (line[start + i] == '\'' && valid_option(line, start + i) == 1)
 				return (cut_apostrophe(start + i, line, end));
+			else if (line[start + i] == '\"'
+			&& valid_option(line, start + i) == 1)
+				return (cut_quotation(start + i, line, end));
 			i++;
 		}
 		return (start + i);
@@ -93,7 +94,7 @@ int		cut_outher(int start_arg, char *line, int end, int *i)
 		else if ((line[start_arg + *i] == '\"' || line[start_arg + *i] == '\'')
 		&& valid_option(line, start_arg + *i) == 1)
 			return (1);
-		else if (line[start_arg + *i] == ' '
+		else if ((line[start_arg + *i] == ' ' || line[start_arg + *i] == '\t')
 		&& valid_option(line, start_arg + *i) == 1)
 			return (0);
 		*i = *i + 1;

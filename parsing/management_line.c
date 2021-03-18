@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 12:35:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:57:11 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ int		lsh_read_line_and_trim(char **line)
 {
 	char *temp;
 
+	t_params.was_read = strdup("");
 	if (get_next_line(STDIN_FILENO, line) == -1)
 		return (-1);
+	free(t_params.was_read);
 	temp = *line;
 	*line = ft_trim(*line);
 	free(temp);

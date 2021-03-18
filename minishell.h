@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:51:49 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:54:24 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ struct			s_params
     char **args;
 	char *error_text;
 	int vld_der;
+	char *was_read;
+	char *temp;
 }				t_params;
 
 int				len_without_speac(char *line);

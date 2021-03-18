@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/16 10:29:10 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 08:56:02 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	lsh_loop(t_env **envlst)
 	char		*line;
 	t_inputs	*list_shell;
 
+	signal(SIGINT, signals_handler);
+	signal(SIGQUIT, signals_handler);
 	list_shell = NULL;
 	while (1)
 	{
@@ -70,30 +72,29 @@ void	lsh_loop(t_env **envlst)
 	}
 }
 
-void	handel_c(int i)
+void	signals_handler(int sig)
 {
-	printf("(%d) ctrl + c\n", i);
-}
+	int exstat;
 
-void	handel_d(int i)
-{
-	printf("(%d) ctrl + d\n", i);
-}
-
-void	handel_b(int i)
-{
-	printf("(%d) ctrl + \\\n", i);
+	if (sig == SIGINT)
+		write_string("\nbash-1.0$ ");
+	if (sig == SIGQUIT && t_g.iscmd > 0)
+	{
+		wait(&exstat);
+		if (WIFEXITED(exstat))
+			t_g.exstat = WEXITSTATUS(exstat);
+		if (t_g.iscmd == 2)
+			ft_putstr("Quit: 3", 1);
+		else
+			write(t_g.mystdout, "\b\b", 2);
+	}
 }
 
 int		main(int argc, char **argv, char **envp)
 {
 	argv = NULL;
 	argc = 0;
-	// signal(SIGINT, handel_c);
-	// signal(SIGQUIT, handel_b);
-	// int fdstdin;
 
-	// fdstdin = dup(STDIN_FILENO);
 	t_env *envlst;
 	envlst = NULL;
 	t_g.envp = NULL;
