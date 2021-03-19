@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 15:52:49 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 11:34:52 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 14:12:55 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ short	ft_strnormed(char *str)
 			&& !(str[i] >= 'A' && str[i] <= 'Z')
 			&& !(str[i] >= '0' && str[i] <= '9')
 			&& str[i] != '_')
-			return (0);
+			return (i);
 	}
-	return (1);
+	return (-1);
 }

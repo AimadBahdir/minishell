@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 10:54:22 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 10:53:20 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,19 @@ short	ft_env(t_env *e, char **args)
 	return (0);
 }
 
-short	ft_pwd(t_env **e)
+short	ft_pwd(t_env **e, short get)
 {
 	char	*path;
 	char	*pwd;
 
 	if (!(pwd = getcwd(NULL, 0)))
 		return (errthrow(strerror(errno), NULL, NULL, errno));
-	ft_putstr(pwd, 1);
 	path = getenval(*e, "PWD");
-	if (path != NULL && !ft_strcmp(path, pwd))
-		setenval(e, "PWD", pwd);
-	return (0);
+	if (get)
+		ft_putstr(pwd, 1);
+	if (path != NULL)
+		setenval(e, "PWD", ft_strdup(pwd));
+	else if (!get)
+		envaddelm(e, newenvelm(ft_strdup("PWD"), ft_strdup(pwd)));
+	return (retfree(path, pwd, 0));
 }

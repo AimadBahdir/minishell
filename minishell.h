@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:45:21 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:31:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e, char **args);
 short			ft_pwd(t_env **e);
+void			ft_setoldpwd(t_env **e);
 short			ft_export(t_env **e, char **args);
 short			ft_exprint(void);
 short			ft_unset(t_env **e, char **args);

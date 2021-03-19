@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:46:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:31:06 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@ short	ft_setvar(t_env *envlst, char *spltd, char **newvar)
 	tmp = *newvar;
 	if (spltd[0] == '?')
 	{
-		*newvar = ft_strjoin(tmp, ft_itoa(t_g.exstat));
-		free(tmp);
+		getedval = ft_itoa(t_g.exstat);
+		*newvar = ft_strjoin(tmp, getedval);
+		retfree(tmp, getedval, 0);
 		tmp = *newvar;
 		*newvar = ft_strjoin(tmp, (spltd + 1));
 	}
 	else if (spltd[0] == '_' || ft_isalpha(spltd[0]))
 	{
-		if ((getedval = getenval(envlst, spltd)) != NULL)
+		if ((getedval = spltandgenv(envlst, spltd)) != NULL)
 		{
 			*newvar = ft_strjoin(tmp, getedval);
 			free(getedval);
@@ -67,7 +68,7 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 	{
 		if (ft_checkfor(24, cmd[i]) != -1)
 		{
-			if ((spltd = ft_split(cmd[i], 24)))
+			if ((spltd = ft_split(cmd[i], 24)) != NULL)
 			{
 				tmp = cmd[i];
 				if (!ft_chkambigs(envlst, cmd, i, spltd))
@@ -81,4 +82,31 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 		}
 	}
 	return (0);
+}
+
+void	ft_setoldpwd(t_env **e)
+{
+	char *pwd;
+	char *oldpwd;
+
+	pwd = getenval(*e, "PWD");
+	oldpwd = getenval(*e, "OLDPWD");
+	if (oldpwd == NULL && pwd != NULL)
+	{
+		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
+		pwd = getenval(t_g.explst, "PWD");
+		envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
+	}
+	else if (pwd == NULL)
+	{
+		setenval(e, "OLDPWD", ft_strdup(""));
+		setenval(&t_g.explst, "OLDPWD", ft_strdup(""));
+	}
+	else
+	{
+		setenval(e, "OLDPWD", pwd);
+		pwd = getenval(t_g.explst, "PWD");
+		setenval(&t_g.explst, "OLDPWD", pwd);
+	}
+	free(oldpwd);
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/16 10:19:56 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:50:39 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ void	setenval(t_env **lst, char *key, char *val)
 		if (ft_strcmp(e->key, key))
 		{
 			tmp = e->val;
-			e->val = val;
+			e->val = ft_strdup(val);
 			free(tmp);
 			tmp = NULL;
 			break ;
 		}
 		e = e->next;
 	}
+	retfree(val, NULL, 0);
 }
 
 char	*getenval(t_env *e, char *key)

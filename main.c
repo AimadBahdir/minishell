@@ -6,26 +6,38 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/16 10:24:40 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:34:22 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handel_c(int i)
+
+void	signals_handler(int sig)
 {
-	printf("(%d) ctrl + c\n", i);
+	int exstat;
+
+	if (t_g.iscmd == 0)
+		write(1, "\b\b", 2);
+	if (sig == SIGINT && !t_g.iscmd)
+	{
+		if (t_params.was_read != NULL)
+		{
+			free(t_params.was_read);
+			t_params.was_read = NULL;
+		}
+		write_string("\nminibash-1.0$ ");
+	}
+	else if (sig == SIGQUIT && t_g.iscmd > 0)
+	{
+		wait(&exstat);
+		if (WIFEXITED(exstat))
+			t_g.exstat = WEXITSTATUS(exstat);
+		if (t_g.iscmd == 2)
+			ft_putstr("Quit: 3", 1);
+	}
 }
 
-void	handel_d(int i)
-{
-	printf("(%d) ctrl + d\n", i);
-}
-
-void	handel_b(int i)
-{
-	printf("(%d) ctrl + \\\n", i);
-}
 
 int		main(int argc, char **argv, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:43:06 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 09:23:41 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 	char	*cmd;
 	short	err;
 
-	ft_setoldcmd(lst, cmdargs[0]);
-	cmd = ft_strlower(cmdargs[0]);
+	cmd = ft_strdup(cmdargs[0]);
+	ft_setoldcmd(lst, cmd);
+	ft_strlower(cmd);
 	if (ft_strcmp(cmd, "echo"))
 		err = ft_echo(cmdargs);
 	else if (ft_strcmp(cmd, "cd"))
 		err = ft_cd(lst, cmdargs);
 	else if (ft_strcmp(cmd, "pwd"))
-		err = ft_pwd(lst);
+		err = ft_pwd(lst, 1);
 	else if (ft_strcmp(cmd, "env"))
 		err = ft_env(*lst, cmdargs);
-	else if (ft_strcmp(cmd, "export"))
+	else if (ft_strcmp(cmdargs[0], "export"))
 		err = ft_export(lst, cmdargs);
-	else if (ft_strcmp(cmd, "unset"))
+	else if (ft_strcmp(cmdargs[0], "unset"))
 		err = ft_unset(lst, cmdargs);
 	else if (ft_strcmp(cmd, "exit"))
 		err = ft_exit(cmdargs);
@@ -39,7 +40,7 @@ short	ft_execmd(t_env **lst, char **cmdargs)
 		err = ft_othercmd(lst, cmdargs);
 	}
 	t_pipe.prev = 0;
-	return (err);
+	return (retfree(cmd, NULL, err));
 }
 
 short	ft_exchild(t_env **envlst, char **cmd)

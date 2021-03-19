@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:01:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:33:13 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 16:42:06 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*ft_strlower(char *str)
+void	ft_strlower(char *str)
 {
 	int i;
 
@@ -22,5 +22,4 @@ char	*ft_strlower(char *str)
 		if (str[i] >= 'A' && str[i] <= 'Z')
 			str[i] += 32;
 	}
-	return (str);
 }

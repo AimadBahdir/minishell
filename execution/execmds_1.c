@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 12:04:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:15:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**spltcmd(char **cmd)
 		return (NULL);
 	i = -1;
 	while (++i < stop)
-		args[i] = cmd[i];
+		args[i] = ft_strdup(cmd[i]);
 	args[stop] = NULL;
 	return (args);
 }
@@ -48,10 +48,11 @@ char	*find_cmd(t_env **lst, char *cmd)
 	int		fd;
 	int		i;
 
-	spltpath = ft_split(getenval(*lst, "PATH"), ':');
+	if (!(spltpath = ft_split(getenval(*lst, "PATH"), ':')))
+		return (NULL);
 	i = -1;
-	cmdpath = ft_strdup(cmd);
-	while (spltpath[++i])
+	cmdpath = ft_ternchar(*cmd == '\0', NULL, ft_strdup(cmd));
+	while (spltpath[++i] && cmdpath != NULL)
 	{
 		if ((fd = open(cmdpath, O_RDONLY)) > 0)
 		{
@@ -103,6 +104,8 @@ short	ft_exit(char **cmd)
 	int excod;
 
 	excod = t_g.exstat;
+	if (!t_pipe.prev)
+		ft_putstr("exit", 1);
 	if (cmd[1])
 	{
 		if (ft_isnum(cmd[1]))
@@ -116,14 +119,11 @@ short	ft_exit(char **cmd)
 		}
 		else
 		{
-			ft_putstr("exit", 1);
 			excod = errthrow("exit: ", cmd[1],
 					": numeric argument required", 255);
 		}
 	}
-	else
-		ft_putstr("exit", 1);
-	if (t_pipe.next)
+	if (t_pipe.prev || t_pipe.next)
 		return (0);
 	exit(excod);
 }
