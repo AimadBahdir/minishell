@@ -74,7 +74,10 @@ int		lsh_read_line_and_trim(char **line)
 
 	t_params.was_read = strdup("");
 	if (get_next_line(0, line) == -1)
+	{
+		t_g.exstat = 258;
 		return (-1);
+	}
 	free(t_params.was_read);
 	temp = *line;
 	*line = ft_trim(*line);
@@ -102,7 +105,10 @@ int		check_line(char **line, t_inputs **list_shell)
 		if (check_syntax_list(*list_shell) != -1)
 			exe_list(*list_shell);
 		else
-			write_string("bash: syntax Error 3\n");
+		{
+			t_g.exstat = 258;
+			write_string("bash: syntax Error \n");
+		}
 		*list_shell = NULL;
 	}
 	return (0);
