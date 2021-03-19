@@ -28,6 +28,12 @@ int		chr_bn(char *was_read)
 	return (-1);
 }
 
+void	print_exit(void)
+{
+	write(1, "exit\n", 5);
+	exit(0);
+}
+
 int		read_fd(char **was_read, int *len_read, int fd)
 {
 	*was_read = malloc(BUFFER_SIZE + 1);
@@ -41,7 +47,7 @@ int		read_fd(char **was_read, int *len_read, int fd)
 	if (was_read[0][*len_read - 1] != '\n')
 	{
 		if (*len_read == 0 && !*t_params.was_read)
-			exit(0);
+			print_exit();
 		free(*was_read);
 		*len_read += read_fd(was_read, len_read, fd);
 	}

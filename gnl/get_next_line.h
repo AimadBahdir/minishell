@@ -20,6 +20,7 @@
 #  define BUFFER_SIZE 200
 # endif
 
+void	print_exit();
 int		chr_bn(char *was_read);
 int		get_next_line(int fd, char **line);
 int		chck_save(char **save, char **line);
