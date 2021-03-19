@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:51:18 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:38:32 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 t_env	*newenvelm(char *key, char *val)
 {
 	t_env	*newelm;
+	char	*tmp;
 
+	tmp = NULL;
 	if (!(newelm = malloc(sizeof(*newelm))))
 		return (NULL);
 	if (ft_strcmp(key, "HOME"))
+	{
+		tmp = t_g.homepath;
 		t_g.homepath = ft_strdup(val);
+		free(tmp);
+	}
 	newelm->key = ft_strdup(key);
 	newelm->val = ft_strdup(val);
 	newelm->next = NULL;
@@ -46,9 +52,10 @@ void	envaddelm(t_env **lst, t_env *newelm)
 
 void	ft_setenv(t_env **lst, char **envp)
 {
-	int i;
-	int elen;
-	int klen;
+	int		i;
+	int		elen;
+	int		klen;
+	char	*old;
 
 	i = -1;
 	elen = 0;
@@ -62,6 +69,9 @@ void	ft_setenv(t_env **lst, char **envp)
 		envaddelm(&t_g.explst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
 			ft_substr(envp[i], klen, (elen - klen))));
 	}
+	old = ft_strdup(" ");
+	old[0] = 16;
+	envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), old));
 }
 
 void	ft_resetenv(t_env *lst)
@@ -74,8 +84,8 @@ void	ft_resetenv(t_env *lst)
 	len = 0;
 	while (head && ++len)
 		head = head->next;
-	// if (t_g.envp != NULL)
-	// 	retfreetwo(t_g.envp, 0);
+	if (t_g.envp != NULL)
+		retfreetwo(t_g.envp, 0);
 	t_g.envp = malloc(sizeof(char *) * (len + 1));
 	len = -1;
 	while (lst)

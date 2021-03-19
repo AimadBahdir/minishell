@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 12:07:04 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:39:07 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,23 @@
 
 int		ft_open(char *name, int flags, short out)
 {
+	int file;
+
+	if ((file = open(name, flags, 0644)) == -1)
+		return (0);
 	if (out)
 	{
-		if (t_g.mystdout > 2)
-		{
-			close(t_g.mystdout);
-			t_g.mystdout = STDOUT_FILENO;
-		}
-		return (t_g.mystdout = open(name, flags, 0644));
+		close(t_g.mystdout);
+		t_g.mystdout = dup(file);
+		close(file);
 	}
 	else
 	{
-		if (t_g.mystdin > 2)
-		{
-			close(t_g.mystdin);
-			t_g.mystdin = dup(STDIN_FILENO);
-		}
-		return (t_g.mystdin = open(name, flags, 0644));
+		close(t_g.mystdin);
+		t_g.mystdin = dup(file);
+		close(file);
 	}
+	return (1);
 }
 
 short	ft_creatfiles(char **cmd, int stop)
@@ -53,6 +52,33 @@ short	ft_creatfiles(char **cmd, int stop)
 	return (0);
 }
 
+char	*spltandgenv(t_env *envlst, char *cmd)
+{
+	char	*key;
+	char	*suit;
+	char	*res;
+	char	*val;
+	int		stop;
+
+	if ((stop = ft_strnormed(cmd)) == -1)
+	{
+		key = ft_strdup(cmd);
+		suit = ft_strdup("");
+	}
+	else
+	{
+		key = ft_substr(cmd, 0, stop);
+		suit = ft_substr(cmd, stop, (ft_strlen(cmd) - stop));
+	}
+	if (!(val = getenval(envlst, key)))
+		val = ft_strdup("");
+	res = ft_strjoin(val, suit);
+	free(key);
+	free(val);
+	free(suit);
+	return (res);
+}
+
 short	ft_chkambigs(t_env *envlst, char **cmd, int pos, char **vars)
 {
 	char	*arg;
@@ -68,7 +94,7 @@ short	ft_chkambigs(t_env *envlst, char **cmd, int pos, char **vars)
 		while (vars[i])
 		{
 			tmp = arg;
-			arg = ft_strjoin(arg, getenval(envlst, vars[i++]));
+			arg = ft_strjoin(arg, spltandgenv(envlst, vars[i++]));
 			free(tmp);
 		}
 		if (ft_checkfor(' ', arg) != -1 || (arg != NULL && *arg == '\0'))
@@ -84,13 +110,18 @@ short	ft_chkambigs(t_env *envlst, char **cmd, int pos, char **vars)
 
 short	gdirections(t_env **envlst, char **cmd)
 {
-	int	err;
+	int		err;
+	char	**splt;
 
 	if ((err = ft_creatfiles(cmd, -1)) == 0)
 	{
 		if (cmd[0][0] == 14 || cmd[0][0] == 15)
 			return (err);
-		return (ft_execmd(envlst, spltcmd(cmd)));
+		if ((splt = spltcmd(cmd)) != NULL)
+		{
+			err = ft_execmd(envlst, splt);
+			return (retfreetwo(splt, err));
+		}
 	}
 	return (err);
 }

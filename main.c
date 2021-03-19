@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:58:53 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/18 17:03:50 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,24 @@ void	signals_handler(int sig)
 {
 	int exstat;
 
-	if (sig == SIGINT)
-		write_string("\nbash-1.0$ ");
-	if (sig == SIGQUIT && t_g.iscmd > 0)
+	if (t_g.iscmd == 0)
+		write(1, "\b\b", 2);
+	if (sig == SIGINT && !t_g.iscmd)
+	{
+		if (t_params.was_read != NULL)
+		{
+			free(t_params.was_read);
+			t_params.was_read = NULL;
+		}
+		write_string("\nminibash-1.0$ ");
+	}
+	else if (sig == SIGQUIT && t_g.iscmd > 0)
 	{
 		wait(&exstat);
 		if (WIFEXITED(exstat))
 			t_g.exstat = WEXITSTATUS(exstat);
 		if (t_g.iscmd == 2)
 			ft_putstr("Quit: 3", 1);
-		else
-			write(t_g.mystdout, "\b\b", 2);
 	}
 }
 
@@ -76,7 +83,8 @@ void	lsh_loop(t_env **envlst)
 	list_shell = NULL;
 	while (1)
 	{
-		write_string("bash-1.0$ ");
+		t_g.iscmd = 0;
+		write_string("minibash-1.0$ ");
 		if (lsh_read_line_and_trim(&line) == -1)
 			write_string("bash: syntax Error\n");
 		else if (read_more(&line) == -1)
@@ -105,6 +113,6 @@ int		main(int argc, char **argv, char **envp)
 		free(envlst->key);
 		free(envlst->val);
 		envlst = envlst->next;
-	}
-	return (0);
+	};
+	return (retfreetwo(t_g.envp, 0));
 }

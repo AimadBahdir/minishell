@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:58:41 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 09:40:33 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int				ft_isalpha(int c);
 char			*ft_itoa(int n);
 short			ft_isnum(char *str);
 int				ft_atoi(const char *str);
-char			*ft_strlower(char *str);
+void			ft_strlower(char *str);
 char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
@@ -172,7 +172,8 @@ short			ft_execute(t_env **envlst, t_inputs *cmdlst);
 short			ft_execmd(t_env **lst, char **cmdargs);
 short			ft_echo(char **args);
 short			ft_env(t_env *e, char **args);
-short			ft_pwd(t_env **e);
+short			ft_pwd(t_env **e, short get);
+void			ft_setoldpwd(t_env **e);
 short			ft_export(t_env **e, char **args);
 short			ft_exprint(void);
 short			ft_unset(t_env **e, char **args);
@@ -187,6 +188,7 @@ char			**spltcmd(char **cmd);
 short			gdirections(t_env **envlst, char **cmd);
 short			ft_chkambigs(t_env *envlst, char **cmd,
 							int pos, char **vars);
+char			*spltandgenv(t_env *envlst, char *cmd);
 int				fillfile(t_env **envlst, char **cmd);
 int				retfreetwo(char **tmp1, int ret);
 int				retfree(char *tmp1, char *tmp2, int ret);

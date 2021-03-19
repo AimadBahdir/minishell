@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 08:43:50 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/19 12:30:56 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,54 +63,38 @@ char	*ft_rplchome(char *path)
 
 	tmp = path;
 	if (path == NULL)
-		path = t_g.homepath;
+		path = ft_strdup(t_g.homepath);
 	else if (path[0] == '~')
 		path = ft_strjoin(t_g.homepath, (path + 1));
+	free(tmp);
 	return (path);
-}
-
-void	ft_setoldpwd(t_env **e)
-{
-	char *pwd;
-
-	pwd = getenval(*e, "PWD");
-	if (getenval(*e, "OLDPWD") == NULL)
-	{
-		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
-		pwd = getenval(t_g.explst, "PWD");
-		envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
-	}
-	else
-	{
-		setenval(e, "OLDPWD", pwd);
-		pwd = getenval(t_g.explst, "PWD");
-		setenval(&t_g.explst, "OLDPWD", pwd);
-	}
 }
 
 short	ft_cd(t_env **e, char **args)
 {
-	char *pwd;
 	char *path;
 
-	path = args[1];
-	if (!path || path[0] == '~')
-		path = ft_rplchome(path);
-	else if (ft_strcmp(path, "-"))
+	if (!args[1] || args[1][0] == '~')
+		path = ft_rplchome(ft_strdup(args[1]));
+	else if (args[1][0] == '\0')
+		return (0);
+	else if (ft_strcmp(args[1], "-"))
 	{
 		if ((path = getenval(*e, "OLDPWD")) == NULL)
 			return (errthrow("cd: ", "OLDPWD not set", NULL, 1));
 		else
 			ft_putstr(path, 1);
 	}
+	else
+		path = ft_strdup(args[1]);
 	if (chdir(path) == -1)
+	{
+		retfree(path, NULL, 1);
 		return (errthrow(path, ": cd: ", strerror(errno), 1));
-	if (!(pwd = getcwd(NULL, 0)))
-		return (errthrow("cd: ", "getcwd: ", strerror(errno), errno));
+	}
 	ft_setoldpwd(e);
-	if (getenval(*e, "PWD"))
-		setenval(e, "PWD", pwd);
-	return (0);
+	ft_pwd(e, 0);
+	return (retfree(path, NULL, 0));
 }
 
 short	ft_pipe(void)
