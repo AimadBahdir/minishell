@@ -14,7 +14,8 @@
 
 int		error_msg(void)
 {
-	t_params.error_text = "bash: syntax Error 2\n";
+	t_g.exstat = 258;
+	t_params.error_text = "bash: syntax Error\n";
 	return (-1);
 }
 

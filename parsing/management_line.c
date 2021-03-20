@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/18 08:57:11 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/03/20 08:38:55 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ int		join_new_line_check_read_more(char **line, char **line2)
 	*line = ft_strjoin(*line, *line2);
 	free(temp);
 	len = ft_strlen(*line2);
-	if (line2[0][len - 1] != '|' && valid_option(*line2, len - 1) == 1)
+	if (line2[0][len - 1] != '|')
 	{
 		free(*line2);
 		return (1);
 	}
-	return (0);
+	else if (line2[0][len - 1] != '|' && valid_option(*line2, len - 1) == 1)
+		return (0);
+	return (1);
 }
 
 int		read_more(char **line)
@@ -71,8 +73,11 @@ int		lsh_read_line_and_trim(char **line)
 	char *temp;
 
 	t_params.was_read = strdup("");
-	if (get_next_line(STDIN_FILENO, line) == -1)
+	if (get_next_line(0, line) == -1)
+	{
+		t_g.exstat = 258;
 		return (-1);
+	}
 	free(t_params.was_read);
 	temp = *line;
 	*line = ft_trim(*line);
@@ -100,7 +105,10 @@ int		check_line(t_env **envlst, char **line, t_inputs **list_shell)
 		if (check_syntax_list(*list_shell) != -1)
 			exe_list(envlst, *list_shell);
 		else
-			write_string("bash: syntax Error 3\n");
+		{
+			t_g.exstat = 258;
+			write_string("bash: syntax Error \n");
+		}
 		*list_shell = NULL;
 	}
 	return (0);

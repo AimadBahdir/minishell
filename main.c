@@ -88,7 +88,10 @@ void	lsh_loop(t_env **envlst)
 		if (lsh_read_line_and_trim(&line) == -1)
 			write_string("bash: syntax Error\n");
 		else if (read_more(&line) == -1)
+		{
+			t_g.exstat = 258;
 			write_string("bash: syntax Error\n");
+		}
 		else if (line[0] != '\0')
 		{
 			if (check_line(envlst, &line, &list_shell) == 1)
