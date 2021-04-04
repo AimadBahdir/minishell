@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/19 12:31:06 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:20:57 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,18 @@ char	*ft_getvar(t_env *envlst, char **spltd, short first)
 short	ft_setenvar(t_env *envlst, char **cmd)
 {
 	char	**spltd;
-	char	*tmp;
 	int		i;
 
 	i = -1;
-	while (cmd[++i])
+	ft_dupcmd(cmd);
+	while (t_g.cmd[++i])
 	{
-		if (ft_checkfor(24, cmd[i]) != -1)
+		if (ft_checkfor(24, t_g.cmd[i]) != -1)
 		{
-			if ((spltd = ft_split(cmd[i], 24)) != NULL)
+			if ((spltd = ft_split(t_g.cmd[i], 24)) != NULL)
 			{
-				tmp = cmd[i];
-				if (!ft_chkambigs(envlst, cmd, i, spltd))
-				{
-					cmd[i] = ft_getvar(envlst, spltd, cmd[i][0] == 24);
-					retfreetwo(spltd, retfree(tmp, NULL, 0));
-				}
+				if (!ft_chkambigs(envlst, i, spltd))
+					retfreetwo(spltd, 0);
 				else
 					return (retfreetwo(spltd, 1));
 			}
@@ -90,12 +86,14 @@ void	ft_setoldpwd(t_env **e)
 	char *oldpwd;
 
 	pwd = getenval(*e, "PWD");
-	oldpwd = getenval(*e, "OLDPWD");
-	if (oldpwd == NULL && pwd != NULL)
+	if ((oldpwd = getenval(*e, "OLDPWD")) == NULL && pwd != NULL)
 	{
 		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
-		pwd = getenval(t_g.explst, "PWD");
-		envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
+		retfree(oldpwd, NULL, !(pwd = getenval(t_g.explst, "PWD")));
+		if ((oldpwd = getenval(t_g.explst, "OLDPWD")) == NULL)
+			envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
+		else
+			setenval(&t_g.explst, "OLDPWD", pwd);
 	}
 	else if (pwd == NULL)
 	{

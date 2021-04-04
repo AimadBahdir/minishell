@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/15 11:28:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:21:56 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 short	errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 {
-	write(STDERR_FILENO, "bash: ", strlen("bash: "));
+	write(STDERR_FILENO, "minibash: ", strlen("minibash: "));
 	if (erp1)
 		write(STDERR_FILENO, erp1, ft_strlen(erp1));
 	if (erp2)

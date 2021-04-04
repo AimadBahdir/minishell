@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 12:38:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 11:12:51 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:22:16 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,8 @@ char			**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	lw = lenwords(s, c) + 1;
-	sp = malloc(lw * sizeof(char *));
-	i = 0;
-	j = -1;
+	lw = lenwords(s, c);
+	sp = malloc(((lw + ((i = 0) == 0 && (j = -1) == -1))) * sizeof(char *));
 	while (s[i])
 	{
 		while (s[i] && s[i] == c)

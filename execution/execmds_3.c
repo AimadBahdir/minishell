@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/19 12:30:56 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:20:33 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ short	ft_chkopt(char **args, int *i)
 	return (nl);
 }
 
-short	ft_echo(char **args)
+short	ft_echo(void)
 {
 	short	newline;
 	int		i;
 
-	if (!args[1])
+	if (t_g.cmd[1] == NULL)
 		return (!(write(t_g.mystdout, "\n", 1)));
-	newline = ft_chkopt(args, &i);
-	while (args[i])
+	newline = ft_chkopt(t_g.cmd, &i);
+	while (t_g.cmd[i])
 	{
-		ft_putstr(args[i++], 0);
-		if (args[i])
+		ft_putstr(t_g.cmd[i++], 0);
+		if (t_g.cmd[i])
 			write(t_g.mystdout, " ", 1);
 	}
 	if (newline)
@@ -70,15 +70,15 @@ char	*ft_rplchome(char *path)
 	return (path);
 }
 
-short	ft_cd(t_env **e, char **args)
+short	ft_cd(t_env **e)
 {
 	char *path;
 
-	if (!args[1] || args[1][0] == '~')
-		path = ft_rplchome(ft_strdup(args[1]));
-	else if (args[1][0] == '\0')
+	if (!t_g.cmd[1] || t_g.cmd[1][0] == '~')
+		path = ft_rplchome(ft_strdup(t_g.cmd[1]));
+	else if (t_g.cmd[1][0] == '\0')
 		return (0);
-	else if (ft_strcmp(args[1], "-"))
+	else if (ft_strcmp(t_g.cmd[1], "-"))
 	{
 		if ((path = getenval(*e, "OLDPWD")) == NULL)
 			return (errthrow("cd: ", "OLDPWD not set", NULL, 1));
@@ -86,7 +86,7 @@ short	ft_cd(t_env **e, char **args)
 			ft_putstr(path, 1);
 	}
 	else
-		path = ft_strdup(args[1]);
+		path = ft_strdup(t_g.cmd[1]);
 	if (chdir(path) == -1)
 	{
 		retfree(path, NULL, 1);
