@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:02:00 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/04 13:30:46 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,9 @@ int		pass_spe(char *line, int i)
 		i++;
 	}
 	return (i);
+}
+
+int		ft_puts(int d)
+{
+	return (write(1, &d, sizeof(int)));
 }

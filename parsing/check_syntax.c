@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:41:07 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/11 16:39:43 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/04 13:51:56 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		error_msg(void)
 {
-	t_g.exstat = 258;
+	//t_g.exstat = 258;
 	t_params.error_text = "bash: syntax Error\n";
 	return (-1);
 }

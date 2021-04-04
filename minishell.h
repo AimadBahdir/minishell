@@ -6,18 +6,19 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/13 09:24:15 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/04 13:17:49 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-#include "gnl/get_next_line.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h> 
+#include <term.h>
+#include <termcap.h>
 
 
 typedef struct s_inputs
@@ -43,12 +44,26 @@ typedef struct s_cargs
 
 struct s_params
 {
-    char **args;
-	char *error_text;
-	int vld_der;
-	char *was_read;
-	char *temp;
+    char	**args;
+	char	*error_text;
+	int		vld_der;
+	char	*was_read;
+	char	*temp;
+	int		c;
+	int		i;
+	int     input;
+	int		ud_down;
+	t_cargs	*str_c;
+	t_cargs	*str_c2;
+	int		check;
 }	t_params;
+
+typedef struct s_stack
+{
+	char *line;
+	int i;
+	struct s_stack *next;
+}           t_stack;
 
 size_t      ft_strlen(const char *s);
 size_t      ft_lento(char *s, char c);
@@ -95,8 +110,7 @@ int			lsh_split_line(char *line, t_inputs **list_shell);
 int			get_param_list_shell(char *line, int start, int end);
 int			new_check(char **line2);
 int			join_new_line_check_read_more(char **line, char **line2);
-int			read_more(char **line);
-int			lsh_read_line_and_trim(char **line);
+int			lsh_read_line_and_trim(char **line, t_stack **stack);
 int			check_line(char **line, t_inputs **list_shell);
 int 		number_of_derc_in_table(char **s);
 int			is_nbr_car(char c);
@@ -118,5 +132,28 @@ int			check_syntax_list(t_inputs *list_shell);
 int			valid_option(char *line, int start);
 void		lsh_loop(void);
 void		exe_list(t_inputs *list_shell);
+
+
+char		*get_line(t_stack **stack);
+t_stack		*ft_lststacknew(char *line, int i);
+void		ft_lststackadd_back(t_stack **list_shell, t_stack *new);
+int			get_len_list_stack(t_stack *lst);
+void		lastnodedeletion(t_cargs **lst);
+void		free_t_cargs(t_cargs **args);
+
+char		*get_word_t_cargs(t_cargs **args);
+int			print_node(t_stack **list_shell, int i, t_cargs **args2);
+int			get_char(t_cargs **args, t_cargs **args2);
+int			ft_puts(int d);
+void		delete_change(void);
+char		*button_enter(int *ud_down, t_stack **stack, t_cargs **args2, t_cargs **args);
+void		button_down(int *ud_down, t_stack **stack, t_cargs **args2, t_cargs **args);
+void		button_remove(int *ud_down, t_stack **stack, t_cargs **args2, t_cargs **args);
+void		button_up(int *ud_down, t_stack **stack, t_cargs **args2);
+void		button_character(int *ud_down, t_stack **stack, t_cargs **args2, t_cargs **args);
+
+
+
+
 
 #endif
