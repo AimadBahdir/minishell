@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 17:04:38 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 18:25:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,27 @@ short	ft_chkambigs(t_env *envlst, int pos, char **vars)
 {
 	char	*arg;
 	char	*tmp;
-	int		err;
 
-	err = 0;
+	t_g.err = 0;
 	arg = ft_getvar(envlst, vars, t_g.cmd[pos][0] == 24);
-	if (ft_checkfor(' ', arg) != -1)
+	if (ft_checkfor(' ', (tmp = ft_strtrim(arg, "\t "))) != -1)
 	{
 		if (pos > 0 && (t_g.cmd[pos - 1][0] == 14 || t_g.cmd[pos - 1][0] == 15))
 		{
-			err = ft_creatfiles(t_g.cmd, pos - 1);
-			return (ft_ternint((err == 0), errthrow("$", vars[(
+			t_g.err = ft_creatfiles(t_g.cmd, pos - 1);
+			return (ft_ternint((t_g.err == 0), errthrow("$", vars[(
 				ft_lento(t_g.cmd[pos], 24) > 0)],
-				": ambiguous redirect", retfree(arg, NULL, 1)), err));
+				": ambiguous redirect", retfree(arg, tmp, 1)), t_g.err));
 		}
 		else
 			ft_rplcmd(arg, pos);
 	}
 	else
 	{
+		free(tmp);
 		tmp = t_g.cmd[pos];
 		t_g.cmd[pos] = ft_strdup(arg);
 		return (retfree(tmp, arg, 0));
 	}
-	return (retfree(arg, NULL, err));
+	return (retfree(arg, tmp, t_g.err));
 }

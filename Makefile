@@ -6,7 +6,7 @@
 #    By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/16 15:17:45 by abahdir           #+#    #+#              #
-#    Updated: 2021/04/04 17:13:23 by abahdir          ###   ########.fr        #
+#    Updated: 2021/04/04 18:26:34 by abahdir          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ SRC =	main.c							\
 all : $(NAME)
 
 $(NAME):$(SRC)
-	gcc -Wall -Wextra -Werror $(SRC) -lncurses -g -o minishell
+	gcc -Wall -Wextra -Werror $(SRC) -lncurses -o minishell
 clean:
 	rm -rf minishell
 fclean:
