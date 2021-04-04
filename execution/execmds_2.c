@@ -6,17 +6,17 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/19 10:53:20 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:20:21 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-short	ft_env(t_env *e, char **args)
+short	ft_env(t_env *e)
 {
-	if (ft_lentwop(args) > 1)
+	if (ft_lentwop(t_g.cmd) > 1)
 	{
-		return (errthrow("env: ", args[1],
+		return (errthrow("env: ", t_g.cmd[1],
 			": No such file or directory", 127));
 	}
 	while (e)
@@ -40,8 +40,14 @@ short	ft_pwd(t_env **e, short get)
 	if (get)
 		ft_putstr(pwd, 1);
 	if (path != NULL)
+	{
 		setenval(e, "PWD", ft_strdup(pwd));
+		setenval(&t_g.explst, "PWD", ft_strdup(pwd));
+	}
 	else if (!get)
+	{
 		envaddelm(e, newenvelm(ft_strdup("PWD"), ft_strdup(pwd)));
+		envaddelm(&t_g.explst, newenvelm(ft_strdup("PWD"), ft_strdup(pwd)));
+	}
 	return (retfree(path, pwd, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 22:08:10 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 09:32:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:22:42 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ size_t	ft_lentwop(char **s)
 	size_t len;
 
 	len = 0;
-	while (s[len] != '\0')
+	while (s[len])
 		len++;
 	return (len);
 }

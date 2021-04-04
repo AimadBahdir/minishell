@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 15:21:39 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/19 09:40:33 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:27:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ struct			s_g
 	int		mystdin;
 	int		exstat;
 	short	iscmd;
+	char	**cmd;
 	t_env	*explst;
 }				t_g;
 
@@ -150,13 +151,14 @@ short			ft_isnum(char *str);
 int				ft_atoi(const char *str);
 void			ft_strlower(char *str);
 char			*ft_strdup(const char *s1);
+short			ft_dupcmd(char **str);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strtrim(const char *s1, const char *set);
 char			**ft_split(char const *s, char c);
 short			ft_checkfor(char c, char *str);
 short			ft_checkforstr(char *str, char **lst);
-short			chk_directions(char **lst);
+short			chk_directions(void);
 short			errthrow(char *erp1, char *erp2, char *erp3, int errcode);
 int				ft_ternint(short cond, int iftrue, int iffalse);
 char			*ft_ternchar(short cond, char *iftrue, char *iffalse);
@@ -169,28 +171,28 @@ void			ft_setenv(t_env **lst, char **envp);
 char			*getenval(t_env *e, char *key);
 short			ft_setoldcmd(t_env **lst, char *cmdpath);
 short			ft_execute(t_env **envlst, t_inputs *cmdlst);
-short			ft_execmd(t_env **lst, char **cmdargs);
-short			ft_echo(char **args);
-short			ft_env(t_env *e, char **args);
+short			ft_execmd(t_env **lst);
+short			ft_echo(void);
+short			ft_env(t_env *e);
 short			ft_pwd(t_env **e, short get);
 void			ft_setoldpwd(t_env **e);
-short			ft_export(t_env **e, char **args);
+short			ft_export(t_env **e);
 short			ft_exprint(void);
-short			ft_unset(t_env **e, char **args);
-short			ft_cd(t_env **e, char **args);
-short			ft_exit(char **cmd);
-short			ft_othercmd(t_env **lst, char **cmdargs);
+short			ft_unset(t_env **e);
+short			ft_cd(t_env **e);
+short			ft_exit(void);
+short			ft_othercmd(t_env **lst);
 short			ft_duptwo(int fd1, int fd2);
 short			ft_pipe(void);
 short			ft_setenvar(t_env *envlst, char **cmd);
 void			ft_resetenv(t_env *lst);
-char			**spltcmd(char **cmd);
-short			gdirections(t_env **envlst, char **cmd);
-short			ft_chkambigs(t_env *envlst, char **cmd,
-							int pos, char **vars);
+char			**spltcmd(void);
+short			gdirections(t_env **envlst);
+short			ft_chkambigs(t_env *envlst, int pos, char **vars);
 char			*spltandgenv(t_env *envlst, char *cmd);
-int				fillfile(t_env **envlst, char **cmd);
+int				fillfile(t_env **envlst);
 int				retfreetwo(char **tmp1, int ret);
 int				retfree(char *tmp1, char *tmp2, int ret);
+char			*ft_getvar(t_env *envlst, char **spltd, short first);
 void			signals_handler(int sig);
 #endif
