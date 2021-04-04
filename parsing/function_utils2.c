@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:35 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 14:20:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,9 @@ int		pass_spe(char *line, int i)
 		i++;
 	}
 	return (i);
+}
+
+int		ft_puts(int d)
+{
+	return (write(1, &d, sizeof(int)));
 }

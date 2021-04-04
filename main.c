@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/11 14:21:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 17:03:50 by abahdir          ###   ########.fr       */
+/*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
+/*   Updated: 2021/04/04 17:00:32 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,7 @@ void	exe_list(t_env **envlst, t_inputs *list_shell)
 	t_inputs	*ptr_list_shell;
 
 	j = 0;
-	// (void)envlst;
-	ptr_list_shell = list_shell;
-	while (ptr_list_shell != NULL)
-	{
-		j = 0;
-		printf("command : ");
-		while (ptr_list_shell->command[j] != NULL)
-		{
-			printf("%s ", ptr_list_shell->command[j]);
-			j++;
-		}
-		printf("| pipe : %d", ptr_list_shell->pipe);
-		ptr_list_shell = ptr_list_shell->next;
-	}
-	printf("\n------------------------------\n");
+	write_string("\n");
 	ft_execute(envlst, list_shell);
 	ptr_list_shell = list_shell;
 	while (list_shell != NULL)
@@ -52,15 +38,10 @@ void	signals_handler(int sig)
 {
 	int exstat;
 
-	if (t_g.iscmd == 0)
-		write(1, "\b\b", 2);
 	if (sig == SIGINT && !t_g.iscmd)
 	{
-		if (t_params.was_read != NULL)
-		{
-			free(t_params.was_read);
-			t_params.was_read = NULL;
-		}
+		t_params.check = 1;
+		t_params.input = 0;
 		write_string("\nminibash-1.0$ ");
 	}
 	else if (sig == SIGQUIT && t_g.iscmd > 0)
@@ -77,45 +58,51 @@ void	lsh_loop(t_env **envlst)
 {
 	char		*line;
 	t_inputs	*list_shell;
+	t_stack		*stack;
 
-	signal(SIGINT, signals_handler);
-	signal(SIGQUIT, signals_handler);
+	t_params.input = 0;
+	t_params.ud_down = 0;
+	t_params.i = 1;
+	stack = NULL;
 	list_shell = NULL;
 	while (1)
 	{
 		t_g.iscmd = 0;
 		write_string("minibash-1.0$ ");
-		if (lsh_read_line_and_trim(&line) == -1)
-			write_string("bash: syntax Error\n");
-		else if (read_more(&line) == -1)
-		{
-			t_g.exstat = 258;
-			write_string("bash: syntax Error\n");
-		}
+		if (lsh_read_line_and_trim(&line, &stack) == -1)
+			write_string("minibash: syntax Error\n");
 		else if (line[0] != '\0')
 		{
 			if (check_line(envlst, &line, &list_shell) == 1)
 				continue;
 		}
+		else if (line[0] == '\0')
+			write_string("\n");
 		free(line);
 	}
 }
 
 int		main(int argc, char **argv, char **envp)
 {
+	t_env *envlst;
+
 	argv = NULL;
 	argc = 0;
-
-	t_env *envlst;
+	t_g.cmd = NULL;
 	envlst = NULL;
 	t_g.envp = NULL;
+	t_params.str_c = NULL;
+	t_params.str_c2 = NULL;
 	ft_setenv(&envlst, envp);
+	t_params.check = 0;
+	signal(SIGINT, signals_handler);
+	signal(SIGQUIT, signals_handler);
 	lsh_loop(&envlst);
 	while (envlst)
 	{
 		free(envlst->key);
 		free(envlst->val);
 		envlst = envlst->next;
-	};
+	}
 	return (retfreetwo(t_g.envp, 0));
 }

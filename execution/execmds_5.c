@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:51:59 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:21:27 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 16:46:55 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,30 @@ short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 short	ft_export(t_env **e)
 {
 	int		keylen;
-	int		err;
 	char	*noval;
-	short	i;
 
-	i = 0;
-	if (!(err = 0) && ft_lentwop(t_g.cmd) < 2)
+	t_g.indx = 0;
+	if (!(t_g.err = 0) && ft_lentwop(t_g.cmd) < 2)
 		return (ft_exprint());
-	while (t_g.cmd[++i])
+	while (t_g.cmd[++t_g.indx])
 	{
-		if (ft_checkfor('=', t_g.cmd[i]) > 0)
+		if (ft_checkfor('=', t_g.cmd[t_g.indx]) > 0)
 		{
-			keylen = ft_lento(t_g.cmd[i], '=') + 1;
-			err = ft_exportelem(e, ft_substr(t_g.cmd[i], 0, keylen - 1),
-				ft_substr(t_g.cmd[i], keylen, (ft_strlen(t_g.cmd[i]) - keylen)), 0);
+			keylen = ft_lento(t_g.cmd[t_g.indx], '=') + 1;
+			t_g.err = ft_exportelem(e, ft_substr(t_g.cmd[t_g.indx],
+				0, keylen - 1), ft_substr(t_g.cmd[t_g.indx], keylen,
+				(ft_strlen(t_g.cmd[t_g.indx]) - keylen)), 0);
 		}
-		else if (ft_strnormed(t_g.cmd[i]) == -1)
+		else if (ft_strnormed(t_g.cmd[t_g.indx]) == -1)
 		{
 			noval = ft_strdup(" ");
 			noval[0] = 16;
-			ft_exportelem(&t_g.explst, ft_strdup(t_g.cmd[i]), noval, 1);
+			ft_exportelem(&t_g.explst, ft_strdup(t_g.cmd[t_g.indx]), noval, 1);
 		}
 		else
-			err = novalidentif(1, t_g.cmd[i]);
+			t_g.err = novalidentif(1, t_g.cmd[t_g.indx]);
 	}
-	return (err);
+	return (t_g.err);
 }
 
 short	ft_unset(t_env **e)

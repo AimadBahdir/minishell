@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:20:33 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 14:25:59 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,19 @@ short	ft_chkopt(char **args, int *i)
 
 short	ft_echo(void)
 {
-	short	newline;
+	short	nl;
 	int		i;
 
 	if (t_g.cmd[1] == NULL)
 		return (!(write(t_g.mystdout, "\n", 1)));
-	newline = ft_chkopt(t_g.cmd, &i);
+	nl = ft_chkopt(t_g.cmd, &i);
 	while (t_g.cmd[i])
 	{
 		ft_putstr(t_g.cmd[i++], 0);
 		if (t_g.cmd[i])
 			write(t_g.mystdout, " ", 1);
 	}
-	if (newline)
+	if (nl)
 		write(t_g.mystdout, "\n", 1);
 	return (0);
 }

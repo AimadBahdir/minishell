@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:07:44 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 15:24:57 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/03 16:39:05 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ char	*get_word_free(t_cargs **args)
 		ptr_args2 = ptr_args2->next;
 		free(ptr_args);
 	}
+	*args = NULL;
 	return (ptr);
 }

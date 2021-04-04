@@ -6,11 +6,72 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:20:21 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 16:59:01 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int		ft_open(char *name, int flags, short out)
+{
+	int file;
+
+	if ((file = open(name, flags, 0644)) == -1)
+		return (0);
+	if (out)
+	{
+		close(t_g.mystdout);
+		t_g.mystdout = dup(file);
+		close(file);
+	}
+	else
+	{
+		close(t_g.mystdin);
+		t_g.mystdin = dup(file);
+		close(file);
+	}
+	return (1);
+}
+
+short	ft_creatfiles(char **cmd, int stop)
+{
+	short	i;
+
+	i = -1;
+	while (cmd[++i] && (i < stop || stop == -1))
+	{
+		if (cmd[i][0] == 15 && ft_open(cmd[++i], O_RDWR, 0) == -1)
+			return (errthrow(cmd[i], ": ", strerror(errno), 1));
+		else if (cmd[i][0] == 14 && cmd[i][1] == '>' && ft_open(cmd[++i],
+			O_CREAT | O_RDWR | O_APPEND, 1) == -1)
+			return (errthrow(cmd[i], ": ", strerror(errno), 1));
+		else if (cmd[i][0] == 14 && ft_open(cmd[++i],
+			O_CREAT | O_RDWR | O_TRUNC, 1) == -1)
+			return (errthrow(cmd[i], ": ", strerror(errno), 1));
+	}
+	return (0);
+}
+
+short	gdirections(t_env **envlst)
+{
+	int		err;
+	char	**splt;
+
+	if ((err = ft_creatfiles(t_g.cmd, -1)) == 0)
+	{
+		if (t_g.cmd[0][0] == 14 || t_g.cmd[0][0] == 15)
+			return (err);
+		if ((splt = spltcmd()) != NULL)
+		{
+			if (ft_dupcmd(splt))
+				err = ft_execmd(envlst);
+			else
+				err = 1;
+			return (retfreetwo(splt, err));
+		}
+	}
+	return (err);
+}
 
 short	ft_env(t_env *e)
 {

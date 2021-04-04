@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 12:38:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:22:16 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 16:48:03 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,27 @@ char			**ft_split(char const *s, char c)
 {
 	char	**sp;
 	int		lw;
-	int		i;
-	int		j;
 
 	if (!s)
 		return (NULL);
 	lw = lenwords(s, c);
-	sp = malloc(((lw + ((i = 0) == 0 && (j = -1) == -1))) * sizeof(char *));
-	while (s[i])
+	sp = malloc((lw + 1) * sizeof(char *));
+	t_g.indx = 0;
+	t_g.err = -1;
+	while (s[t_g.indx])
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		if (i == 0)
+		while (s[t_g.indx] && s[t_g.indx] == c)
+			t_g.indx++;
+		if (t_g.indx == 0)
 		{
-			if ((sp[++j] = getword(s, c, &i, sp)) == NULL)
+			if ((sp[++t_g.err] = getword(s, c, &t_g.indx, sp)) == NULL)
 				return (NULL);
 		}
-		else if (s[i - 1] == c && s[i] != c && s[i])
-			if ((sp[++j] = getword(s, c, &i, sp)) == NULL)
+		else if (s[t_g.indx - 1] == c && s[t_g.indx] != c && s[t_g.indx])
+			if ((sp[++t_g.err] = getword(s, c, &t_g.indx, sp)) == NULL)
 				return (NULL);
-		i += ft_ternint(s[i], 1, 0);
+		t_g.indx += ft_ternint(s[t_g.indx], 1, 0);
 	}
-	sp[++j] = 0;
+	sp[++t_g.err] = 0;
 	return (sp);
 }

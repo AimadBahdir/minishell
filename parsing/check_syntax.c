@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:41:07 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/11 16:39:43 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/04 17:14:18 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		error_msg(void)
 {
 	t_g.exstat = 258;
-	t_params.error_text = "bash: syntax Error\n";
+	t_params.error_text = "\nminibash: syntax Error\n";
 	return (-1);
 }
 
@@ -50,7 +50,7 @@ int		check_syntax_redirection(char *line, int i)
 	|| ((line[i] == '<' && line[i + 1] == '<') && valid_option(line, i) == 1))
 	{
 		i = pass_spe(line, i + 2);
-		if (line[i] == '|' || line[i] == ';'
+		if (line[i] == '|' || line[i] == ';' || line[i] == '\0'
 		|| line[i] == '>' || line[i] == '<')
 			return (-1);
 		return (i - 1);

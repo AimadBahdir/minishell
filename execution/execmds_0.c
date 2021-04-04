@@ -6,20 +6,28 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:26:48 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 15:33:45 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*lowercmd(t_env **lst)
+{
+	char	*cmd;
+
+	cmd = ft_strdup(t_g.cmd[0]);
+	ft_setoldcmd(lst, cmd);
+	ft_strlower(cmd);
+	return (cmd);
+}
 
 short	ft_execmd(t_env **lst)
 {
 	char	*cmd;
 	short	err;
 
-	cmd = ft_strdup(t_g.cmd[0]);
-	ft_setoldcmd(lst, cmd);
-	ft_strlower(cmd);
+	cmd = lowercmd(lst);
 	if (ft_strcmp(cmd, "echo"))
 		err = ft_echo();
 	else if (ft_strcmp(cmd, "cd"))
@@ -78,10 +86,8 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 
 	head = cmdlst;
 	t_pipe.prev = 0;
-	t_g.cmd = NULL;
 	while (head)
 	{
-		
 		t_g.mystdout = dup(STDOUT_FILENO);
 		t_g.mystdin = dup(STDIN_FILENO);
 		if (!ft_setenvar(*envlst, head->command))

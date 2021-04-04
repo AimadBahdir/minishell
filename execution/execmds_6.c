@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:27:14 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 16:14:04 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,33 @@ void	ft_setoldpwd(t_env **e)
 		setenval(&t_g.explst, "OLDPWD", pwd);
 	}
 	free(oldpwd);
+}
+
+short	ft_exit(void)
+{
+	int excod;
+
+	excod = t_g.exstat;
+	if (!t_pipe.prev)
+		ft_putstr("exit", 1);
+	if (t_g.cmd[1])
+	{
+		if (ft_isnum(t_g.cmd[1]))
+		{
+			if (ft_lentwop(t_g.cmd) > 2)
+			{
+				return (errthrow("exit: ",
+						"too many arguments", NULL, !t_pipe.next));
+			}
+			excod = ft_atoi(t_g.cmd[1]);
+		}
+		else
+		{
+			excod = errthrow("exit: ", t_g.cmd[1],
+					": numeric argument required", 255);
+		}
+	}
+	if (t_pipe.prev || t_pipe.next)
+		return (0);
+	exit(excod);
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 08:55:32 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:21:42 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 15:44:01 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ short	ft_checkforstr(char *str, char **lst)
 	return (0);
 }
 
-short	chk_directions()
+short	chk_directions(void)
 {
 	int i;
 

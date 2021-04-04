@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/20 08:38:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 15:21:18 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,43 +42,11 @@ int		join_new_line_check_read_more(char **line, char **line2)
 	return (1);
 }
 
-int		read_more(char **line)
-{
-	int		len;
-	char	*line2;
-
-	len = ft_strlen(*line);
-	if (check_syntax(*line) == -1)
-		return (-1);
-	if (line[0][len - 1] == '|' && valid_option(*line, len - 1) == 1)
-	{
-		while (1)
-		{
-			write_string("> ");
-			if (lsh_read_line_and_trim(&line2) == -1)
-				return (-1);
-			if (new_check(&line2) == -1)
-				return (-1);
-			if (line2[0] != '\0')
-				if (join_new_line_check_read_more(line, &line2) == 1)
-					return (1);
-			free(line2);
-		}
-	}
-	return (1);
-}
-
-int		lsh_read_line_and_trim(char **line)
+int		lsh_read_line_and_trim(char **line, t_stack **stack)
 {
 	char *temp;
 
-	t_params.was_read = strdup("");
-	if (get_next_line(0, line) == -1)
-	{
-		t_g.exstat = 258;
-		return (-1);
-	}
-	free(t_params.was_read);
+	*line = get_line(stack);
 	temp = *line;
 	*line = ft_trim(*line);
 	free(temp);
@@ -107,7 +75,7 @@ int		check_line(t_env **envlst, char **line, t_inputs **list_shell)
 		else
 		{
 			t_g.exstat = 258;
-			write_string("bash: syntax Error \n");
+			write_string("minibash: syntax Error \n");
 		}
 		*list_shell = NULL;
 	}

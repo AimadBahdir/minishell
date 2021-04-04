@@ -6,7 +6,7 @@
 #    By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/16 15:17:45 by abahdir           #+#    #+#              #
-#    Updated: 2021/03/20 08:36:33 by abahdir          ###   ########.fr        #
+#    Updated: 2021/04/04 17:13:23 by abahdir          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,7 @@ SRC =	main.c							\
 		execution/ft_strtolower.c		\
 		execution/ft_strtrim.c			\
 		execution/ft_substr.c			\
-		gnl/get_next_line.c				\
-		gnl/get_next_line_utils.c		\
+		parsing/button_click.c			\
 		parsing/check_args.c			\
 		parsing/check_args2.c			\
 		parsing/check_syntax.c			\
@@ -45,20 +44,22 @@ SRC =	main.c							\
 		parsing/ft_trim.c				\
 		parsing/function_utils.c		\
 		parsing/function_utils2.c		\
+		parsing/listshell_stack.c		\
 		parsing/listshell_tcargs.c		\
 		parsing/listshell_tgargs.c		\
 		parsing/listshell_tgargs2.c		\
 		parsing/listshell_tinputs.c		\
 		parsing/management_args.c		\
 		parsing/management_args2.c		\
-		parsing/management_line.c
+		parsing/management_line.c		\
+		parsing/tmain.c					
 
 all : $(NAME)
 
 $(NAME):$(SRC)
-	gcc -Wall -Wextra -Werror $(SRC) -g -o minishell
+	gcc -Wall -Wextra -Werror $(SRC) -lncurses -g -o minishell
 clean:
-	rm -rf minishell minishell.dSYM
+	rm -rf minishell
 fclean:
-	rm -rf minishell minishell.dSYM
+	rm -rf minishell
 re: fclean all

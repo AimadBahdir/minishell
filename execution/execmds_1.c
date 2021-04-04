@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 13:26:56 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/04 15:40:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*find_cmd(t_env **lst, char *cmd)
 int		chkprms(int err)
 {
 	if (err == 13)
-		return(errthrow(strerror(err), NULL, NULL, 126));
+		return (errthrow(strerror(err), NULL, NULL, 126));
 	else if (err == 8)
 		return (0);
 	return (err);
@@ -105,33 +105,4 @@ short	ft_othercmd(t_env **lst)
 			return (WEXITSTATUS(exstat));
 	}
 	return (0);
-}
-
-short	ft_exit(void)
-{
-	int excod;
-
-	excod = t_g.exstat;
-	if (!t_pipe.prev)
-		ft_putstr("exit", 1);
-	if (t_g.cmd[1])
-	{
-		if (ft_isnum(t_g.cmd[1]))
-		{
-			if (ft_lentwop(t_g.cmd) > 2)
-			{
-				return (errthrow("exit: ",
-						"too many arguments", NULL, !t_pipe.next));
-			}
-			excod = ft_atoi(t_g.cmd[1]);
-		}
-		else
-		{
-			excod = errthrow("exit: ", t_g.cmd[1],
-					": numeric argument required", 255);
-		}
-	}
-	if (t_pipe.prev || t_pipe.next)
-		return (0);
-	exit(excod);
 }
