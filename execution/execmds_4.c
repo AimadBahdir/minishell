@@ -6,11 +6,27 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 18:25:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 11:38:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	**spltcmd(void)
+{
+	char	**args;
+	short	i;
+	short	stop;
+
+	stop = chk_directions();
+	if (!(args = malloc(sizeof(char *) * (stop + 1))))
+		return (NULL);
+	i = -1;
+	while (++i < stop)
+		args[i] = ft_strdup(t_g.cmd[i]);
+	args[stop] = NULL;
+	return (args);
+}
 
 char	*spltandgenv(t_env *envlst, char *cmd)
 {
@@ -91,5 +107,5 @@ short	ft_chkambigs(t_env *envlst, int pos, char **vars)
 		t_g.cmd[pos] = ft_strdup(arg);
 		return (retfree(tmp, arg, 0));
 	}
-	return (retfree(arg, tmp, t_g.err));
+	return (retfree(arg, tmp, 0));
 }

@@ -6,27 +6,11 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 18:02:34 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 11:37:51 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char	**spltcmd(void)
-{
-	char	**args;
-	short	i;
-	short	stop;
-
-	stop = chk_directions();
-	if (!(args = malloc(sizeof(char *) * (stop + 1))))
-		return (NULL);
-	i = -1;
-	while (++i < stop)
-		args[i] = ft_strdup(t_g.cmd[i]);
-	args[stop] = NULL;
-	return (args);
-}
 
 char	*ft_joinslash(char *cmdpath, char *path, char *cmd)
 {
@@ -41,6 +25,17 @@ char	*ft_joinslash(char *cmdpath, char *path, char *cmd)
 	return (cmdpath);
 }
 
+char	*retpath(char *cmdpath)
+{
+	if (ft_checkfor('/', cmdpath) != -1)
+		return (cmdpath);
+	else
+	{
+		free(cmdpath);
+		return (NULL);
+	}
+}
+
 char	*find_cmd(t_env **lst, char *cmd)
 {
 	char	*cmdpath;
@@ -52,20 +47,19 @@ char	*find_cmd(t_env **lst, char *cmd)
 		return (NULL);
 	i = -1;
 	cmdpath = ft_ternchar(*cmd == '\0', NULL, ft_strdup(cmd));
+	if ((fd = open(cmdpath, O_RDONLY)) > 0)
+	{
+		retfreetwo(spltpath, close(fd));
+		return (retpath(cmdpath));
+	}
 	while (spltpath[++i] && cmdpath != NULL)
 	{
+		cmdpath = ft_joinslash(cmdpath, spltpath[i], cmd);
 		if ((fd = open(cmdpath, O_RDONLY)) > 0)
 		{
 			retfreetwo(spltpath, close(fd));
-			if (ft_checkfor('/', cmdpath) != -1)
-				return (cmdpath);
-			else
-			{
-				free(cmdpath);
-				return (NULL);
-			}
+			return (retpath(cmdpath));
 		}
-		cmdpath = ft_joinslash(cmdpath, spltpath[i], cmd);
 	}
 	return (ft_ternchar(ft_checkfor('/', cmd) != -1, cmd, NULL));
 }
