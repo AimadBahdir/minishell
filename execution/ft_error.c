@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 10:30:43 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 14:45:54 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:57:17 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ short	errthrow(char *erp1, char *erp2, char *erp3, int errcode)
 	return (errcode);
 }
 
-int		retfree(char *tmp1, char *tmp2, int ret)
+int	retfree(char *tmp1, char *tmp2, int ret)
 {
 	if (tmp1 != NULL)
 	{
@@ -40,9 +40,9 @@ int		retfree(char *tmp1, char *tmp2, int ret)
 	return (ret);
 }
 
-int		retfreetwo(char **tmp1, int ret)
+int	retfreetwo(char **tmp1, int ret)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (tmp1)
@@ -59,7 +59,7 @@ int		retfreetwo(char **tmp1, int ret)
 	return (ret);
 }
 
-int		ft_ternint(short cond, int iftrue, int iffalse)
+int	ft_ternint(short cond, int iftrue, int iffalse)
 {
 	if (cond)
 		return (iftrue);

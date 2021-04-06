@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 17:51:10 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:50:26 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ t_env	*newenvelm(char *key, char *val)
 	char	*tmp;
 
 	tmp = NULL;
-	if (!(newelm = malloc(sizeof(*newelm))))
+	newelm = malloc(sizeof(*newelm));
+	if (!newelm)
 		return (NULL);
 	if (ft_strcmp(key, "HOME"))
 	{
@@ -77,9 +78,9 @@ void	ft_setenv(t_env **lst, char **envp)
 		elen = ft_strlen(envp[i]);
 		klen = ft_lento(envp[i], '=') + 1;
 		envaddelm(lst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
-			ft_substr(envp[i], klen, (elen - klen))));
+				ft_substr(envp[i], klen, (elen - klen))));
 		envaddelm(&t_g.explst, newenvelm(ft_substr(envp[i], 0, (klen - 1)),
-			ft_substr(envp[i], klen, (elen - klen))));
+				ft_substr(envp[i], klen, (elen - klen))));
 	}
 	old = ft_strdup(" ");
 	old[0] = 16;

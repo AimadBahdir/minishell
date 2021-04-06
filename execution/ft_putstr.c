@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 15:52:49 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 14:12:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:59:23 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putstr(char *str, short nl)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -25,7 +25,7 @@ void	ft_putstr(char *str, short nl)
 
 void	ft_putmstr(char **mstr, char spr)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (mstr[++i])
@@ -38,7 +38,7 @@ void	ft_putmstr(char **mstr, char spr)
 
 short	ft_strnormed(char *str)
 {
-	short i;
+	short	i;
 
 	i = -1;
 	if (str[0] >= '0' && str[0] <= '9')

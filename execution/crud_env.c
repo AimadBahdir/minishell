@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 11:06:22 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/06 08:38:32 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:50:52 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ char	*getenval(t_env *e, char *key)
 
 void	rmenval(t_env **lst, char *key)
 {
-	t_env *e;
-	t_env *tmp;
+	t_env	*e;
+	t_env	*tmp;
 
 	e = *lst;
 	while (e)

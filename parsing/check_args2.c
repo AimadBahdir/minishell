@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:07:44 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/03 16:39:05 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:18:05 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*checkpath(char *s)
 
 void	free_table_args(void)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (t_params.args != NULL)
@@ -51,8 +51,8 @@ void	free_table_args(void)
 
 char	*get_word_free(t_cargs **args)
 {
-	t_cargs *ptr_args;
-	t_cargs *ptr_args2;
+	t_cargs	*ptr_args;
+	t_cargs	*ptr_args2;
 	int		i;
 	char	*ptr;
 

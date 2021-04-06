@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 08:55:32 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 15:44:01 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:56:47 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 short	ft_checkfor(char c, char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (!str)
@@ -29,7 +29,7 @@ short	ft_checkfor(char c, char *str)
 
 short	ft_checkforstr(char *str, char **lst)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (!lst || !str)
@@ -42,7 +42,7 @@ short	ft_checkforstr(char *str, char **lst)
 
 short	chk_directions(void)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (!t_g.cmd)
@@ -54,8 +54,14 @@ short	chk_directions(void)
 	return (-1);
 }
 
-int		ft_isalpha(int c)
+int	ft_isalpha(int c)
 {
 	return ((c >= 'A' && c <= 'Z')
-			|| (c >= 'a' && c <= 'z'));
+		|| (c >= 'a' && c <= 'z'));
+}
+
+void	ft_closestd(void)
+{
+	close(t_g.mystdin);
+	close(t_g.mystdout);
 }

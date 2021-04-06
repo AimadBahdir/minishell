@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:51:36 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:45:53 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:29:59 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ void	gestion_fill_arg(t_gargs *gargs, char *line, int len)
 	{
 		len = ptr_list_shell->end - ptr_list_shell->start;
 		t_params.args[i] = (char *)fill_arg(len,
-		ptr_list_shell->start, line, ptr_list_shell->vld_der);
+				ptr_list_shell->start, line, ptr_list_shell->vld_der);
 		ptr_list_shell = ptr_list_shell->next;
 		i++;
 	}
 	t_params.args[i] = NULL;
 }
 
-int		get_start_and_end_args(char *lne, t_inputs **list_shell)
+int	get_start_and_end_args(char *lne, t_inputs **list_shell)
 {
-	int i;
+	int	i;
 	int	start;
-	int pipe;
+	int	pipe;
 
 	i = -1;
 	start = 0;
@@ -44,7 +44,7 @@ int		get_start_and_end_args(char *lne, t_inputs **list_shell)
 		if ((lne[++i] == '\"' || lne[i] == '\'') && valid_option(lne, i) == 1)
 			i = get_end_index(lne, i);
 		else if (((lne[i] == ';' || lne[i] == '|')
-		&& valid_option(lne, i) == 1) || lne[i] == '\0')
+				&& valid_option(lne, i) == 1) || lne[i] == '\0')
 		{
 			pipe = 0;
 			if (lne[i] == '|')
@@ -60,9 +60,9 @@ int		get_start_and_end_args(char *lne, t_inputs **list_shell)
 	return (1);
 }
 
-int		get_end_arg(int start_arg, char *line, int end)
+int	get_end_arg(int start_arg, char *line, int end)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	t_params.vld_der = 0;
@@ -71,10 +71,10 @@ int		get_end_arg(int start_arg, char *line, int end)
 		while (line[start_arg + i] == ' ' && start_arg + i < end)
 			i++;
 		if (valid_option(line, start_arg + i) == 1
-		&& (line[start_arg + i] == '>' || line[start_arg + i] == '<'))
+			&& (line[start_arg + i] == '>' || line[start_arg + i] == '<'))
 			return (greater_less(start_arg + i, line));
 		else if (valid_option(line, start_arg + i) == 1
-		&& line[start_arg + i] == '\"')
+			&& line[start_arg + i] == '\"')
 			return (cut_quotation(start_arg + i, line, end));
 		else if (line[start_arg + i] == '\'')
 			return (cut_apostrophe(start_arg + i, line, end));
@@ -82,17 +82,17 @@ int		get_end_arg(int start_arg, char *line, int end)
 		{
 			if (cut_outher(start_arg + i, line, end, &i) == 0)
 				break ;
-			continue;
+			continue ;
 		}
 	}
 	return (start_arg + i);
 }
 
-int		gestion_args(char *line, int start, int end, t_gargs **gargs)
+int	gestion_args(char *line, int start, int end, t_gargs **gargs)
 {
-	int i;
-	int start_arg;
-	int end_arg;
+	int	i;
+	int	start_arg;
+	int	end_arg;
 
 	i = 0;
 	while (start + i < end && i >= 0)
@@ -106,7 +106,7 @@ int		gestion_args(char *line, int start, int end, t_gargs **gargs)
 		if (end_arg == -1)
 			return (-1);
 		ft_lstadd_back_arg(gargs, ft_lstnew_args(start_arg,
-		end_arg, t_params.vld_der));
+				end_arg, t_params.vld_der));
 		if (end_arg - start_arg == 0)
 			i += 1;
 		else

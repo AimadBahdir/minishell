@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:30:55 by abahdir           #+#    #+#             */
-/*   Updated: 2021/02/01 16:31:35 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:33:46 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	i -= 1;
 	while (--c >= 0)
+	{
 		if (l >= 0)
 			ns[c] = s2[l--];
 		else if (i >= 0)
 			ns[c] = s1[i--];
+	}
 	return (ns);
 }

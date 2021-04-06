@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_stack.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/04 11:31:52 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 11:57:22 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:24:47 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_stack		*ft_lststacknew(char *line, int i)
+t_stack	*ft_lststacknew(char *line, int i)
 {
-	t_stack *nouveau;
+	t_stack	*nouveau;
 
 	nouveau = malloc(sizeof(*nouveau));
 	nouveau->line = line;
@@ -23,7 +23,7 @@ t_stack		*ft_lststacknew(char *line, int i)
 	return (nouveau);
 }
 
-void		ft_lststackadd_back(t_stack **list_shell, t_stack *new)
+void	ft_lststackadd_back(t_stack **list_shell, t_stack *new)
 {
 	t_stack	*ptr_list_shell;
 
@@ -42,7 +42,7 @@ void		ft_lststackadd_back(t_stack **list_shell, t_stack *new)
 	}
 }
 
-int			get_len_list_stack(t_stack *lst)
+int	get_len_list_stack(t_stack *lst)
 {
 	t_stack	*temp1;
 	int		i;
@@ -57,7 +57,7 @@ int			get_len_list_stack(t_stack *lst)
 	return (i);
 }
 
-void		lastnodedeletion(t_cargs **lst)
+void	lastnodedeletion(t_cargs **lst)
 {
 	t_cargs	*ptr_lst;
 	t_cargs	*ptr_lst2;
@@ -81,10 +81,10 @@ void		lastnodedeletion(t_cargs **lst)
 	}
 }
 
-void		free_t_cargs(t_cargs **args)
+void	free_t_cargs(t_cargs **args)
 {
-	t_cargs *ptr_args;
-	t_cargs *ptr_args2;
+	t_cargs	*ptr_args;
+	t_cargs	*ptr_args2;
 
 	ptr_args2 = *args;
 	while (ptr_args2 != NULL)

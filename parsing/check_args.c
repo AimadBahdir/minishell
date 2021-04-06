@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:58:53 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 15:59:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:17:20 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		checkpath_apostrophe(t_cargs **args, char *s, int i)
+int	checkpath_apostrophe(t_cargs **args, char *s, int i)
 {
 	while (s[i] != '\0' && s[i] != '\'')
 	{
@@ -22,7 +22,7 @@ int		checkpath_apostrophe(t_cargs **args, char *s, int i)
 	return (i);
 }
 
-int		checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation)
+int	checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation)
 {
 	if (in_quotation == 1)
 	{
@@ -33,7 +33,7 @@ int		checkpath_backslash(t_cargs **args, char *s, int i, int in_quotation)
 	return (i);
 }
 
-int		checkpath_quotation(t_cargs **args, char *s, int i)
+int	checkpath_quotation(t_cargs **args, char *s, int i)
 {
 	while (1)
 	{
@@ -50,14 +50,14 @@ int		checkpath_quotation(t_cargs **args, char *s, int i)
 	return (i);
 }
 
-int		checkpath_question_mark(t_cargs **args, int i)
+int	checkpath_question_mark(t_cargs **args, int i)
 {
 	ft_lstcargsadd_back(args, ft_lstcargsnew(24));
 	ft_lstcargsadd_back(args, ft_lstcargsnew('?'));
 	return (i);
 }
 
-int		checkpath_dollar(t_cargs **args, char *s, int i)
+int	checkpath_dollar(t_cargs **args, char *s, int i)
 {
 	if (s[i] == '?')
 		return (checkpath_question_mark(args, i));

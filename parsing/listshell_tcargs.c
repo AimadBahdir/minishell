@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_tcargs.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:08:12 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:20:28 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:25:06 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_cargs		*ft_lstcargsnew(char c)
+t_cargs	*ft_lstcargsnew(char c)
 {
-	t_cargs *nouveau;
+	t_cargs	*nouveau;
 
 	nouveau = malloc(sizeof(*nouveau));
 	nouveau->c = c;
@@ -22,7 +22,7 @@ t_cargs		*ft_lstcargsnew(char c)
 	return (nouveau);
 }
 
-void		ft_lstcargsadd_back(t_cargs **list_shell, t_cargs *new)
+void	ft_lstcargsadd_back(t_cargs **list_shell, t_cargs *new)
 {
 	t_cargs	*ptr_list_shell;
 
@@ -41,7 +41,7 @@ void		ft_lstcargsadd_back(t_cargs **list_shell, t_cargs *new)
 	}
 }
 
-int			get_len_list(t_cargs *lst)
+int	get_len_list(t_cargs *lst)
 {
 	t_cargs	*temp1;
 	int		i;

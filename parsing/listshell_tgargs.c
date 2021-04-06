@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_tgargs.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:10:29 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:25:04 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:25:28 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_gargs		*ft_lstnew_args(int start, int end, int vld_der)
+t_gargs	*ft_lstnew_args(int start, int end, int vld_der)
 {
-	t_gargs *nouveau;
+	t_gargs	*nouveau;
 
 	nouveau = malloc(sizeof(*nouveau));
 	nouveau->start = start;
@@ -24,9 +24,9 @@ t_gargs		*ft_lstnew_args(int start, int end, int vld_der)
 	return (nouveau);
 }
 
-void		ft_lstadd_back_arg(t_gargs **list_shell, t_gargs *new)
+void	ft_lstadd_back_arg(t_gargs **list_shell, t_gargs *new)
 {
-	t_gargs *ptr_list_shell;
+	t_gargs	*ptr_list_shell;
 
 	ptr_list_shell = *list_shell;
 	if (*list_shell == NULL)
@@ -43,7 +43,7 @@ void		ft_lstadd_back_arg(t_gargs **list_shell, t_gargs *new)
 	}
 }
 
-int			get_number_args(t_gargs **gargs)
+int	get_number_args(t_gargs **gargs)
 {
 	t_gargs	*ptr_list_shell;
 	int		x;

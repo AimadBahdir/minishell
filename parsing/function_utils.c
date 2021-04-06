@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   function_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 18:22:25 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/13 09:26:16 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:23:28 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	number_of_derc_in_table(char **s)
 {
-	int i;
-	int j;
-	int res;
+	int	i;
+	int	j;
+	int	res;
 
 	i = 0;
 	res = 0;
@@ -53,8 +53,8 @@ int	ft_alpha(char c)
 
 int	valid_option(char *line, int start)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	j = 0;

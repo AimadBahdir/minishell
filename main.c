@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/05 17:06:18 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:04:28 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	exe_list(t_env **envlst, t_inputs *list_shell)
 
 void	signals_handler(int sig)
 {
-	int exstat;
+	int	exstat;
 
 	if (sig == SIGINT && !t_g.iscmd)
 	{
@@ -50,7 +50,12 @@ void	signals_handler(int sig)
 		if (WIFEXITED(exstat))
 			t_g.exstat = WEXITSTATUS(exstat);
 		if (t_g.iscmd == 2)
+		{
 			ft_putstr("Quit: 3", 1);
+			t_g.exstat = 131;
+		}
+		else if (t_g.iscmd == 1)
+			t_g.exstat = 255;
 	}
 }
 
@@ -74,7 +79,7 @@ void	lsh_loop(t_env **envlst)
 		else if (line[0] != '\0')
 		{
 			if (check_line(envlst, &line, &list_shell) == 1)
-				continue;
+				continue ;
 		}
 		else if (line[0] == '\0')
 			write_string("\n");
@@ -82,9 +87,9 @@ void	lsh_loop(t_env **envlst)
 	}
 }
 
-int		main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_env *envlst;
+	t_env	*envlst;
 
 	argv = NULL;
 	argc = 0;

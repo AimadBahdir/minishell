@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:01:48 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 14:20:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:24:15 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_nbr_car(char c)
+int	is_nbr_car(char c)
 {
 	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 		return (1);
@@ -21,14 +21,14 @@ int		is_nbr_car(char c)
 
 void	write_string(char *s)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (s != NULL && s[++i])
 		write(1, &s[i], 1);
 }
 
-int		pass_spe(char *line, int i)
+int	pass_spe(char *line, int i)
 {
 	while (line[i] == ' ')
 	{
@@ -39,7 +39,7 @@ int		pass_spe(char *line, int i)
 	return (i);
 }
 
-int		ft_puts(int d)
+int	ft_puts(int d)
 {
 	return (write(1, &d, sizeof(int)));
 }

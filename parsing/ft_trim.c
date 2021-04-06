@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_trim.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 18:01:06 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:18:38 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:22:52 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		len_without_speac(char *line)
+int	len_without_speac(char *line)
 {
-	int i;
-	int j;
-	int len_line;
+	int	i;
+	int	j;
+	int	len_line;
 
 	i = 1;
 	j = 0;

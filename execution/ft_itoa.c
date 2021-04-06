@@ -6,15 +6,15 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 09:19:55 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/14 11:21:08 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:58:05 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-short		ft_isnum(char *str)
+short	ft_isnum(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (str[0] == '-' || str[0] == '+')
@@ -27,7 +27,7 @@ short		ft_isnum(char *str)
 
 static int	getsize(long l, short sign)
 {
-	int i;
+	int	i;
 
 	if ((l * sign) == 0)
 		l = 1;
@@ -43,7 +43,7 @@ static int	getsize(long l, short sign)
 	return (i);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	long	l;
 	int		i;

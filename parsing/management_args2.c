@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:09:08 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/05 14:59:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:30:39 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		get_args(char *line, int start, int end, int norm)
+int	get_args(char *line, int start, int end, int norm)
 {
 	int		i;
 	int		len;
@@ -65,8 +65,8 @@ char	*fill_arg(int len, int start, char *line, int vldder)
 
 void	check_more(t_gargs *gargs, char *line, int len, int norm)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	gestion_fill_arg(gargs, line, len);
@@ -86,22 +86,22 @@ void	check_more(t_gargs *gargs, char *line, int len, int norm)
 			free_table_args();
 			gestion_fill_arg(gargs, line, len);
 			j--;
-			continue;
+			continue ;
 		}
 		i++;
 	}
 }
 
-int		lsh_split_line(char *line, t_inputs **list_shell)
+int	lsh_split_line(char *line, t_inputs **list_shell)
 {
 	if (get_start_and_end_args(line, list_shell) == -1)
 		return (-1);
 	return (1);
 }
 
-int		get_param_list_shell(char *line, int start, int end)
+int	get_param_list_shell(char *line, int start, int end)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[start + i] == ' ')

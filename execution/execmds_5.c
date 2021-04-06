@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:51:59 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/06 08:38:12 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:50:23 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ short	novalidentif(short cmd, char *identif)
 
 short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 {
-	char *k;
-	char *v;
-	char *tmp;
+	char	*k;
+	char	*v;
+	char	*tmp;
 
 	k = NULL;
 	v = NULL;
@@ -39,13 +39,15 @@ short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 	{
 		k = ft_strdup(key);
 		v = ft_strdup(val);
-		if ((tmp = getenval(*envlst, k)) == NULL)
+		tmp = getenval(*envlst, k);
+		if (tmp == NULL)
 			envaddelm(envlst, newenvelm(k, v));
 		else
 			setenval(envlst, k, v);
 		retfree(tmp, NULL, 0);
 	}
-	if ((tmp = getenval(t_g.explst, key)) == NULL)
+	tmp = getenval(t_g.explst, key);
+	if (tmp == NULL)
 		envaddelm(&t_g.explst, newenvelm(key, val));
 	else
 		setenval(&t_g.explst, key, val);
@@ -54,20 +56,20 @@ short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 
 short	ft_export(t_env **e)
 {
-	int		keylen;
 	char	*noval;
 
 	t_g.indx = 0;
-	if (!(t_g.err = 0) && ft_lentwop(t_g.cmd) < 2)
+	t_g.err = 0;
+	if (ft_lentwop(t_g.cmd) < 2)
 		return (ft_exprint());
 	while (t_g.cmd[++t_g.indx])
 	{
 		if (ft_checkfor('=', t_g.cmd[t_g.indx]) > 0)
 		{
-			keylen = ft_lento(t_g.cmd[t_g.indx], '=') + 1;
-			t_g.err = ft_exportelem(e, ft_substr(t_g.cmd[t_g.indx],
-				0, keylen - 1), ft_substr(t_g.cmd[t_g.indx], keylen,
-				(ft_strlen(t_g.cmd[t_g.indx]) - keylen)), 0);
+			t_g.kl = ft_lento(t_g.cmd[t_g.indx], '=') + 1;
+			t_g.err = ft_exportelem(e, ft_substr(t_g.cmd[t_g.indx], 0,
+						t_g.kl - 1), ft_substr(t_g.cmd[t_g.indx], t_g.kl,
+						(ft_strlen(t_g.cmd[t_g.indx]) - t_g.kl)), 0);
 		}
 		else if (ft_strnormed(t_g.cmd[t_g.indx]) == -1)
 		{

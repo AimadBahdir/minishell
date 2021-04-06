@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_tinputs.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 14:59:14 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 10:26:10 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:27:31 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_inputs	*ft_lstnew(char **command, short pipe)
 {
-	t_inputs *nouveau;
+	t_inputs	*nouveau;
 
 	nouveau = malloc(sizeof(*nouveau));
 	nouveau->command = command;
@@ -23,7 +23,7 @@ t_inputs	*ft_lstnew(char **command, short pipe)
 	return (nouveau);
 }
 
-int			check_syntax_list(t_inputs *list_shell)
+int	check_syntax_list(t_inputs *list_shell)
 {
 	int			i;
 	int			pipe;
@@ -38,15 +38,15 @@ int			check_syntax_list(t_inputs *list_shell)
 			return (-1);
 		ptr_list_shell = ptr_list_shell->next;
 		if (ptr_list_shell != NULL && pipe == 1
-		&& ptr_list_shell->command[0] == NULL)
+			&& ptr_list_shell->command[0] == NULL)
 			return (-1);
 	}
 	return (1);
 }
 
-void		ft_lstadd_back(t_inputs **list_shell, t_inputs *new)
+void	ft_lstadd_back(t_inputs **list_shell, t_inputs *new)
 {
-	t_inputs *ptr_list_shell;
+	t_inputs	*ptr_list_shell;
 
 	ptr_list_shell = *list_shell;
 	if (*list_shell == NULL)

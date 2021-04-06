@@ -6,16 +6,16 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 15:21:18 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:31:03 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		new_check(char **line2)
+int	new_check(char **line2)
 {
 	if (line2[0][0] == '|' || line2[0][0] == ';'
-	|| line2[0][0] == '>' || line2[0][0] == '<')
+		|| line2[0][0] == '>' || line2[0][0] == '<')
 	{
 		free(*line2);
 		return (-1);
@@ -23,7 +23,7 @@ int		new_check(char **line2)
 	return (0);
 }
 
-int		join_new_line_check_read_more(char **line, char **line2)
+int	join_new_line_check_read_more(char **line, char **line2)
 {
 	char	*temp;
 	int		len;
@@ -42,9 +42,9 @@ int		join_new_line_check_read_more(char **line, char **line2)
 	return (1);
 }
 
-int		lsh_read_line_and_trim(char **line, t_stack **stack)
+int	lsh_read_line_and_trim(char **line, t_stack **stack)
 {
-	char *temp;
+	char	*temp;
 
 	*line = get_line(stack);
 	temp = *line;
@@ -53,7 +53,7 @@ int		lsh_read_line_and_trim(char **line, t_stack **stack)
 	return (0);
 }
 
-int		check_line(t_env **envlst, char **line, t_inputs **list_shell)
+int	check_line(t_env **envlst, char **line, t_inputs **list_shell)
 {
 	int	errors;
 

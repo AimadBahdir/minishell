@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 10:10:46 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/12 11:46:01 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:27:03 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	echonge_list_args(t_gargs **lst)
 
 void	echonge(int *start1, int *end1, int *start2, int *end2)
 {
-	int temp;
+	int	temp;
 
 	temp = *start2;
 	*start2 = *start1;
@@ -61,7 +61,7 @@ void	echonge(int *start1, int *end1, int *start2, int *end2)
 
 void	echongevld_der(int *vld_der, int *vld_der2)
 {
-	int temp;
+	int	temp;
 
 	temp = *vld_der2;
 	*vld_der2 = *vld_der;

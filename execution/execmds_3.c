@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 17:22:13 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 11:35:48 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ short	ft_echo(void)
 
 char	*ft_rplchome(t_env *lst, char *path)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = path;
 	if (path == NULL)
@@ -72,47 +72,49 @@ char	*ft_rplchome(t_env *lst, char *path)
 
 short	ft_cd(t_env **e)
 {
-	char *path;
-
 	if (!t_g.cmd[1] || t_g.cmd[1][0] == '~')
 	{
-		if (!(path = ft_rplchome(*e, ft_strdup(t_g.cmd[1]))))
+		t_g.path = ft_rplchome(*e, ft_strdup(t_g.cmd[1]));
+		if (!t_g.path)
 			return (errthrow("cd: ", "HOME not set", NULL, 1));
 	}
 	else if (t_g.cmd[1][0] == '\0')
 		return (0);
 	else if (ft_strcmp(t_g.cmd[1], "-"))
 	{
-		if ((path = getenval(*e, "OLDPWD")) == NULL)
+		t_g.path = getenval(*e, "OLDPWD");
+		if (t_g.path == NULL)
 			return (errthrow("cd: ", "OLDPWD not set", NULL, 1));
 		else
-			ft_putstr(path, 1);
+			ft_putstr(t_g.path, 1);
 	}
 	else
-		path = ft_strdup(t_g.cmd[1]);
-	if (chdir(path) == -1)
+		t_g.path = ft_strdup(t_g.cmd[1]);
+	if (chdir(t_g.path) == -1)
 	{
-		retfree(path, NULL, 1);
-		return (errthrow(path, ": cd: ", strerror(errno), 1));
+		retfree(t_g.path, NULL, 1);
+		return (errthrow(t_g.path, ": cd: ", strerror(errno), 1));
 	}
 	ft_setoldpwd(e);
-	return (retfree(path, NULL, ft_pwd(e, 0)));
+	return (retfree(t_g.path, NULL, ft_pwd(e, 0)));
 }
 
 short	ft_pipe(void)
 {
-	int err;
+	int	err;
 
 	err = 0;
 	if (t_pipe.next)
 	{
-		if ((t_g.mystdout = dup(t_pipe.nxtio[1])) == -1)
+		t_g.mystdout = dup(t_pipe.nxtio[1]);
+		if (t_g.mystdout == -1)
 			err = 1;
 		close(t_pipe.nxtio[1]);
 	}
 	if (t_pipe.prev)
 	{
-		if ((t_g.mystdin = dup(t_pipe.prvo)) == -1)
+		t_g.mystdin = dup(t_pipe.prvo);
+		if (t_g.mystdin == -1)
 			err = 1;
 		close(t_pipe.prvo);
 	}

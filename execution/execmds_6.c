@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 10:59:06 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 17:48:07 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:57:11 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 
 short	ft_setvar(t_env *envlst, char *spltd, char **newvar)
 {
-	char	*tmp;
 	char	*getedval;
 
-	tmp = *newvar;
+	t_g.tmp = *newvar;
 	if (spltd[0] == '?')
 	{
 		getedval = ft_itoa(t_g.exstat);
-		*newvar = ft_strjoin(tmp, getedval);
-		retfree(tmp, getedval, 0);
-		tmp = *newvar;
-		*newvar = ft_strjoin(tmp, (spltd + 1));
+		*newvar = ft_strjoin(t_g.tmp, getedval);
+		retfree(t_g.tmp, getedval, 0);
+		t_g.tmp = *newvar;
+		*newvar = ft_strjoin(t_g.tmp, (spltd + 1));
 	}
 	else if (spltd[0] == '_' || ft_isalpha(spltd[0]))
 	{
-		if ((getedval = spltandgenv(envlst, spltd)) != NULL)
+		getedval = spltandgenv(envlst, spltd);
+		if (getedval != NULL)
 		{
-			*newvar = ft_strjoin(tmp, getedval);
+			*newvar = ft_strjoin(t_g.tmp, getedval);
 			free(getedval);
 		}
 		else
-			*newvar = ft_strjoin(tmp, "");
+			*newvar = ft_strjoin(t_g.tmp, "");
 	}
 	else
-		return (retfree(tmp, NULL, 0));
-	return (retfree(tmp, NULL, 1));
+		return (retfree(t_g.tmp, NULL, 0));
+	return (retfree(t_g.tmp, NULL, 1));
 }
 
 char	*ft_getvar(t_env *envlst, char **spltd, short first)
@@ -68,7 +68,8 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 	{
 		if (ft_checkfor(24, t_g.cmd[i]) != -1)
 		{
-			if ((spltd = ft_split(t_g.cmd[i], 24)) != NULL)
+			spltd = ft_split(t_g.cmd[i], 24);
+			if (spltd != NULL)
 			{
 				if (!ft_chkambigs(envlst, &i, spltd))
 					retfreetwo(spltd, 0);
@@ -82,36 +83,35 @@ short	ft_setenvar(t_env *envlst, char **cmd)
 
 void	ft_setoldpwd(t_env **e)
 {
-	char *pwd;
-	char *oldpwd;
-
-	pwd = getenval(*e, "PWD");
-	if ((oldpwd = getenval(*e, "OLDPWD")) == NULL && pwd != NULL)
+	t_g.pwd = getenval(*e, "PWD");
+	t_g.oldpwd = getenval(*e, "OLDPWD");
+	if (t_g.oldpwd == NULL && t_g.pwd != NULL)
 	{
-		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), pwd));
-		retfree(oldpwd, NULL, !(pwd = getenval(t_g.explst, "PWD")));
-		if ((oldpwd = getenval(t_g.explst, "OLDPWD")) == NULL)
-			envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), pwd));
+		envaddelm(e, newenvelm(ft_strdup("OLDPWD"), t_g.pwd));
+		retfree(t_g.oldpwd, NULL, !(t_g.pwd = getenval(t_g.explst, "PWD")));
+		t_g.oldpwd = getenval(t_g.explst, "OLDPWD");
+		if (t_g.oldpwd == NULL)
+			envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), t_g.pwd));
 		else
-			setenval(&t_g.explst, ft_strdup("OLDPWD"), pwd);
+			setenval(&t_g.explst, ft_strdup("OLDPWD"), t_g.pwd);
 	}
-	else if (pwd == NULL)
+	else if (t_g.pwd == NULL)
 	{
 		setenval(e, ft_strdup("OLDPWD"), ft_strdup(""));
 		setenval(&t_g.explst, ft_strdup("OLDPWD"), ft_strdup(""));
 	}
 	else
 	{
-		setenval(e, ft_strdup("OLDPWD"), pwd);
-		pwd = getenval(t_g.explst, "PWD");
-		setenval(&t_g.explst, ft_strdup("OLDPWD"), pwd);
+		setenval(e, ft_strdup("OLDPWD"), t_g.pwd);
+		t_g.pwd = getenval(t_g.explst, "PWD");
+		setenval(&t_g.explst, ft_strdup("OLDPWD"), t_g.pwd);
 	}
-	free(oldpwd);
+	free(t_g.oldpwd);
 }
 
 short	ft_exit(void)
 {
-	int excod;
+	int	excod;
 
 	excod = t_g.exstat;
 	if (!t_pipe.prev)

@@ -6,17 +6,18 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 17:47:13 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:08:19 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		ft_open(char *name, int flags, short out)
+int	ft_open(char *name, int flags, short out)
 {
-	int file;
+	int	file;
 
-	if ((file = open(name, flags, 0644)) == -1)
+	file = open(name, flags, 0644);
+	if (file == -1)
 		return (0);
 	if (out)
 	{
@@ -57,11 +58,13 @@ short	gdirections(t_env **envlst)
 	int		err;
 	char	**splt;
 
-	if ((err = ft_creatfiles(t_g.cmd, -1)) == 0)
+	err = ft_creatfiles(t_g.cmd, -1);
+	if (err == 0)
 	{
 		if (t_g.cmd[0][0] == 14 || t_g.cmd[0][0] == 15)
 			return (err);
-		if ((splt = spltcmd()) != NULL)
+		splt = spltcmd();
+		if (splt != NULL)
 		{
 			if (ft_dupcmd(splt))
 				err = ft_execmd(envlst);
@@ -78,7 +81,7 @@ short	ft_env(t_env *e)
 	if (ft_lentwop(t_g.cmd) > 1)
 	{
 		return (errthrow("env: ", t_g.cmd[1],
-			": No such file or directory", 127));
+				": No such file or directory", 127));
 	}
 	while (e)
 	{
@@ -95,7 +98,8 @@ short	ft_pwd(t_env **e, short get)
 	char	*path;
 	char	*pwd;
 
-	if (!(pwd = getcwd(NULL, 0)))
+	pwd = getcwd(NULL, 0);
+	if (pwd)
 		return (errthrow(strerror(errno), NULL, NULL, errno));
 	path = getenval(*e, "PWD");
 	if (get)

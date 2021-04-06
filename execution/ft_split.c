@@ -6,16 +6,16 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 12:38:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 16:48:03 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 09:34:08 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int		lenwords(char const *s, char c)
+static int	lenwords(char const *s, char c)
 {
-	int lenw;
-	int i;
+	int	lenw;
+	int	i;
 
 	i = 0;
 	lenw = 0;
@@ -35,9 +35,9 @@ static int		lenwords(char const *s, char c)
 	return (lenw);
 }
 
-static int		wordlen(char const *s, char c, int start)
+static int	wordlen(char const *s, char c, int start)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (s[start] != c && s[start] != '\0')
@@ -48,7 +48,7 @@ static int		wordlen(char const *s, char c, int start)
 	return (len);
 }
 
-static char		*getword(char const *s, char c, int *i, char **sp)
+static char	*getword(char const *s, char c, int *i, char **sp)
 {
 	int		wlen;
 	char	*ns;
@@ -56,7 +56,8 @@ static char		*getword(char const *s, char c, int *i, char **sp)
 
 	wlen = wordlen(s, c, *i);
 	j = -1;
-	if ((ns = malloc(wlen * sizeof(char) + 1)) == NULL)
+	ns = malloc(wlen * sizeof(char) + 1);
+	if (ns == NULL)
 	{
 		while (sp[++j])
 			free(sp[j]);
@@ -72,10 +73,28 @@ static char		*getword(char const *s, char c, int *i, char **sp)
 	return (ns);
 }
 
-char			**ft_split(char const *s, char c)
+char	*ft_sphelp(char **sp, char const *s, char c)
+{
+	char	*res;
+
+	res = NULL;
+	while (s[t_g.indx] && s[t_g.indx] == c)
+		t_g.indx++;
+	if (t_g.indx == 0)
+		return (getword(s, c, &t_g.indx, sp));
+	else if (s[t_g.indx - 1] == c && s[t_g.indx] != c && s[t_g.indx])
+		return (getword(s, c, &t_g.indx, sp));
+	res = malloc(2);
+	res[0] = 17;
+	res[1] = '\0';
+	return (res);
+}
+
+char	**ft_split(char const *s, char c)
 {
 	char	**sp;
 	int		lw;
+	char	*res;
 
 	if (!s)
 		return (NULL);
@@ -85,16 +104,13 @@ char			**ft_split(char const *s, char c)
 	t_g.err = -1;
 	while (s[t_g.indx])
 	{
-		while (s[t_g.indx] && s[t_g.indx] == c)
-			t_g.indx++;
-		if (t_g.indx == 0)
-		{
-			if ((sp[++t_g.err] = getword(s, c, &t_g.indx, sp)) == NULL)
-				return (NULL);
-		}
-		else if (s[t_g.indx - 1] == c && s[t_g.indx] != c && s[t_g.indx])
-			if ((sp[++t_g.err] = getword(s, c, &t_g.indx, sp)) == NULL)
-				return (NULL);
+		res = ft_sphelp(sp, s, c);
+		if (res == NULL)
+			return (NULL);
+		else if (res[0] != 17)
+			sp[++t_g.err] = res;
+		else
+			retfree(res, NULL, 0);
 		t_g.indx += ft_ternint(s[t_g.indx], 1, 0);
 	}
 	sp[++t_g.err] = 0;

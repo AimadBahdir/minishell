@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 12:43:40 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/11 17:12:42 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:34:59 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	getlen(const char *s1, const char *set, int start)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = ft_strlen(s1) + 1;
 	if (i > start)
@@ -35,8 +35,8 @@ static int	getlen(const char *s1, const char *set, int start)
 
 static int	getstart(const char *s1, const char *set)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	j = -1;
@@ -52,7 +52,7 @@ static int	getstart(const char *s1, const char *set)
 	return (i);
 }
 
-char		*ft_strtrim(const char *s1, const char *set)
+char	*ft_strtrim(const char *s1, const char *set)
 {
 	int	start;
 	int	len;

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 18:05:05 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:55:23 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,22 @@ short	ft_execmd(t_env **lst)
 
 short	ft_exchild(t_env **envlst)
 {
-	int err;
+	int	err;
 
 	err = 0;
-	if ((err = ft_pipe()) > 0)
+	err = ft_pipe();
+	if (err > 0)
 		return (err);
 	if (chk_directions() != -1)
 	{
-		if ((err = gdirections(envlst)) > 0)
+		err = gdirections(envlst);
+		if (err > 0)
 			return (err);
 	}
 	else
 	{
-		if ((err = ft_execmd(envlst)) > 0)
+		err = ft_execmd(envlst);
+		if (err > 0)
 			return (err);
 	}
 	return (err);
@@ -73,7 +76,8 @@ short	ft_exchild(t_env **envlst)
 
 short	ft_setprvpip(void)
 {
-	if ((t_pipe.prvo = dup(t_pipe.nxtio[0])) < 0)
+	t_pipe.prvo = dup(t_pipe.nxtio[0]);
+	if (t_pipe.prvo < 0)
 		return (0);
 	close(t_pipe.nxtio[0]);
 	t_pipe.prev = 1;
@@ -92,7 +96,8 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 		t_g.mystdin = dup(STDIN_FILENO);
 		if (!ft_setenvar(*envlst, head->command))
 		{
-			if ((t_pipe.next = head->pipe) == 1)
+			t_pipe.next = head->pipe;
+			if (t_pipe.next == 1)
 				if (pipe(t_pipe.nxtio) < 0)
 					exit(errthrow(strerror(errno), NULL, NULL, 1));
 			t_g.exstat = ft_exchild(envlst);
@@ -102,8 +107,7 @@ short	ft_execute(t_env **envlst, t_inputs *cmdlst)
 		}
 		else
 			t_g.exstat = 1;
-		close(t_g.mystdin);
-		close(t_g.mystdout);
+		ft_closestd();
 		head = head->next;
 	}
 	return (0);

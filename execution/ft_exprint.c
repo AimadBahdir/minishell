@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 10:21:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/17 08:34:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:57:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 short	alphacmp(char *str1, char *str2)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = -1;
 	i = -1;

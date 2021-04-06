@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/05 17:00:54 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:57:00 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,30 @@
 # include <term.h>
 # include <termcap.h>
 
-typedef struct	s_inputs
+typedef struct s_inputs
 {
 	char			**command;
 	short			pipe;
 	struct s_inputs	*next;
-}				t_inputs;
+}	t_inputs;
 
-typedef struct	s_env
+typedef struct s_env
 {
 	char			*key;
 	char			*val;
 	struct s_env	*next;
-}				t_env;
-int				g_cmdstat;
+}	t_env;
 
-struct			s_pipe
+struct s_pipe
 {
 	short	next;
 	short	prev;
 	int		nxtio[2];
 	int		prvo;
 	int		envio[2];
-}				t_pipe;
+}	t_pipe;
 
-struct			s_g
+struct s_g
 {
 	char	**envp;
 	char	*homepath;
@@ -58,25 +57,30 @@ struct			s_g
 	int		indx;
 	int		err;
 	char	**cmd;
+	char	*path;
+	int		kl;
+	char	*tmp;
+	char	*oldpwd;
+	char	*pwd;
 	short	haspace;
 	t_env	*explst;
-}				t_g;
+}	t_g;
 
-typedef struct	s_gargs
+typedef struct s_gargs
 {
 	int				start;
 	int				end;
 	int				vld_der;
 	struct s_gargs	*next;
-}				t_gargs;
+}	t_gargs;
 
-typedef struct	s_cargs
+typedef struct s_cargs
 {
 	char			c;
 	struct s_cargs	*next;
-}				t_cargs;
+}	t_cargs;
 
-struct			s_params
+struct s_params
 {
 	char	**args;
 	char	*error_text;
@@ -92,18 +96,18 @@ struct			s_params
 	int		total;
 	int		check;
 	int		index;
-}				t_params;
+}	t_params;
 
-typedef struct	s_stack
+typedef struct s_stack
 {
 	char			*line;
 	int				i;
 	struct s_stack	*next;
-}				t_stack;
+}	t_stack;
 
 int				checkpath_apostrophe(t_cargs **args, char *s, int i);
 int				checkpath_backslash(t_cargs **args, char *s, int i,
-									int in_quotation);
+					int in_quotation);
 int				checkpath_quotation(t_cargs **args, char *s, int i);
 int				checkpath_question_mark(t_cargs **args, int i);
 int				checkpath_dollar(t_cargs **args, char *s, int i);
@@ -164,14 +168,14 @@ int				get_char(t_cargs **args, t_cargs **args2);
 int				ft_puts(int d);
 void			delete_change(void);
 char			*button_enter(int *ud_down, t_stack **stack,
-								t_cargs **args2, t_cargs **args);
+					t_cargs **args2, t_cargs **args);
 void			button_down(int *ud_down, t_stack **stack,
-								t_cargs **args2, t_cargs **args);
+					t_cargs **args2, t_cargs **args);
 void			button_remove(int *ud_down, t_stack **stack,
-								t_cargs **args2, t_cargs **args);
+					t_cargs **args2, t_cargs **args);
 void			button_up(int *ud_down, t_stack **stack, t_cargs **args2);
 void			button_character(int *ud_down, t_stack **stack,
-								t_cargs **args2, t_cargs **args);
+					t_cargs **args2, t_cargs **args);
 int				ft_isnumber(char c);
 int				ft_alpha(char c);
 char			*ft_trim(char *line);
@@ -235,4 +239,5 @@ int				retfreetwo(char **tmp1, int ret);
 int				retfree(char *tmp1, char *tmp2, int ret);
 char			*ft_getvar(t_env *envlst, char **spltd, short first);
 void			signals_handler(int sig);
+void			ft_closestd(void);
 #endif

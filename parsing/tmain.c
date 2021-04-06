@@ -6,13 +6,13 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 08:17:04 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 16:56:03 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 10:31:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		print_node(t_stack **list_shell, int i, t_cargs **args2)
+int	print_node(t_stack **list_shell, int i, t_cargs **args2)
 {
 	t_stack	*ptr_list_shell;
 	int		x;
@@ -27,7 +27,7 @@ int		print_node(t_stack **list_shell, int i, t_cargs **args2)
 			{
 				while (ptr_list_shell->line[++x] != '\0')
 					ft_lstcargsadd_back(args2,
-					ft_lstcargsnew(ptr_list_shell->line[x]));
+						ft_lstcargsnew(ptr_list_shell->line[x]));
 				write_string(ptr_list_shell->line);
 				return (ft_strlen(ptr_list_shell->line));
 			}
@@ -55,7 +55,7 @@ char	*get_word_t_cargs(t_cargs **args)
 	return (ptr);
 }
 
-int		get_char(t_cargs **args, t_cargs **args2)
+int	get_char(t_cargs **args, t_cargs **args2)
 {
 	char			c;
 	struct termios	term;
