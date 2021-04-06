@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:57:00 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 15:04:49 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ struct s_params
 	int		total;
 	int		check;
 	int		index;
+	char	*s;
 }	t_params;
 
 typedef struct s_stack
@@ -161,6 +162,9 @@ t_stack			*ft_lststacknew(char *line, int i);
 void			ft_lststackadd_back(t_stack **list_shell, t_stack *new);
 int				get_len_list_stack(t_stack *lst);
 void			lastnodedeletion(t_cargs **lst);
+int				len_dollar(char *s);
+int				exe_change(int i, char **ptr, char *s);
+char			*addchange(char *s);
 void			free_t_cargs(t_cargs **args);
 char			*get_word_t_cargs(t_cargs **args);
 int				print_node(t_stack **list_shell, int i, t_cargs **args2);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+         #
+#    By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/16 15:17:45 by abahdir           #+#    #+#              #
-#    Updated: 2021/04/05 15:24:51 by abahdir          ###   ########.fr        #
+#    Updated: 2021/04/06 15:03:26 by wben-sai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRC =	main.c							\
 		parsing/listshell_tinputs.c		\
 		parsing/management_args.c		\
 		parsing/management_args2.c		\
+		parsing/management_args3.c		\
 		parsing/management_line.c		\
 		parsing/tmain.c					
 

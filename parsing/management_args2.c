@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   management_args2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:09:08 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:30:39 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 15:08:30 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,87 +34,101 @@ int	get_args(char *line, int start, int end, int norm)
 	return (1);
 }
 
+int	len_dollar(char *s)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	res = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\'' && valid_option(s, i) == 1)
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+		}
+		else if (s[i] == '$' && valid_option(s, i) == 1)
+		{
+			if (s[i + 1] == '$')
+				i++;
+			else if (ft_alpha(s[i + 1]) == 1 || s[i + 1] == '_')
+				res++;
+		}
+		i++;
+	}
+	return (res);
+}
+
+int	exe_change(int i, char **ptr, char *s)
+{
+	if (s[i] == '\'' && valid_option(s, i) == 1)
+	{
+		ptr[0][t_params.index++] = s[i++];
+		while (s[i] != '\'')
+			ptr[0][t_params.index++] = s[i++];
+		if (s[i] == '\'')
+			ptr[0][t_params.index++] = s[i++];
+	}
+	else if (s[i] == '$' && valid_option(s, i) == 1)
+	{
+		ptr[0][t_params.index++] = s[i++];
+		if (s[i] == '$')
+			ptr[0][t_params.index++] = s[i++];
+		else if (ft_alpha(s[i]) == 1 || s[i] == '_')
+		{
+			while (is_nbr_car(s[i]) == 1 || s[i] == '_')
+				ptr[0][t_params.index++] = s[i++];
+			ptr[0][t_params.index++] = 17;
+		}
+	}
+	else
+		ptr[0][t_params.index++] = s[i++];
+	return (i);
+}
+
+char	*addchange(char *s)
+{
+	int		i;
+	char	*ptr;
+	int		len_dlr;
+
+	i = 0;
+	t_params.index = 0;
+	len_dlr = len_dollar(s);
+	ptr = malloc(sizeof(char) * (ft_strlen(s) + len_dlr + 1));
+	while (s[i] != '\0')
+		i = exe_change(i, &ptr, s);
+	ptr[t_params.index] = '\0';
+	return (ptr);
+}
+
 char	*fill_arg(int len, int start, char *line, int vldder)
 {
-	char	*s;
-	int		i;
-
-	i = -1;
+	t_g.indx = -1;
 	t_params.index = 0;
 	if (len == 0)
 		len++;
-	s = (char *)malloc(sizeof(char ) * len + 1);
-	while (len > ++i)
+	t_params.s = (char *)malloc(sizeof(char ) * len + 1);
+	while (len > ++t_g.indx)
 	{
-		if (vldder == 1 && line[start + i] == '>')
+		if (vldder == 1 && line[start + t_g.indx] == '>')
 		{
-			s[t_params.index++] = 14;
+			t_params.s[t_params.index++] = 14;
 			vldder = 0;
 		}
-		else if (vldder == 1 && line[start + i] == '<')
-			s[t_params.index++] = 15;
+		else if (vldder == 1 && line[start + t_g.indx] == '<')
+			t_params.s[t_params.index++] = 15;
 		else
-			s[t_params.index++] = line[start + i];
+			t_params.s[t_params.index++] = line[start + t_g.indx];
 	}
-	s[t_params.index] = '\0';
-	t_params.temp = s;
-	s = checkpath(s);
+	t_params.s[t_params.index] = '\0';
+	t_params.temp = t_params.s;
+	t_params.s = addchange(t_params.s);
 	free(t_params.temp);
-	return (s);
-}
-
-void	check_more(t_gargs *gargs, char *line, int len, int norm)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	gestion_fill_arg(gargs, line, len);
-	j = number_of_derc_in_table(t_params.args);
-	if (norm == 1)
-	{
-		j--;
-		echonge_list_args(&gargs);
-		free_table_args();
-		gestion_fill_arg(gargs, line, len);
-	}
-	while (j > 0)
-	{
-		if (t_params.args[i][0] == 14 || t_params.args[i][0] == 15)
-		{
-			change_position(&gargs, i);
-			free_table_args();
-			gestion_fill_arg(gargs, line, len);
-			j--;
-			continue ;
-		}
-		i++;
-	}
-}
-
-int	lsh_split_line(char *line, t_inputs **list_shell)
-{
-	if (get_start_and_end_args(line, list_shell) == -1)
-		return (-1);
-	return (1);
-}
-
-int	get_param_list_shell(char *line, int start, int end)
-{
-	int	i;
-
-	i = 0;
-	while (line[start + i] == ' ')
-		i++;
-	if (line[start + i] != '>' && line[start + i] != '<')
-	{
-		if (get_args(line, start, end, 0) == -1)
-			return (-1);
-	}
-	else
-	{
-		if (get_args(line, start, end, 1) == -1)
-			return (-1);
-	}
-	return (1);
+	t_params.temp = t_params.s;
+	t_params.s = checkpath(t_params.s);
+	free(t_params.temp);
+	return (t_params.s);
 }

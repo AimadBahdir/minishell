@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execmds_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/06 10:08:19 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 12:10:16 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ short	ft_pwd(t_env **e, short get)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if (pwd)
+	if (!pwd)
 		return (errthrow(strerror(errno), NULL, NULL, errno));
 	path = getenval(*e, "PWD");
 	if (get)
