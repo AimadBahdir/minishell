@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 17:49:18 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 16:59:01 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:47:13 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ short	ft_pwd(t_env **e, short get)
 		ft_putstr(pwd, 1);
 	if (path != NULL)
 	{
-		setenval(e, "PWD", ft_strdup(pwd));
-		setenval(&t_g.explst, "PWD", ft_strdup(pwd));
+		setenval(e, ft_strdup("PWD"), ft_strdup(pwd));
+		setenval(&t_g.explst, ft_strdup("PWD"), ft_strdup(pwd));
 	}
 	else if (!get)
 	{

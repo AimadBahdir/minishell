@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 17:00:32 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:06:18 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int		main(int argc, char **argv, char **envp)
 
 	argv = NULL;
 	argc = 0;
+	t_g.haspace = 0;
 	t_g.cmd = NULL;
 	envlst = NULL;
 	t_g.envp = NULL;

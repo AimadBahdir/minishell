@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   management_args2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:09:08 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/03/13 09:40:31 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:59:36 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,29 @@ int		get_args(char *line, int start, int end, int norm)
 char	*fill_arg(int len, int start, char *line, int vldder)
 {
 	char	*s;
-	char	*temp;
 	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	t_params.index = 0;
 	if (len == 0)
 		len++;
 	s = (char *)malloc(sizeof(char ) * len + 1);
-	while (len > i)
+	while (len > ++i)
 	{
-		if (vldder == 1 && line[start + i] == '>' && line[start + i - 1] != '>')
-			s[j++] = 14;
+		if (vldder == 1 && line[start + i] == '>')
+		{
+			s[t_params.index++] = 14;
+			vldder = 0;
+		}
 		else if (vldder == 1 && line[start + i] == '<')
-			s[j++] = 15;
+			s[t_params.index++] = 15;
 		else
-			s[j++] = line[start + i];
-		i++;
+			s[t_params.index++] = line[start + i];
 	}
-	s[j] = '\0';
-	temp = s;
+	s[t_params.index] = '\0';
+	t_params.temp = s;
 	s = checkpath(s);
-	free(temp);
+	free(t_params.temp);
 	return (s);
 }
 

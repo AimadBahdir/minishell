@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:41:07 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 17:14:18 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 15:21:06 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		check_syntax_line(char *line, int i)
 	if ((line[i] == '\'' || line[i] == '\"') && valid_option(line, i) == 1)
 		i = get_end_index(line, i);
 	if (i == -1)
-		return (-1);
+		return (error_msg());
 	if ((line[i] == '|' || line[i] == ';') && valid_option(line, i) == 1)
 	{
 		i = pass_spe(line, i + 1);

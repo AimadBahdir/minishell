@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 15:33:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 18:05:05 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ short	ft_execmd(t_env **lst)
 	short	err;
 
 	cmd = lowercmd(lst);
-	if (ft_strcmp(cmd, "echo"))
+	if (ft_strcmp(cmd, "echo") > 0)
 		err = ft_echo();
-	else if (ft_strcmp(cmd, "cd"))
+	else if (ft_strcmp(cmd, "cd") > 0)
 		err = ft_cd(lst);
-	else if (ft_strcmp(cmd, "pwd"))
+	else if (ft_strcmp(cmd, "pwd") > 0)
 		err = ft_pwd(lst, 1);
-	else if (ft_strcmp(cmd, "env"))
+	else if (ft_strcmp(cmd, "env") > 0)
 		err = ft_env(*lst);
-	else if (ft_strcmp(t_g.cmd[0], "export"))
+	else if (ft_strcmp(t_g.cmd[0], "export") > 0)
 		err = ft_export(lst);
-	else if (ft_strcmp(t_g.cmd[0], "unset"))
+	else if (ft_strcmp(t_g.cmd[0], "unset") > 0)
 		err = ft_unset(lst);
-	else if (ft_strcmp(cmd, "exit"))
+	else if (ft_strcmp(cmd, "exit") > 0)
 		err = ft_exit();
 	else
 	{

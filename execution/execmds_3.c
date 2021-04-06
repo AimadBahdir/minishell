@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 10:07:26 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 14:25:59 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:22:13 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ short	ft_echo(void)
 	return (0);
 }
 
-char	*ft_rplchome(char *path)
+char	*ft_rplchome(t_env *lst, char *path)
 {
 	char *tmp;
 
 	tmp = path;
 	if (path == NULL)
-		path = ft_strdup(t_g.homepath);
+		path = getenval(lst, "HOME");
 	else if (path[0] == '~')
 		path = ft_strjoin(t_g.homepath, (path + 1));
 	free(tmp);
@@ -75,7 +75,10 @@ short	ft_cd(t_env **e)
 	char *path;
 
 	if (!t_g.cmd[1] || t_g.cmd[1][0] == '~')
-		path = ft_rplchome(ft_strdup(t_g.cmd[1]));
+	{
+		if (!(path = ft_rplchome(*e, ft_strdup(t_g.cmd[1]))))
+			return (errthrow("cd: ", "HOME not set", NULL, 1));
+	}
 	else if (t_g.cmd[1][0] == '\0')
 		return (0);
 	else if (ft_strcmp(t_g.cmd[1], "-"))
@@ -93,8 +96,7 @@ short	ft_cd(t_env **e)
 		return (errthrow(path, ": cd: ", strerror(errno), 1));
 	}
 	ft_setoldpwd(e);
-	ft_pwd(e, 0);
-	return (retfree(path, NULL, 0));
+	return (retfree(path, NULL, ft_pwd(e, 0)));
 }
 
 short	ft_pipe(void)

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/04 16:59:25 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:00:54 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct			s_g
 	int		indx;
 	int		err;
 	char	**cmd;
+	short	haspace;
 	t_env	*explst;
 }				t_g;
 
@@ -90,6 +91,7 @@ struct			s_params
 	t_cargs	*str_c2;
 	int		total;
 	int		check;
+	int		index;
 }				t_params;
 
 typedef struct	s_stack
@@ -226,7 +228,7 @@ short			ft_setenvar(t_env *envlst, char **cmd);
 void			ft_resetenv(t_env *lst);
 char			**spltcmd(void);
 short			gdirections(t_env **envlst);
-short			ft_chkambigs(t_env *envlst, int pos, char **vars);
+short			ft_chkambigs(t_env *envlst, int *pos, char **vars);
 char			*spltandgenv(t_env *envlst, char *cmd);
 int				fillfile(t_env **envlst);
 int				retfreetwo(char **tmp1, int ret);

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:20:19 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/19 12:38:32 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:51:10 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ t_env	*newenvelm(char *key, char *val)
 	newelm->key = ft_strdup(key);
 	newelm->val = ft_strdup(val);
 	newelm->next = NULL;
-	free(key);
-	free(val);
+	retfree(key, val, 0);
 	return (newelm);
 }
 
@@ -48,6 +47,19 @@ void	envaddelm(t_env **lst, t_env *newelm)
 		e->next = newelm;
 		newelm->next = NULL;
 	}
+}
+
+void	ft_setlvl(t_env **lst)
+{
+	char	*lvl;
+	int		nblvl;
+
+	lvl = getenval(*lst, "SHLVL");
+	nblvl = ft_atoi(lvl);
+	retfree(lvl, NULL, 0);
+	nblvl++;
+	setenval(lst, ft_strdup("SHLVL"), ft_itoa(nblvl));
+	setenval(&t_g.explst, ft_strdup("SHLVL"), ft_itoa(nblvl));
 }
 
 void	ft_setenv(t_env **lst, char **envp)
@@ -72,6 +84,7 @@ void	ft_setenv(t_env **lst, char **envp)
 	old = ft_strdup(" ");
 	old[0] = 16;
 	envaddelm(&t_g.explst, newenvelm(ft_strdup("OLDPWD"), old));
+	ft_setlvl(lst);
 }
 
 void	ft_resetenv(t_env *lst)

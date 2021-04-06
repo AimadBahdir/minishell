@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 09:46:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 11:38:15 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 17:25:09 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ char	*spltandgenv(t_env *envlst, char *cmd)
 	}
 	if (!(val = getenval(envlst, key)))
 		val = ft_strdup("");
+	if (ft_checkfor(' ', (t_params.temp = ft_strtrim(val, "\t "))) != -1)
+		t_g.haspace = 1;
 	res = ft_strjoin(val, suit);
-	free(key);
-	free(val);
-	free(suit);
+	retfree(key, val, 0);
+	retfree(t_params.temp, suit, 0);
 	return (res);
 }
 
@@ -81,31 +82,60 @@ void	ft_rplcmd(char *arg, int pos)
 	t_g.cmd[i] = 0;
 }
 
-short	ft_chkambigs(t_env *envlst, int pos, char **vars)
+void	ft_setcmdvar(char *arg, int *pos)
 {
-	char	*arg;
 	char	*tmp;
+	char	**oldcmd;
+	int		len;
+	int		j;
+	int		i;
 
-	t_g.err = 0;
-	arg = ft_getvar(envlst, vars, t_g.cmd[pos][0] == 24);
-	if (ft_checkfor(' ', (tmp = ft_strtrim(arg, "\t "))) != -1)
+	tmp = t_g.cmd[*pos];
+	oldcmd = t_g.cmd;
+	len = ft_lentwop(t_g.cmd);
+	if (*pos == 0 && !*arg)
 	{
-		if (pos > 0 && (t_g.cmd[pos - 1][0] == 14 || t_g.cmd[pos - 1][0] == 15))
-		{
-			t_g.err = ft_creatfiles(t_g.cmd, pos - 1);
-			return (ft_ternint((t_g.err == 0), errthrow("$", vars[(
-				ft_lento(t_g.cmd[pos], 24) > 0)],
-				": ambiguous redirect", retfree(arg, tmp, 1)), t_g.err));
-		}
-		else
-			ft_rplcmd(arg, pos);
+		i = 0;
+		j = *pos;
+		t_g.cmd = malloc(len * sizeof(char *));
+		while (oldcmd[++j])
+			t_g.cmd[i++] = ft_strdup(oldcmd[j]);
+		t_g.cmd[j - 1] = 0;
+		*pos -= 1;
+		retfreetwo(oldcmd, 0);
 	}
 	else
 	{
+		t_g.cmd[*pos] = ft_strdup(arg);
 		free(tmp);
-		tmp = t_g.cmd[pos];
-		t_g.cmd[pos] = ft_strdup(arg);
-		return (retfree(tmp, arg, 0));
 	}
-	return (retfree(arg, tmp, 0));
+}
+
+short	ft_chkambigs(t_env *envlst, int *pos, char **vars)
+{
+	char	*arg;
+	int		err;
+
+	err = 0;
+	arg = ft_getvar(envlst, vars, t_g.cmd[*pos][0] == 24);
+	if (t_g.haspace)
+	{
+		t_g.haspace = 0;
+		if (pos > 0 && (t_g.cmd[*pos - 1][0] == 14
+			|| t_g.cmd[*pos - 1][0] == 15))
+		{
+			err = ft_creatfiles(t_g.cmd, *pos - 1);
+			return (ft_ternint((err == 0), errthrow("$", vars[(
+				ft_lento(t_g.cmd[*pos], 24) > 0)],
+				": ambiguous redirect", retfree(arg, NULL, 1)), err));
+		}
+		else
+			ft_rplcmd(arg, *pos);
+	}
+	else
+	{
+		ft_setcmdvar(arg, pos);
+		return (retfree(arg, NULL, 0));
+	}
+	return (retfree(arg, NULL, 0));
 }

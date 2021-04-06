@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:51:59 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/04 16:46:55 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/06 08:38:12 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 {
 	char *k;
 	char *v;
+	char *tmp;
 
 	k = NULL;
 	v = NULL;
@@ -38,16 +39,17 @@ short	ft_exportelem(t_env **envlst, char *key, char *val, short exl)
 	{
 		k = ft_strdup(key);
 		v = ft_strdup(val);
-		if (getenval(*envlst, k) == NULL)
+		if ((tmp = getenval(*envlst, k)) == NULL)
 			envaddelm(envlst, newenvelm(k, v));
 		else
 			setenval(envlst, k, v);
+		retfree(tmp, NULL, 0);
 	}
-	if (getenval(t_g.explst, key) == NULL)
+	if ((tmp = getenval(t_g.explst, key)) == NULL)
 		envaddelm(&t_g.explst, newenvelm(key, val));
 	else
 		setenval(&t_g.explst, key, val);
-	return (0);
+	return (retfree(tmp, NULL, 0));
 }
 
 short	ft_export(t_env **e)
@@ -113,8 +115,8 @@ short	ft_setoldcmd(t_env **lst, char *cmdpath)
 		t_g.iscmd = 2;
 	free(cmd);
 	cmd = ft_strdup(cmdpath);
-	setenval(lst, "_", cmd);
+	setenval(lst, ft_strdup("_"), cmd);
 	cmd = ft_strdup(cmdpath);
-	setenval(&t_g.explst, "_", cmd);
+	setenval(&t_g.explst, ft_strdup("_"), cmd);
 	return (127);
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:01:48 by abahdir           #+#    #+#             */
-/*   Updated: 2021/03/18 16:42:06 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 16:39:06 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void	ft_strlower(char *str)
 	int i;
 
 	i = -1;
-	while (str[++i] != '\0')
+	if (str)
 	{
-		if (str[i] >= 'A' && str[i] <= 'Z')
-			str[i] += 32;
+		while (str[++i] != '\0')
+		{
+			if (str[i] >= 'A' && str[i] <= 'Z')
+				str[i] += 32;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/05 11:37:51 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/05 16:52:35 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ short	ft_othercmd(t_env **lst)
 		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0
 		|| ft_duptwo(t_g.mystdin, STDIN_FILENO) > 0)
 			exit(1);
-		if (!ft_strcmp(t_g.cmd[0], "") && !(cmd = find_cmd(lst, t_g.cmd[0])))
+		if (!(cmd = find_cmd(lst, t_g.cmd[0])))
 			exit(errthrow(t_g.cmd[0], ": command not found", NULL, 127));
 		if (execve(cmd, t_g.cmd, t_g.envp) == -1)
 			exit(chkprms(errno));
