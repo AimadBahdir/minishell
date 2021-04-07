@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+         #
+#    By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/16 15:17:45 by abahdir           #+#    #+#              #
-#    Updated: 2021/04/06 15:03:26 by wben-sai         ###   ########.fr        #
+#    Updated: 2021/04/07 08:30:09 by abahdir          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ SRC =	main.c							\
 all : $(NAME)
 
 $(NAME):$(SRC)
-	gcc -Wall -Wextra -Werror $(SRC) -lncurses -g -o minishell
+	gcc -Wall -Wextra -Werror $(SRC) -lncurses -o minishell
 clean:
 	rm -rf minishell
 fclean:
