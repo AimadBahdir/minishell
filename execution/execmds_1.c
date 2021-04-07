@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/06 10:03:40 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/07 08:27:14 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	chkprms(int err)
 		return (errthrow(strerror(err), NULL, NULL, 126));
 	else if (err == 8)
 		return (0);
-	return (err);
+	return (errthrow(strerror(err), NULL, NULL, err));
 }
 
 short	ft_othercmd(t_env **lst)

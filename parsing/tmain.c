@@ -6,7 +6,7 @@
 /*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 08:17:04 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:31:36 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/07 08:16:00 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void	delete_change(void)
 	char	*temp;
 
 	temp = tgetstr("le", NULL);
-	tputs(temp, 1, ft_puts);
+	tputs(temp, 1, ft_putchar);
 	temp = tgetstr("ce", NULL);
-	tputs(temp, 1, ft_puts);
+	tputs(temp, 1, ft_putchar);
 }
 
 char	*get_line(t_stack **stack)

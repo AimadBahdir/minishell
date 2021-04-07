@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 15:04:49 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/07 08:15:45 by abahdir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void			free_t_cargs(t_cargs **args);
 char			*get_word_t_cargs(t_cargs **args);
 int				print_node(t_stack **list_shell, int i, t_cargs **args2);
 int				get_char(t_cargs **args, t_cargs **args2);
-int				ft_puts(int d);
+int				ft_putchar(int d);
 void			delete_change(void);
 char			*button_enter(int *ud_down, t_stack **stack,
 					t_cargs **args2, t_cargs **args);
