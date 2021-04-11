@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   management_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 15:15:55 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:31:03 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:33:31 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,6 @@ int	new_check(char **line2)
 		return (-1);
 	}
 	return (0);
-}
-
-int	join_new_line_check_read_more(char **line, char **line2)
-{
-	char	*temp;
-	int		len;
-
-	temp = *line;
-	*line = ft_strjoin(*line, *line2);
-	free(temp);
-	len = ft_strlen(*line2);
-	if (line2[0][len - 1] != '|')
-	{
-		free(*line2);
-		return (1);
-	}
-	else if (line2[0][len - 1] != '|' && valid_option(*line2, len - 1) == 1)
-		return (0);
-	return (1);
 }
 
 int	lsh_read_line_and_trim(char **line, t_stack **stack)

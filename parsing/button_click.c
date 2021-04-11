@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   button_click.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/04 13:18:30 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:16:48 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:24:48 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*button_enter(int *up_dwn, t_stack **stk, t_cargs **arg2, t_cargs **arg)
 	}
 	else
 	{
-		free(t_params.temp);
+		retfree(t_params.temp, NULL, 0);
 		t_params.input = 0;
 		return (ft_strdup(""));
 	}
@@ -66,7 +66,7 @@ void	button_down(int *up_dwn, t_stack **stack, t_cargs **arg2, t_cargs **arg)
 		t_params.temp = get_word_t_cargs(arg);
 		write_string(t_params.temp);
 		t_params.input = ft_strlen(t_params.temp);
-		free(t_params.temp);
+		retfree(t_params.temp, NULL, 0);
 	}
 }
 

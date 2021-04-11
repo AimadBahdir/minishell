@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 16:07:44 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:18:05 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:27:34 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,12 @@ void	free_table_args(void)
 	if (t_params.args != NULL)
 	{
 		while (t_params.args[i] != NULL)
+		{
 			free(t_params.args[i++]);
+			t_params.args[i - 1] = NULL;
+		}
 		free(t_params.args);
+		t_params.args = NULL;
 	}
 }
 
@@ -71,6 +75,7 @@ char	*get_word_free(t_cargs **args)
 		ptr_args = ptr_args2;
 		ptr_args2 = ptr_args2->next;
 		free(ptr_args);
+		ptr_args = NULL;
 	}
 	*args = NULL;
 	return (ptr);

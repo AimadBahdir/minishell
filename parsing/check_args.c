@@ -6,7 +6,7 @@
 /*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/11 14:58:53 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 12:09:57 by wben-sai         ###   ########.fr       */
+/*   Updated: 2021/04/08 17:17:40 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ int	checkpath_dollar(t_cargs **args, char *s, int i)
 	if (s[i] == '?')
 		return (checkpath_question_mark(args, i));
 	else if (ft_isnumber(s[i]) == 0 && ft_alpha(s[i]) == 0 && s[i] != '_')
+	{
 		ft_lstcargsadd_back(args, ft_lstcargsnew('$'));
+		return (i - 1);
+	}
 	else if (ft_isnumber(s[i]) == 1)
 		return (i);
 	else if (ft_alpha(s[i]) == 1 || s[i] == '_')

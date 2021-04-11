@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   listshell_stack.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/04 11:31:52 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:24:47 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:28:23 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_len_list_stack(t_stack *lst)
 
 	temp1 = lst;
 	i = 0;
-	while (temp1)
+	while (temp1 != NULL)
 	{
 		i++;
 		temp1 = temp1->next;
@@ -78,6 +78,7 @@ void	lastnodedeletion(t_cargs **lst)
 		else
 			ptr_lst2->next = NULL;
 		free(ptr_lst);
+		ptr_lst = NULL;
 	}
 }
 
@@ -92,6 +93,7 @@ void	free_t_cargs(t_cargs **args)
 		ptr_args = ptr_args2;
 		ptr_args2 = ptr_args2->next;
 		free(ptr_args);
+		ptr_args = NULL;
 	}
 	*args = NULL;
 }

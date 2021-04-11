@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 16:26:39 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/06 10:04:28 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:08:03 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	signals_handler(int sig)
 		}
 		else if (t_g.iscmd == 1)
 			t_g.exstat = 255;
+		t_g.is_sig = 1;
 	}
 }
 
@@ -94,6 +95,7 @@ int	main(int argc, char **argv, char **envp)
 	argv = NULL;
 	argc = 0;
 	t_g.haspace = 0;
+	t_g.is_sig = 0;
 	t_g.cmd = NULL;
 	envlst = NULL;
 	t_g.envp = NULL;

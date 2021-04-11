@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 15:12:49 by wben-sai          #+#    #+#             */
-/*   Updated: 2021/04/07 08:15:45 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:07:14 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ struct s_g
 	char	*oldpwd;
 	char	*pwd;
 	short	haspace;
+	short	is_sig;
 	t_env	*explst;
 }	t_g;
 

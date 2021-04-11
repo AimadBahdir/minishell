@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execmds_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abahdir <abahdir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wben-sai <wben-sai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 16:37:58 by abahdir           #+#    #+#             */
-/*   Updated: 2021/04/07 08:27:14 by abahdir          ###   ########.fr       */
+/*   Updated: 2021/04/08 17:15:29 by wben-sai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ short	ft_othercmd(t_env **lst)
 	char	*cmd;
 
 	pid = fork();
-	if (pid < 0)
-		return (errthrow("Error ", "in ", "forking", 1));
 	if (pid == 0)
 	{
 		if (ft_duptwo(t_g.mystdout, STDOUT_FILENO) > 0
@@ -94,8 +92,10 @@ short	ft_othercmd(t_env **lst)
 	else
 	{
 		wait(&t_g.err);
-		if (WIFEXITED(t_g.err))
+		if (WIFEXITED(t_g.err) && !t_g.is_sig)
 			return (WEXITSTATUS(t_g.err));
+		t_g.is_sig = 0;
+		return (t_g.exstat);
 	}
 	return (0);
 }
